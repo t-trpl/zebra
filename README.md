@@ -1,6 +1,6 @@
 # zebra
 
-A portable C++17 command-line utility to stripe and reassemble files easily.
+A portable C++17 command-line utility to stripe and reassemble files easily. Similar to GNU split.
 
 ---
 
