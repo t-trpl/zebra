@@ -1,0 +1,185 @@
+/**
+ * File: Parser.cc
+ * Copyright (C) 2025 Tyler Triplett
+ * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
+ *
+ * This is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ */
+
+#include "src/Parser.hh"
+#include "src/UtilAssembler.hh"
+#include "src/UtilStripe.hh"
+#include "src/UtilAssemblerMulti.hh"
+#include "src/types.hh"
+#include "src/utils.hh"
+#include "src/helpers.hh"
+#include <unordered_map>
+#include <vector>
+
+Error Parser::runParse(const Args& args)
+{
+    std::string mode = "";
+    for (auto ptr = args.begin(); ptr != args.end(); ptr++) {
+        const auto& left = *ptr;
+        if (isMode(left)) {
+            if (!mode.empty())
+                return "Two modes";
+            else 
+                mode = left;
+        }
+        else if (isFlag(left))
+            flags_.insert(left);
+        else if (isOpt(left)) {
+            ptr++;
+            while (ptr != args.end() && noLeadingHyphen(*ptr))
+                argMap_[left].push_back(*ptr++);
+            ptr--;
+            if (argMap_[left].empty())
+                return "Unmatched option: " + left;
+        }
+        else
+            return "Bad arg: " + left;
+    }
+    if (containsFlag(flags_, {"-h", "--help"}))
+        return util::help;
+    const auto missing = ensureRequired();
+    if (missing)
+        return *missing;
+    mode_ = getMode(mode);
+    if (mode_ == Mode::NONE)
+        return "No mode";
+    return None;
+}
+
+bool Parser::noLeadingHyphen(const std::string& str) const
+{
+    return str.size() > 0 && str[0] != '-';
+}
+
+bool Parser::isFlag(const std::string& str) const
+{
+    static const Flags flags = {
+        "-q", "--quiet",
+        "-np", "--no-padding",
+        "-h", "--help",
+        "-ne", "--no-extension",
+    };
+    return flags.find(str) != flags.end();
+}
+
+std::vector<std::string> Parser::argOr(const std::pair<std::string,
+        std::string>& options) const
+{
+    if (auto ptr = argMap_.find(options.first); ptr != argMap_.end())
+        return ptr->second;
+    if (auto ptr = argMap_.find(options.second); ptr != argMap_.end())
+        return ptr->second;
+    return std::vector<std::string>();
+}
+
+Parser::Mode Parser::getMode(const std::string& mode) const
+{
+    if (mode == "-A" || mode == "--Assemble") {
+        const auto val = argOr({"--input", "-i"});
+        return val.size() > 1 ? Mode::ASM_MULTI : Mode::ASM;
+    }
+    else if (mode == "-S" || mode == "--Stripe")
+        return Mode::STRIPE;
+    return Mode::NONE;
+}
+
+Error Parser::ensureRequired() const
+{
+    const std::vector<ArgT> required = {
+        {"--input", "-i", "input"},
+        {"--output", "-o", "output"},
+    };
+    for (const auto& r : required) {
+        const auto maybeRequired = argToValue(argMap_, r);
+        if (!maybeRequired)
+            return maybeRequired.error();
+        if (*maybeRequired == argMap_.end())
+            return "Missing " + std::get<2>(r);
+    }
+    return None;
+}
+
+bool Parser::isMode(const std::string& left) const
+{
+    const auto end = left.end();
+    if (left.size() < 2)
+        return false;
+    auto ptr = left.begin();
+    for (int hypthen = 0; ptr != end && *ptr == '-'; hypthen++, ptr++)
+        if (hypthen >= 2)
+            return false;
+    if (ptr == end || !isUpper(*ptr++))
+        return false;
+    for (; ptr != end; ptr++)
+        if (!isLower(*ptr) && *ptr != '-')
+            return false;
+    return true;
+}
+
+bool Parser::isOpt(const std::string& left) const
+{
+    const auto end = left.end();
+    if (left.size() < 2)
+        return false;
+    auto ptr = left.begin();
+    for (int hypthen = 0; ptr != end && *ptr == '-'; hypthen++, ptr++)
+        if (hypthen >= 2)
+            return false;
+    if (ptr == end)
+        return false;
+    for (;ptr != end; ptr++)
+        if (!isLower(*ptr) && *ptr != '-')
+            return false;
+    return true;
+}
+
+bool Parser::isUpper(const char c) const
+{
+    return c >= 'A' && c <= 'Z';
+}
+
+bool Parser::isLower(const char c) const
+{
+    return c >= 'a' && c <= 'z';
+}
+
+template<typename T>
+Maybe<UtilPtr> Parser::createPtr()
+{
+    auto ptr = std::make_unique<T>();
+    const auto unknown = ptr->checkForUnknown(argMap_, flags_);
+    if (unknown)
+        return make_bad<UtilPtr>(*unknown);
+    const auto argErr = ptr->setArgs(argMap_);
+    if (argErr)
+        return make_bad<UtilPtr>(*argErr);
+    ptr->setFlags(flags_);
+    return ptr;
+}
+
+Maybe<UtilPtr> Parser::createUtil()
+{
+    switch (mode_) {
+    case Mode::STRIPE :
+        return createPtr<UtilStripe>();
+    case Mode::ASM :
+        return createPtr<UtilAssembler>();
+    case Mode::ASM_MULTI :
+        return createPtr<UtilAssemblerMulti>();
+    case Mode::NONE : { }
+    }
+    return make_bad<UtilPtr>("No type");
+}
