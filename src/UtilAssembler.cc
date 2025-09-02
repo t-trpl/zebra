@@ -58,7 +58,8 @@ Error UtilAssembler::setArgs(const ArgMap& map)
     const auto baseError = UtilBaseSingle::setArgs(map);
     if (baseError)
         return *baseError;
-    const auto errorExtension = setMember(map, {"--extension", "-e", "extension"}, ext_);
+    const auto errorExtension = setMember(map,
+            {"--extension", "-e", "extension"}, ext_);
     if (errorExtension)
         return *errorExtension;
     const auto errorName = setMember(map, {"--name", "-n", "name"}, name_);
