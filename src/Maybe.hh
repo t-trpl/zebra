@@ -32,6 +32,7 @@ private:
     bool hasValue_ = false;
     std::variant<T, err> value_;
     Maybe(const std::string& msg, bool);
+    Maybe(std::string&& msg, bool);
 public:
     Maybe(const T& val);
     ~Maybe();
@@ -48,6 +49,7 @@ public:
     T& operator*();
     const T& operator*() const;
     static Maybe<T> bad(const std::string& err);
+    static Maybe<T> bad(std::string&& err);
     std::string error() const;
     template<typename U> T valueOr(const U& fallback) const;
     T extract();
@@ -68,6 +70,12 @@ Maybe<T> make_bad(const std::string& err)
 }
 
 template<typename T>
+Maybe<T> make_bad(std::string&& err)
+{
+    return Maybe<T>::bad(std::forward<std::string>(err));
+}
+
+template<typename T>
 Maybe<T>::Maybe(const T& val) 
     : hasValue_(true)
     , value_(val)
@@ -85,6 +93,14 @@ template<typename T>
 Maybe<T>::Maybe(const std::string& msg, bool) 
     : hasValue_(false)
     , value_(msg)
+{
+
+}
+
+template<typename T>
+Maybe<T>::Maybe(std::string&& msg, bool) 
+    : hasValue_(false)
+    , value_(std::forward<std::string>(msg))
 {
 
 }
@@ -147,6 +163,12 @@ template<typename T>
 Maybe<T> Maybe<T>::bad(const std::string& err)
 {
     return Maybe<T>(err, 0);
+}
+
+template<typename T>
+Maybe<T> Maybe<T>::bad(std::string&& err)
+{
+    return Maybe<T>(std::forward<std::string>(err), 0);
 }
 
 template<typename T>

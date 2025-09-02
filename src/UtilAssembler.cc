@@ -46,7 +46,6 @@ Maybe<Files> UtilAssembler::loadFileNames() const
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
 {
-    
     auto ptr = stem.end() - 1;
     while (ptr > stem.begin() && std::isdigit(*ptr))
         ptr--;
