@@ -57,12 +57,6 @@ public:
     const T& operator->() const;
 };
 
-template<typename U, typename T>
-constexpr bool should_forward_v =
-        std::is_same_v<std::decay_t<U>, T> ||
-        std::is_base_of_v<T, std::decay_t<U>> ||
-        (std::is_convertible_v<std::decay_t<U>, T> && std::is_class_v<U>);
-
 template<typename T>
 Maybe<T> make_bad(const std::string& err)
 {
@@ -215,10 +209,10 @@ Maybe<T>::Maybe(Maybe<U>&& other)
 {
     if (other) {
         hasValue_ = true;
-        if constexpr (should_forward_v<U, T>)
-            value_ = std::forward<U>(*other);
-        else
-            value_ = static_cast<T>(*other);
+        if constexpr (std::is_constructible_v<T, U&&>)
+            value_ = T(std::forward<U>(*other));
+        else 
+            value_ = static_cast<T>(std::forward<U>(*other));
     }
     else {
         hasValue_ = false;
@@ -235,16 +229,17 @@ Maybe<T>::Maybe(std::initializer_list<U> il)
 
 }
 
-template<typename T> 
+template<typename T>
 template<typename U>
 Maybe<T>::Maybe(U&& val)
+    : hasValue_(true)
 {
-    hasValue_ = true;
-    if constexpr (should_forward_v<U, T>)
-        value_ = std::forward<U>(val);
-    else
-        value_ = static_cast<T>(val);
+    if constexpr (std::is_constructible_v<T, U&&>)
+        value_ = T(std::forward<U>(val));
+    else 
+        value_ = static_cast<T>(std::forward<U>(val));
 }
+
 
 template<typename T>
 T Maybe<T>::extract()
@@ -263,5 +258,6 @@ const T& Maybe<T>::operator->() const
 {
     return **this;
 }
+
 
 #endif /// MAYBE_HH
