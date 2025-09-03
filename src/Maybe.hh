@@ -59,9 +59,9 @@ public:
 
 template<typename U, typename T>
 constexpr bool should_forward_v =
-    std::is_same_v<std::decay_t<U>, std::decay_t<T>> ||
-    std::is_base_of_v<std::decay_t<T>, std::decay_t<U>> ||
-    std::is_constructible_v<T, U>;
+        std::is_same_v<std::decay_t<U>, T> ||
+        std::is_base_of_v<T, std::decay_t<U>> ||
+        (std::is_convertible_v<std::decay_t<U>, T> && std::is_class_v<U>);
 
 template<typename T>
 Maybe<T> make_bad(const std::string& err)
