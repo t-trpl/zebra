@@ -35,10 +35,11 @@ private:
     size_t maxNameLength(const std::streamsize& size) const ;
     std::string getFileName(const int& number, const size_t& len) const;
     Maybe<size_t> stringToBytes(const std::string& size) const;
-    size_t countPieces(const size_t& rem) const;
+    size_t stripesStrLen(const size_t& rem) const;
     std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
         const;
     std::unordered_set<std::string> getValidOptionsFlags() const override;
+    std::string getStripePath(const size_t& num, const size_t& max) const;
 public:
     UtilStripe() { }
     ~UtilStripe() { }

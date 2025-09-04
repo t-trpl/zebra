@@ -78,9 +78,9 @@ bool Parser::isFlag(const std::string& str) const
 std::vector<std::string> Parser::argOr(const std::pair<std::string,
         std::string>& options) const
 {
-    if (auto ptr = argMap_.find(options.first); ptr != argMap_.end())
+    if (const auto ptr = argMap_.find(options.first); ptr != argMap_.end())
         return ptr->second;
-    if (auto ptr = argMap_.find(options.second); ptr != argMap_.end())
+    if (const auto ptr = argMap_.find(options.second); ptr != argMap_.end())
         return ptr->second;
     return std::vector<std::string>();
 }

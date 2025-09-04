@@ -85,9 +85,9 @@ Error UtilBase::checkForBadArgs(const ArgMap& map)
 
 Error UtilBase::checkForUnknown(const ArgMap& map, const Flags& flag)
 {
-    if (auto err = checkForBadArgs(map); err)
+    if (const auto err = checkForBadArgs(map); err)
         return *err;
-    if (auto err = checkForBadFlags(flag); err)
+    if (const auto err = checkForBadFlags(flag); err)
         return *err;
     return None;
 }

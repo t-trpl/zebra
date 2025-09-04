@@ -77,9 +77,9 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
         num += *it++;
     if (num.empty())
         return make_bad<size_t>("No size...");
-    const auto decCount = std::count_if(num.begin(), num.end(),
+    const auto decimalCount = std::count_if(num.begin(), num.end(),
             [](const auto& c){ return c == '.'; });
-    if (it != size.end() && (!std::isalpha(*it) || decCount > 1))
+    if (it != size.end() && (!std::isalpha(*it) || decimalCount > 1))
         return make_bad<size_t>("Bad byte size");
     const double s = std::stod(num);
     std::unordered_map<std::string, size_t> pref = {   
@@ -102,15 +102,15 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
     return bytes;
 }
 
-size_t UtilStripe::countPieces(const size_t& rem) const
+size_t UtilStripe::stripesStrLen(const size_t& rem) const
 {
-    return rem > 0 ? 1 + countPieces(rem / 10) : 0;
+    return rem > 0 ? 1 + stripesStrLen(rem / 10) : 0;
 }
 
 size_t UtilStripe::maxNameLength(const std::streamsize& size) const
 {
     const size_t pieces = size / stripeSize_ + (size % stripeSize_ > 0); 
-    return countPieces(pieces);
+    return stripesStrLen(pieces);
 }
 
 std::streamsize UtilStripe::getFileSize(const std::string& location) const
@@ -148,6 +148,14 @@ void UtilStripe::setFlags(const Flags& flags)
         useExt_ = false;
 }
 
+std::string UtilStripe::getStripePath(const size_t& num, const size_t& max) const
+{
+    const auto name = getFileName(num, max);
+    const std::string fullName = useExt_ ? (name + "." + ext_) : name;
+    const std::string path = fs::path(out_) / fullName;
+    return path;
+}
+
 Error UtilStripe::run() const
 {
     if (!silence_) {
@@ -170,9 +178,7 @@ Error UtilStripe::run() const
     for (auto bytes = readChunk(file, buffer);
          bytes;
          bytes = readChunk(file, buffer)) {
-        const std::string name = getFileName(chunkNumber++, maxName);
-        const std::string absName = useExt_ ? (name + "." + ext_) : name;
-        const std::string path = fs::path(out_) / absName;
+        const auto path = getStripePath(chunkNumber++, maxName);
         std::ofstream outFile(path);
         if (!outFile)
             return "Failed to write: " + path;
