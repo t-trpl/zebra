@@ -50,8 +50,10 @@ Error UtilStripe::setArgs(const ArgMap& map)
     if (!maybeSize)
         return maybeSize.error();
     if (*maybeSize != map.end()) {
+        if (maybeSize->second.empty())
+            return "No size";
         if (maybeSize->second.size() > 1)
-            return "Two sizes";
+            return "Too many sizes";
         const auto &size = maybeSize->second[0];
         const auto bytes = stringToBytes(size);
         if (bytes)
