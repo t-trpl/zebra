@@ -33,8 +33,6 @@ using Args = std::vector<std::string>;
 
 using ArgT = std::tuple<std::string, std::string, std::string>;
 
-using OptOr = std::pair<std::string, std::string>;
-
 using ArgOr = std::pair<std::string, std::string>;
 
 constexpr auto None = std::nullopt;

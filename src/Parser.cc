@@ -23,6 +23,7 @@
 #include "src/helpers.hh"
 #include <unordered_map>
 #include <vector>
+#include <iostream>
 
 Error Parser::runParse(const Args& args)
 {
@@ -49,11 +50,6 @@ Error Parser::runParse(const Args& args)
         else
             return "Empty arg";
     }
-    if (containsMap(argMap_, {"-h", "--help"}))
-        return util::help;
-    const auto missing = ensureRequired();
-    if (missing)
-        return *missing;
     mode_ = getMode(mode);
     if (mode_ == Mode::NONE) {
         if (mode.empty())
@@ -64,12 +60,19 @@ Error Parser::runParse(const Args& args)
     return None;
 }
 
+
+void Parser::printHelper() const{ 
+    if (containsMap(argMap_, {"-h", "--help"}))
+        std::cout << util::help;
+}
+
+
 bool Parser::noLeadingHyphen(const std::string& str) const
 {
     return str.size() > 0 && str[0] != '-';
 }
 
-std::vector<std::string> Parser::MapOr(const ArgMap map, const OptOr& options)
+std::vector<std::string> Parser::MapOr(const ArgMap map, const ArgOr& options)
     const
 {
     if (const auto ptr = map.find(options.first); ptr != map.end())

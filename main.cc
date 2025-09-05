@@ -23,6 +23,7 @@ Error run(const Args& args)
     const auto parseError = p.runParse(args);
     if (parseError)
         return *parseError;
+    p.printHelper();
     const auto util = p.createUtil();
     if (!util)
         return util.error();
