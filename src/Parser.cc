@@ -36,10 +36,10 @@ Error Parser::runParse(const Args& args)
                 mode = left;
         }
         else if (isOpt(left)) {
-            ptr++;
             if (argMap_.find(left) != argMap_.end())
                 return "Duplicate " + left;
             argMap_[left];
+            ptr++;
             while (ptr != args.end() && noLeadingHyphen(*ptr))
                 argMap_[left].push_back(*ptr++);
             ptr--;
@@ -83,7 +83,7 @@ std::vector<std::string> Parser::MapOr(const ArgMap map, const OptOr& options)
 Parser::Mode Parser::getMode(const std::string& mode) const
 {
     if (mode == "-A" || mode == "--Assemble") {
-        const auto val = MapOr(argMap_, {"--input", "-i"});
+        const auto& val = MapOr(argMap_, {"--input", "-i"});
         return val.size() > 1 ? Mode::ASM_MULTI : Mode::ASM;
     }
     else if (mode == "-S" || mode == "--Stripe")
