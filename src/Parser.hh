@@ -32,7 +32,7 @@ private:
         ASM,
         ASM_MULTI,
     };
-    Mode mode_ = Mode::NONE;
+    std::string mode_;
     ArgMap argMap_;
     bool isUpper(const char c) const;
     bool isLower(const char c) const;

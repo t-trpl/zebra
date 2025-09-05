@@ -26,14 +26,13 @@
 
 Error Parser::runParse(const Args& args)
 {
-    std::string mode = "";
     for (auto ptr = args.begin(); ptr != args.end(); ptr++) {
         const auto& left = *ptr;
         if (isMode(left)) {
-            if (!mode.empty())
+            if (!mode_.empty())
                 return "Two modes";
             else 
-                mode = left;
+                mode_ = left;
         }
         else if (isOpt(left)) {
             if (argMap_.find(left) != argMap_.end())
@@ -49,13 +48,6 @@ Error Parser::runParse(const Args& args)
         else
             return "Empty arg";
     }
-    mode_ = getMode(mode);
-    if (mode_ == Mode::NONE) {
-        if (mode.empty())
-            return "No mode";
-        else
-            return "Bad mode " + mode;
-    }
     return None;
 }
 
@@ -64,7 +56,6 @@ bool Parser::printHelper() const
 { 
     return containsMap(argMap_, {"-h", "--help"});
 }
-
 
 bool Parser::noLeadingHyphen(const std::string& str) const
 {
@@ -80,7 +71,6 @@ std::vector<std::string> Parser::MapOr(const ArgMap map, const ArgOr& options)
         return ptr->second;
     return std::vector<std::string>();
 }
-
 
 Parser::Mode Parser::getMode(const std::string& mode) const
 {
@@ -155,7 +145,8 @@ Maybe<UtilPtr> Parser::createPtr()
 
 Maybe<UtilPtr> Parser::createUtil()
 {
-    switch (mode_) {
+    const auto mode = getMode(mode_);
+    switch (mode) {
     case Mode::STRIPE :
         return createPtr<UtilStripe>();
     case Mode::ASM :
@@ -164,5 +155,5 @@ Maybe<UtilPtr> Parser::createUtil()
         return createPtr<UtilAssemblerMulti>();
     case Mode::NONE : { }
     }
-    return make_bad<UtilPtr>("No type");
+    return make_bad<UtilPtr>("No mode");
 }
