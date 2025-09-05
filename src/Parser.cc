@@ -39,7 +39,7 @@ Error Parser::runParse(const Args& args)
             ptr++;
             if (argMap_.find(left) != argMap_.end())
                 return "Duplicate " + left;
-            argMap_[left] = std::vector<std::string>();
+            argMap_[left];
             while (ptr != args.end() && noLeadingHyphen(*ptr))
                 argMap_[left].push_back(*ptr++);
             ptr--;
@@ -155,7 +155,7 @@ template<typename T>
 Maybe<UtilPtr> Parser::createPtr()
 {
     auto ptr = std::make_unique<T>();
-    const auto unknown = ptr->checkForBadArgs(argMap_);
+    const auto unknown = ptr->checkForUnknown(argMap_);
     if (unknown)
         return make_bad<UtilPtr>(*unknown);
     const auto argErr = ptr->setArgs(argMap_);

@@ -76,7 +76,7 @@ std::string UtilBase::clean(const std::string& path) const
     return path;
 }
 
-Error UtilBase::checkForBadArgs(const ArgMap& map)
+Error UtilBase::checkForUnknown(const ArgMap& map)
 {
     const auto valid = getValidOptionsFlags();
     for (const auto& p : map)
