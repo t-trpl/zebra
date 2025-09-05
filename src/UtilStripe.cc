@@ -140,14 +140,26 @@ std::streamsize UtilStripe::readChunk(std::ifstream& file,
     return file.gcount();
 }
 
-void UtilStripe::setFlags(const ArgMap& map)
+Error UtilStripe::setFlags(const ArgMap& map)
 {
-    if (containsMap(map, {"-np", "--no-padding"}))
+    const auto maybePad = validFlag(map, {"-np", "--no-padding"});
+    if (!maybePad)
+        return maybePad.error();
+    else if (*maybePad)
         padding_ = false;
-    if (containsMap(map, {"-q", "--quiet"}))
+
+    const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
+    if (!maybeQuiet)
+        return maybeQuiet.error();
+    else if (*maybeQuiet)
         silence_ = true;
-    if (containsMap(map, {"-ne", "--no-extension"}))
+
+    const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
+    if (!maybeNoExt)
+        return maybeNoExt.error();
+    else if (*maybeNoExt)
         useExt_ = false;
+    return None;
 }
 
 std::string UtilStripe::getStripePath(const size_t& num, const size_t& max) const

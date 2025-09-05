@@ -18,8 +18,22 @@
 
 bool containsMap(const ArgMap& map, const ArgOr& arg)
 {
-    return map.find(arg.first) != map.end() ||
-            map.find(arg.second) != map.end();
+    return map.find(arg.first) != map.end() || map.find(arg.second) != map.end();
+}
+
+Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
+{
+    const auto f = map.find(arg.first);
+    const auto s = map.find(arg.second);
+    const auto end = map.end();
+    if (f != end && s != end)
+        return make_bad<bool>("Duplicate flags");
+    if (f == end && s == end)
+        return false;
+    const auto c = f != end ? f : s;
+    if (!c->second.empty())
+        return make_bad<bool>("Flag with args " + c->first);
+    return true;
 }
 
 Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg)

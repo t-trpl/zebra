@@ -23,7 +23,6 @@
 #include "src/helpers.hh"
 #include <unordered_map>
 #include <vector>
-#include <iostream>
 
 Error Parser::runParse(const Args& args)
 {
@@ -61,9 +60,9 @@ Error Parser::runParse(const Args& args)
 }
 
 
-void Parser::printHelper() const{ 
-    if (containsMap(argMap_, {"-h", "--help"}))
-        std::cout << util::help;
+bool Parser::printHelper() const
+{ 
+    return containsMap(argMap_, {"-h", "--help"});
 }
 
 
@@ -92,22 +91,6 @@ Parser::Mode Parser::getMode(const std::string& mode) const
     else if (mode == "-S" || mode == "--Stripe")
         return Mode::STRIPE;
     return Mode::NONE;
-}
-
-Error Parser::ensureRequired() const
-{
-    const std::vector<ArgT> required = {
-        {"--input", "-i", "input"},
-        {"--output", "-o", "output"},
-    };
-    for (const auto& r : required) {
-        const auto maybeRequired = argToValue(argMap_, r);
-        if (!maybeRequired)
-            return maybeRequired.error();
-        if (*maybeRequired == argMap_.end())
-            return "Missing " + std::get<2>(r);
-    }
-    return None;
 }
 
 bool Parser::isMode(const std::string& left) const
@@ -164,7 +147,9 @@ Maybe<UtilPtr> Parser::createPtr()
     const auto argErr = ptr->setArgs(argMap_);
     if (argErr)
         return make_bad<UtilPtr>(*argErr);
-    ptr->setFlags(argMap_);
+    const auto flagErr = ptr->setFlags(argMap_);
+    if (flagErr)
+        return make_bad<UtilPtr>(*flagErr);
     return ptr;
 }
 

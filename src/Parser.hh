@@ -38,7 +38,6 @@ private:
     bool isLower(const char c) const;
     bool isMode(const std::string& left) const;
     bool isOpt(const std::string& str) const;
-    Error ensureRequired() const;
     Mode getMode(const std::string& mode) const;
     template<typename T> Maybe<UtilPtr> createPtr();
     std::vector<std::string> MapOr(const ArgMap map, const ArgOr& options) const;
@@ -50,7 +49,7 @@ public:
     Maybe<UtilPtr> createUtil();
     Error runParse(const Args& args);
     void printBanner() const;
-    void printHelper() const;
+    bool printHelper() const;
 };
 
 #endif /// STRIPE_PARSER_HH

@@ -14,8 +14,9 @@
  * GNU General Public License for more details.
  */
 
-#include <iostream>
 #include "src/Parser.hh"
+#include "src/utils.hh"
+#include <iostream>
 
 Error run(const Args& args)
 {
@@ -23,7 +24,8 @@ Error run(const Args& args)
     const auto parseError = p.runParse(args);
     if (parseError)
         return *parseError;
-    p.printHelper();
+    if (p.printHelper())
+        return util::help;
     const auto util = p.createUtil();
     if (!util)
         return util.error();

@@ -62,10 +62,14 @@ Error UtilAssemblerMulti::run() const
     return None;
 }
 
-void UtilAssemblerMulti::setFlags(const ArgMap& map)
+Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-    if (containsMap(map, {"-q", "--quiet"}))
+    const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
+    if (!maybeQuiet)
+        return maybeQuiet.error();
+    else if (*maybeQuiet)
         silence_ = true;
+    return None;
 }
 
 std::unordered_set<std::string> UtilAssemblerMulti::getValidOptionsFlags() const

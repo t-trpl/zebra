@@ -22,6 +22,8 @@
 
 bool containsMap(const ArgMap& map, const ArgOr& flag);
 
+Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
+
 Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg);
 
 #endif /// HELPERS_HH
