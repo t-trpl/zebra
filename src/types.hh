@@ -27,15 +27,15 @@ using Files = std::vector<std::string>;
 
 using ArgMap = std::unordered_map<std::string, std::vector<std::string>>;
 
-using Flags = std::unordered_set<std::string>;
-
 using Error = std::optional<std::string>;
 
 using Args = std::vector<std::string>;
 
 using ArgT = std::tuple<std::string, std::string, std::string>;
 
-using FlagOr = std::pair<std::string, std::string>;
+using OptOr = std::pair<std::string, std::string>;
+
+using ArgOr = std::pair<std::string, std::string>;
 
 constexpr auto None = std::nullopt;
 

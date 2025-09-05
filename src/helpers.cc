@@ -16,10 +16,10 @@
 
 #include "src/helpers.hh"
 
-bool containsFlag(const Flags& flags, const FlagOr& flag)
+bool containsMap(const ArgMap& map, const ArgOr& arg)
 {
-    return flags.find(flag.first) != flags.end() ||
-            flags.find(flag.second) != flags.end();
+    return map.find(arg.first) != map.end() ||
+            map.find(arg.second) != map.end();
 }
 
 Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg)

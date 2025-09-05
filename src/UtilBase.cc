@@ -28,8 +28,10 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
     if (!maybeOpt)
         return maybeOpt.error();
     if (*maybeOpt != map.end()) {
+        if (maybeOpt->second.empty())
+            return "Unmatched " + tag;
         if (maybeOpt->second.size() > 1)
-            return "Two " + tag;
+            return "Too many " + tag + "s";
         const auto val = maybeOpt->second[0];
         if (!val.empty())
             ref = val;
@@ -80,24 +82,6 @@ Error UtilBase::checkForBadArgs(const ArgMap& map)
     for (const auto& p : map)
         if (valid.find(p.first) == valid.end())
             return "Unrecognized " + p.first;
-    return None;
-}
-
-Error UtilBase::checkForUnknown(const ArgMap& map, const Flags& flag)
-{
-    if (const auto err = checkForBadArgs(map); err)
-        return *err;
-    if (const auto err = checkForBadFlags(flag); err)
-        return *err;
-    return None;
-}
-
-Error UtilBase::checkForBadFlags(const Flags& flag)
-{
-    const auto valid = getValidOptionsFlags();
-    for (const auto& f : flag)
-        if (valid.find(f) == valid.end())
-            return "Unrecognized " + f;
     return None;
 }
 

@@ -138,13 +138,13 @@ std::streamsize UtilStripe::readChunk(std::ifstream& file,
     return file.gcount();
 }
 
-void UtilStripe::setFlags(const Flags& flags)
+void UtilStripe::setFlags(const ArgMap& map)
 {
-    if (containsFlag(flags, {"-np", "--no-padding"}))
+    if (containsMap(map, {"-np", "--no-padding"}))
         padding_ = false;
-    if (containsFlag(flags, {"-q", "--quiet"}))
+    if (containsMap(map, {"-q", "--quiet"}))
         silence_ = true;
-    if (containsFlag(flags, {"-ne", "--no-extension"}))
+    if (containsMap(map, {"-ne", "--no-extension"}))
         useExt_ = false;
 }
 

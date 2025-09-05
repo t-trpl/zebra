@@ -22,7 +22,6 @@
 
 class UtilBaseSingle : public UtilBase {
 protected:
-    /// input/ output directories
     std::string in_;
     std::string out_;
 public:

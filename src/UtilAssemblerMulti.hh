@@ -30,7 +30,7 @@ public:
     ~UtilAssemblerMulti() { }
     UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
     Error run() const override;
-    void setFlags(const Flags& flags) override;
+    void setFlags(const ArgMap& map) override;
     Error setArgs(const ArgMap& map) override;
 };
 

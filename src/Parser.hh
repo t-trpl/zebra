@@ -34,17 +34,14 @@ private:
     };
     Mode mode_ = Mode::NONE;
     ArgMap argMap_;
-    Flags flags_;
     bool isUpper(const char c) const;
     bool isLower(const char c) const;
     bool isMode(const std::string& left) const;
     bool isOpt(const std::string& str) const;
-    bool isFlag(const std::string& str) const;
     Error ensureRequired() const;
     Mode getMode(const std::string& mode) const;
     template<typename T> Maybe<UtilPtr> createPtr();
-    std::vector<std::string> argOr(const std::pair<std::string,
-            std::string>& options) const;
+    std::vector<std::string> MapOr(const ArgMap map, const OptOr& options) const;
     bool noLeadingHyphen(const std::string& str) const;
 public:
     Parser() { }

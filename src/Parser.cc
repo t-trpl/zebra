@@ -35,27 +35,32 @@ Error Parser::runParse(const Args& args)
             else 
                 mode = left;
         }
-        else if (isFlag(left))
-            flags_.insert(left);
         else if (isOpt(left)) {
             ptr++;
+            if (argMap_.find(left) != argMap_.end())
+                return "Duplicate " + left;
+            argMap_[left] = std::vector<std::string>();
             while (ptr != args.end() && noLeadingHyphen(*ptr))
                 argMap_[left].push_back(*ptr++);
             ptr--;
-            if (argMap_[left].empty())
-                return "Unmatched option: " + left;
         }
+        else if (!left.empty())
+            return "Bad arg " + left;
         else
-            return "Bad arg: " + left;
+            return "Empty arg";
     }
-    if (containsFlag(flags_, {"-h", "--help"}))
+    if (containsMap(argMap_, {"-h", "--help"}))
         return util::help;
     const auto missing = ensureRequired();
     if (missing)
         return *missing;
     mode_ = getMode(mode);
-    if (mode_ == Mode::NONE)
-        return "No mode";
+    if (mode_ == Mode::NONE) {
+        if (mode.empty())
+            return "No mode";
+        else
+            return "Bad mode " + mode;
+    }
     return None;
 }
 
@@ -64,31 +69,21 @@ bool Parser::noLeadingHyphen(const std::string& str) const
     return str.size() > 0 && str[0] != '-';
 }
 
-bool Parser::isFlag(const std::string& str) const
+std::vector<std::string> Parser::MapOr(const ArgMap map, const OptOr& options)
+    const
 {
-    static const Flags flags = {
-        "-q", "--quiet",
-        "-np", "--no-padding",
-        "-h", "--help",
-        "-ne", "--no-extension",
-    };
-    return flags.find(str) != flags.end();
-}
-
-std::vector<std::string> Parser::argOr(const std::pair<std::string,
-        std::string>& options) const
-{
-    if (const auto ptr = argMap_.find(options.first); ptr != argMap_.end())
+    if (const auto ptr = map.find(options.first); ptr != map.end())
         return ptr->second;
-    if (const auto ptr = argMap_.find(options.second); ptr != argMap_.end())
+    if (const auto ptr = map.find(options.second); ptr != map.end())
         return ptr->second;
     return std::vector<std::string>();
 }
 
+
 Parser::Mode Parser::getMode(const std::string& mode) const
 {
     if (mode == "-A" || mode == "--Assemble") {
-        const auto val = argOr({"--input", "-i"});
+        const auto val = MapOr(argMap_, {"--input", "-i"});
         return val.size() > 1 ? Mode::ASM_MULTI : Mode::ASM;
     }
     else if (mode == "-S" || mode == "--Stripe")
@@ -140,7 +135,7 @@ bool Parser::isOpt(const std::string& left) const
             return false;
     if (ptr == end)
         return false;
-    for (;ptr != end; ptr++)
+    for (; ptr != end; ptr++)
         if (!isLower(*ptr) && *ptr != '-')
             return false;
     return true;
@@ -160,13 +155,13 @@ template<typename T>
 Maybe<UtilPtr> Parser::createPtr()
 {
     auto ptr = std::make_unique<T>();
-    const auto unknown = ptr->checkForUnknown(argMap_, flags_);
+    const auto unknown = ptr->checkForBadArgs(argMap_);
     if (unknown)
         return make_bad<UtilPtr>(*unknown);
     const auto argErr = ptr->setArgs(argMap_);
     if (argErr)
         return make_bad<UtilPtr>(*argErr);
-    ptr->setFlags(flags_);
+    ptr->setFlags(argMap_);
     return ptr;
 }
 

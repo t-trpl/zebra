@@ -20,7 +20,7 @@
 #include "src/types.hh"
 #include "src/Maybe.hh"
 
-bool containsFlag(const Flags& flags, const FlagOr& flag);
+bool containsMap(const ArgMap& map, const ArgOr& flag);
 
 Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg);
 

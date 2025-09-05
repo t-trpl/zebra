@@ -94,11 +94,11 @@ Error UtilAssembler::run() const
     return None;
 }
 
-void UtilAssembler::setFlags(const Flags& flags)
+void UtilAssembler::setFlags(const ArgMap& map)
 {
-    if (containsFlag(flags, {"-q", "--quiet"}))
+    if (containsMap(map, {"-q", "--quiet"}))
         silence_ = true;
-    if (containsFlag(flags, {"-ne", "--no-extension"}))
+    if (containsMap(map, {"-ne", "--no-extension"}))
         useExt_ = false;
 }
 

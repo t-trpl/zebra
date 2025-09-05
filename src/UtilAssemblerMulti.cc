@@ -62,9 +62,9 @@ Error UtilAssemblerMulti::run() const
     return None;
 }
 
-void UtilAssemblerMulti::setFlags(const Flags& flags)
+void UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-    if (containsFlag(flags, {"-q", "--quiet"}))
+    if (containsMap(map, {"-q", "--quiet"}))
         silence_ = true;
 }
 

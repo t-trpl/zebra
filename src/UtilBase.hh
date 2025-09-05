@@ -25,8 +25,6 @@ class UtilBase {
 private:
     Error setMemberBase(const ArgMap& map, const ArgT& opt, std::string& ref,
             bool required);
-    Error checkForBadArgs(const ArgMap& map);
-    Error checkForBadFlags(const Flags& flag);
 protected:
     bool silence_ = false;
     Maybe<std::string> getPath(const std::string& loc) const;
@@ -41,9 +39,9 @@ public:
     virtual ~UtilBase() { }
     UtilBase(const UtilBase&) = delete;
     virtual Error run() const = 0;
-    virtual void setFlags(const Flags& flags) = 0;
+    virtual void setFlags(const ArgMap& map) = 0;
     virtual Error setArgs(const ArgMap& map) = 0;
-    Error checkForUnknown(const ArgMap& map, const Flags& flag);
+    Error checkForBadArgs(const ArgMap& map);
 };
 
 #endif /// UTIL_BASE_HH
