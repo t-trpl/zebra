@@ -51,7 +51,6 @@ Error Parser::runParse(const Args& args)
     return None;
 }
 
-
 bool Parser::printHelper() const
 { 
     return containsMap(argMap_, {"-h", "--help"});
