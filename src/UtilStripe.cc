@@ -37,7 +37,7 @@ std::unordered_set<std::string> UtilStripe::getValidOptionsFlags() const
         "-e", "--extension",
         "-np", "--no-padding",
         "-q", "--quiet",
-        "-ne", "--no-extension"
+        "-ne", "--no-extension",
     };
 }
 

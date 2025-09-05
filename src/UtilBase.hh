@@ -41,7 +41,7 @@ public:
     virtual Error run() const = 0;
     virtual Error setFlags(const ArgMap& map) = 0;
     virtual Error setArgs(const ArgMap& map) = 0;
-    Error checkForUnknown(const ArgMap& map);
+    Error checkForUnknown(const ArgMap& map) const;
 };
 
 #endif /// UTIL_BASE_HH

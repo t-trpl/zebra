@@ -39,14 +39,14 @@ private:
     bool isMode(const std::string& left) const;
     bool isOpt(const std::string& str) const;
     Mode getMode(const std::string& mode) const;
-    template<typename T> Maybe<UtilPtr> createPtr();
+    template<typename T> Maybe<UtilPtr> createPtr() const;
     std::vector<std::string> MapOr(const ArgMap map, const ArgOr& options) const;
     bool noLeadingHyphen(const std::string& str) const;
 public:
     Parser() { }
     ~Parser() { }
     Parser(const Parser&) = delete;
-    Maybe<UtilPtr> createUtil();
+    Maybe<UtilPtr> createUtil() const;
     Error runParse(const Args& args);
     void printBanner() const;
     bool printHelper() const;

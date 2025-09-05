@@ -128,7 +128,7 @@ bool Parser::isLower(const char c) const
 }
 
 template<typename T>
-Maybe<UtilPtr> Parser::createPtr()
+Maybe<UtilPtr> Parser::createPtr() const
 {
     auto ptr = std::make_unique<T>();
     const auto unknown = ptr->checkForUnknown(argMap_);
@@ -143,7 +143,7 @@ Maybe<UtilPtr> Parser::createPtr()
     return ptr;
 }
 
-Maybe<UtilPtr> Parser::createUtil()
+Maybe<UtilPtr> Parser::createUtil() const
 {
     const auto mode = getMode(mode_);
     switch (mode) {
