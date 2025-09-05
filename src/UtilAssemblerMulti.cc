@@ -25,8 +25,8 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
     const auto maybeInput = argToValue(map, {"--input", "-i", "input"});
     if (!maybeInput)
         return maybeInput.error();
-    if (*maybeInput != map.end()) {
-        for (const auto& f : maybeInput->second) {
+    if (const auto ptr = *maybeInput; ptr != map.end()) {
+        for (const auto& f : ptr->second) {
             if (const auto part = getPath(f); part)
                 parts_.push_back(*part);
             else

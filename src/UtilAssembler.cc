@@ -73,18 +73,17 @@ Error UtilAssembler::run() const
       std::cout << util::banner << "\n";
       std::cout << "Assembling\n";
     }
-    const auto load = loadFileNames();
-    if (!load)
-        return load.error();
-    const auto& files = *load;
-    if (files.empty())
+    const auto maybeFiles = loadFileNames();
+    if (!maybeFiles)
+        return maybeFiles.error();
+    if (maybeFiles->empty())
         return "No Pieces";
     std::ofstream outFile(out_);
     if (!outFile)
         return "Failed to open: " + out_;
     if (!silence_)
         std::cout << "\033[32m->\033[0m" << out_ << "\n";
-    for (const auto& x : files) {
+    for (const auto& x : *maybeFiles) {
         const std::string path = fs::path(in_) / x;
         std::ifstream file(path, std::ios::binary);
         if (!file)
@@ -118,6 +117,6 @@ std::unordered_set<std::string> UtilAssembler::getValidOptionsFlags() const
         "-e", "--extension",
         "-n", "--name",
         "-q", "--quiet",
-        "-ne", "--no-extension"
+        "-ne", "--no-extension",
     };
 }

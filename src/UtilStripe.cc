@@ -49,12 +49,12 @@ Error UtilStripe::setArgs(const ArgMap& map)
     const auto maybeSize = argToValue(map, {"--size", "-s", "size"});
     if (!maybeSize)
         return maybeSize.error();
-    if (*maybeSize != map.end()) {
-        if (maybeSize->second.empty())
+    if (const auto ptr = *maybeSize; ptr != map.end()) {
+        if (ptr->second.empty())
             return "No size";
-        if (maybeSize->second.size() > 1)
+        if (ptr->second.size() > 1)
             return "Too many sizes";
-        const auto &size = maybeSize->second[0];
+        const auto &size = ptr->second[0];
         const auto bytes = stringToBytes(size);
         if (bytes)
             stripeSize_ = *bytes;

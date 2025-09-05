@@ -27,12 +27,12 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
     const auto tag = std::get<2>(opt);
     if (!maybeOpt)
         return maybeOpt.error();
-    if (*maybeOpt != map.end()) {
-        if (maybeOpt->second.empty())
+    if (const auto ptr = *maybeOpt; ptr != map.end()) {
+        if (ptr->second.empty())
             return "Unmatched " + tag;
-        if (maybeOpt->second.size() > 1)
+        if (ptr->second.size() > 1)
             return "Too many " + tag + "s";
-        const auto val = maybeOpt->second[0];
+        const auto val = ptr->second[0];
         if (!val.empty())
             ref = val;
         else

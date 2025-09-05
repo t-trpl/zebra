@@ -29,7 +29,7 @@ Error run(const Args& args)
     const auto util = p.createUtil();
     if (!util)
         return util.error();
-    const auto error = util->run();
+    const auto error = (*util)->run();
     if (error)
         return *error;
     return None;
