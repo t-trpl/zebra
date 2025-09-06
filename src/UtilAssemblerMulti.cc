@@ -44,10 +44,8 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 
 Error UtilAssemblerMulti::run() const
 {
-    if (!silence_) {
-        std::cout << util::banner << "\n";
-        std::cout << "Assembling\n";
-    }
+    if (!silence_)
+        std::cout << util::banner << "\nAssembling\n";
     std::ofstream outFile(out_);
     if (!outFile)
         return "Failed to open: " + out_;

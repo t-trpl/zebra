@@ -172,10 +172,8 @@ std::string UtilStripe::getStripePath(const size_t& num, const size_t& max) cons
 
 Error UtilStripe::run() const
 {
-    if (!silence_) {
-        std::cout << util::banner << "\n";
-        std::cout << "Striping\n";
-    }
+    if (!silence_)
+        std::cout << util::banner << "\nStriping\n";
     if (fs::is_directory(in_))
         return "Cannot run on a directory";
     if (!fs::exists(out_) || !fs::is_directory(out_))

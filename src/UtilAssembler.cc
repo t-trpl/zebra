@@ -69,10 +69,8 @@ Error UtilAssembler::setArgs(const ArgMap& map)
 
 Error UtilAssembler::run() const 
 {
-    if (!silence_) {
-      std::cout << util::banner << "\n";
-      std::cout << "Assembling\n";
-    }
+    if (!silence_)
+      std::cout << util::banner << "\nAssembling\n";
     const auto maybeFiles = loadFileNames();
     if (!maybeFiles)
         return maybeFiles.error();
