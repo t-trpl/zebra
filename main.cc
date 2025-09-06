@@ -38,7 +38,7 @@ Error run(const Args& args)
 int main(int argc, char* argv[])
 {
     const Args args(argv + 1, argv + argc);
-    auto error = run(args);
+    const auto error = run(args);
     if (error) {
         std::cout << *error << "\n";
         return 1;

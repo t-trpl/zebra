@@ -126,22 +126,6 @@ bool Parser::isLower(const char c) const
     return c >= 'a' && c <= 'z';
 }
 
-template<typename T>
-Maybe<UtilPtr> Parser::createPtr() const
-{
-    auto ptr = std::make_unique<T>();
-    const auto unknown = ptr->checkForUnknown(argMap_);
-    if (unknown)
-        return make_bad<UtilPtr>(*unknown);
-    const auto argErr = ptr->setArgs(argMap_);
-    if (argErr)
-        return make_bad<UtilPtr>(*argErr);
-    const auto flagErr = ptr->setFlags(argMap_);
-    if (flagErr)
-        return make_bad<UtilPtr>(*flagErr);
-    return ptr;
-}
-
 Maybe<UtilPtr> Parser::createUtil() const
 {
     const auto mode = getMode(mode_);
