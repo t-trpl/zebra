@@ -26,8 +26,8 @@ Error Parser::runParse(const ArgN& args)
 {
     if (!args)
         return None;
-    const auto& left = args->val;
-    const auto& next = args->next;
+    const auto& left = car(args);
+    const auto& next = cdr(args);
     if (isMode(left)) {
         if(!mode_.empty())
             return "Two Modes";
@@ -37,10 +37,10 @@ Error Parser::runParse(const ArgN& args)
     else if (isOpt(left)) {
         if (argMapN_.find(left) != argMapN_.end())
             return "Duplicate " + left;
-        auto curr = args->next;
+        auto curr = cdr(args);
         ArgN acc = nullptr;
-        for (; curr && noLeadingHyphen(curr->val); curr = curr->next)
-            acc = push(curr->val, acc);
+        for (; curr && noLeadingHyphen(curr->val); curr = cdr(curr))
+            acc = cons(car(curr), acc);
         argMapN_[left] = ty::reverse(acc);
         return runParse(curr);
     }

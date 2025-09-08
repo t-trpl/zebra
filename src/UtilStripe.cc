@@ -50,17 +50,22 @@ Error UtilStripe::setArgs(const ArgMapN& map)
     if (!maybeSize)
         return maybeSize.error();
     if (const auto ptr = *maybeSize; ptr != map.end()) {
-        const auto c = count(ptr->second);
-        if (c == 0)
+        const auto argn = ptr->second;
+        switch (count(argn)) {
+        case 0:
             return "No size";
-        if (c > 1)
+        case 1: {
+            const auto &size = car(argn);
+            const auto bytes = stringToBytes(size);
+            if (bytes)
+                stripeSize_ = *bytes;
+            else
+                return bytes.error();
+            break;
+        }
+        default:
             return "Too many sizes";
-        const auto &size = ptr->second->val;
-        const auto bytes = stringToBytes(size);
-        if (bytes)
-            stripeSize_ = *bytes;
-        else
-            return bytes.error();
+        }
     }
     const auto nameError = setMember(map, {"--name", "-n", "name"}, name_);
     if (nameError)

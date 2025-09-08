@@ -37,7 +37,7 @@ Maybe<ty::list<std::string>> UtilAssembler::loadFileNames() const
         if (((!useExt_ && ext.empty()) || ext == completeExt) &&
                 (name_.empty() || name_ == stemToName(stem))) {
             const auto& name = file.path().filename().string();
-            files = push(name, files);
+            files = cons(name, files);
         }
     }
     ty::sort(files);
@@ -72,7 +72,7 @@ Error UtilAssembler::writeAssemble(ty::list<std::string> files,
 {
     if (!files)
         return None;
-    const std::string path = fs::path(in_) / files->val;
+    const std::string path = fs::path(in_) / car(files);
     std::ifstream file(path, std::ios::binary);
     if (!file)
         return "Failed to open: " + path + "\nDiscard output";

@@ -33,7 +33,7 @@ Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
         case 0:
             return "Unmatched "+ tag;
         case 1: {
-            const auto val = argn->val;
+            const auto val = car(argn);
             if (!val.empty())
                 ref = val;
             else

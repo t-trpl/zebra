@@ -32,19 +32,25 @@ struct node {
     T val;
     list<T> next = nullptr;
     node(const T& v) : val(v) { }
-    node(const T& v, list<T> top) : val(v), next(top) { }
+    node(const T& v, list<T> head) : val(v), next(head) { }
 };
 
 template <typename T>
-list<T> push(const T& val, list<T> top)
+list<T> cons(const T& val, list<T> top)
 {
     return std::make_shared<node<T>>(val, top);
 }
 
 template <typename T>
-list<T> pop(list<T> top)
+list<T> cdr(list<T> head)
 {
-    return top ? top->next : nullptr;
+    return head ? head->next : nullptr;
+}
+
+template <typename T>
+T car(list<T> head)
+{
+    return head->val;
 }
 
 template <typename T>

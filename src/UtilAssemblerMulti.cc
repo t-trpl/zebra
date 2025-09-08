@@ -27,8 +27,8 @@ Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
         return maybeInput.error();
     if (const auto ptr = *maybeInput; ptr != map.end()) {
         auto p = ptr->second;
-        for (auto p = ptr->second; p; p = p->next) {
-            if (const auto part = getPath(p->val); part)
+        for (auto p = ptr->second; p; p = cdr(p)) {
+            if (const auto part = getPath(car(p)); part)
                 parts_.push_back(*part);
             else
                 part.error();
