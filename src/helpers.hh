@@ -14,11 +14,11 @@
  * GNU General Public License for more details.
  */
 
-#ifndef Helpers_HH
-#define Helpers_HH
-
 #include "src/types.hh"
 #include "src/Maybe.hh"
+
+#ifndef Helpers_HH
+#define Helpers_HH
 
 bool containsMap(const ArgMap& map, const ArgOr& flag);
 

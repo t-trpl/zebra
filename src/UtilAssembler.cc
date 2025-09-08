@@ -16,20 +16,20 @@
 
 #include "src/UtilAssembler.hh"
 #include "src/Maybe.hh"
+#include "src/types.hh"
 #include "src/utils.hh"
 #include "src/helpers.hh"
 #include <filesystem>
-#include <algorithm>
 #include <fstream>
 #include <iostream>
 
 namespace fs = std::filesystem;
 
-Maybe<Files> UtilAssembler::loadFileNames() const
+Maybe<ty::Safelist<std::string>> UtilAssembler::loadFileNames() const
 {
-    Files files;
+    ty::Safelist<std::string> f;
     if (!fs::exists(in_) || !fs::is_directory(in_))
-        return make_bad<Files>("Not a directory: " + in_);
+        return make_bad<ty::Safelist<std::string>>("Not a directory: " + in_);
     const std::string completeExt = std::string(".") + ext_;
     for (const auto& file : fs::directory_iterator(in_)) {
         const auto& ext = file.path().extension().string();
@@ -37,11 +37,11 @@ Maybe<Files> UtilAssembler::loadFileNames() const
         if (((!useExt_ && ext.empty()) || ext == completeExt) &&
                 (name_.empty() || name_ == stemToName(stem))) {
             const auto& name = file.path().filename().string();
-            files.push_back(name);
+            f = push(name, f);
         }
     }
-    std::sort(files.begin(), files.end());
-    return files;
+    ty::sort(f);
+    return f;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
@@ -67,6 +67,19 @@ Error UtilAssembler::setArgs(const ArgMap& map)
     return None;
 }
 
+Error UtilAssembler::writeAssemble(ty::Safelist<std::string> l,
+        std::ofstream& out) const
+{
+    if (!l)
+        return None;
+    const std::string path = fs::path(in_) / l->val;
+    std::ifstream file(path, std::ios::binary);
+    if (!file)
+        return "Failed to open: " + path + "\nDiscard output";
+    out << file.rdbuf();
+    return writeAssemble(l->next, out);
+}
+
 Error UtilAssembler::run() const 
 {
     if (!silence_)
@@ -74,20 +87,14 @@ Error UtilAssembler::run() const
     const auto maybeFiles = loadFileNames();
     if (!maybeFiles)
         return maybeFiles.error();
-    if (maybeFiles->empty())
+    if (!*maybeFiles)
         return "No Pieces";
     std::ofstream outFile(out_);
     if (!outFile)
         return "Failed to open: " + out_;
     if (!silence_)
         std::cout << "\033[32m->\033[0m" << out_ << "\n";
-    for (const auto& x : *maybeFiles) {
-        const std::string path = fs::path(in_) / x;
-        std::ifstream file(path, std::ios::binary);
-        if (!file)
-            return "Failed to open: " + path + "\nDiscard output";
-        outFile << file.rdbuf();
-    }
+    return writeAssemble(*maybeFiles, outFile);
     return None;
 }
 
@@ -103,7 +110,6 @@ Error UtilAssembler::setFlags(const ArgMap& map)
         return maybeNoExt.error();
     else if (*maybeNoExt)
         useExt_ = false;
-
     return None;
 }
 

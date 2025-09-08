@@ -14,11 +14,11 @@
  * GNU General Public License for more details.
  */
 
-#ifndef MAYBE_HH
-#define MAYBE_HH
-
 #include <string>
 #include <variant>
+
+#ifndef MAYBE_HH
+#define MAYBE_HH
 
 template<typename T>
 class Maybe {

@@ -14,11 +14,11 @@
  * GNU General Public License for more details.
  */
 
-#ifndef UTIL_ASSEMBLER_MULTI_HH
-#define UTIL_ASSEMBLER_MULTI_HH
-
 #include "src/UtilBase.hh"
 #include <string>
+
+#ifndef UTIL_ASSEMBLER_MULTI_HH
+#define UTIL_ASSEMBLER_MULTI_HH
 
 class UtilAssemblerMulti : public UtilBase {
 private:

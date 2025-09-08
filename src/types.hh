@@ -14,14 +14,14 @@
  * GNU General Public License for more details.
  */
 
-#ifndef TYPES_HH
-#define TYPES_HH
-
+#include "src/Safelist.hh"
 #include <vector>
 #include <unordered_map>
 #include <string>
 #include <optional>
-#include <unordered_set>
+
+#ifndef TYPES_HH
+#define TYPES_HH
 
 using Files = std::vector<std::string>;
 
@@ -36,5 +36,7 @@ using ArgT = std::tuple<std::string, std::string, std::string>;
 using ArgOr = std::pair<std::string, std::string>;
 
 constexpr auto None = std::nullopt;
+
+using ArgN = ty::Safelist<std::string>;
 
 #endif /// TYPES_HH

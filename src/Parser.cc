@@ -19,7 +19,6 @@
 #include "src/UtilStripe.hh"
 #include "src/UtilAssemblerMulti.hh"
 #include "src/types.hh"
-#include "src/utils.hh"
 #include "src/helpers.hh"
 #include <unordered_map>
 #include <vector>

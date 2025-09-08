@@ -14,10 +14,10 @@
  * GNU General Public License for more details.
  */
 
+#include <string>
+
 #ifndef UTILS_HH
 #define UTILS_HH
-
-#include <string>
 
 namespace util {
 

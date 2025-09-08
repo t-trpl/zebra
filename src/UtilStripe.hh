@@ -14,15 +14,15 @@
  * GNU General Public License for more details.
  */
 
-#ifndef UTIL_STRIPE_HH
-#define UTIL_STRIPE_HH
-
 #include "src/UtilBaseSingle.hh"
 #include "src/types.hh"
 #include "src/Maybe.hh"
 #include <string>
 #include <fstream>
 #include <vector>
+
+#ifndef UTIL_STRIPE_HH
+#define UTIL_STRIPE_HH
 
 class UtilStripe : public UtilBaseSingle {
 private:

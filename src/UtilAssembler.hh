@@ -14,11 +14,12 @@
  * GNU General Public License for more details.
  */
 
-#ifndef UTIL_ASSEMBLER_HH
-#define UTIL_ASSEMBLER_HH
-
 #include "src/UtilBaseSingle.hh"
 #include "src/Maybe.hh"
+#include "src/Safelist.hh"
+
+#ifndef UTIL_ASSEMBLER_HH
+#define UTIL_ASSEMBLER_HH
 
 class UtilAssembler : public UtilBaseSingle {
 private:
@@ -26,8 +27,9 @@ private:
     bool useExt_ = true;
     std::string name_ = "";
     std::string stemToName(const std::string& stem) const;
-    Maybe<Files> loadFileNames() const;
+    Maybe<ty::Safelist<std::string>> loadFileNames() const;
     std::unordered_set<std::string> getValidOptionsFlags() const override;
+    Error writeAssemble(ty::Safelist<std::string> l, std::ofstream& out) const;
 public:
     UtilAssembler() { }
     ~UtilAssembler() { }
