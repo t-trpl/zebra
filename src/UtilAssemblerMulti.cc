@@ -20,14 +20,15 @@
 #include <iostream>
 #include <fstream>
 
-Error UtilAssemblerMulti::setArgs(const ArgMap& map)
+Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
 {
     const auto maybeInput = argToValue(map, {"--input", "-i", "input"});
     if (!maybeInput)
         return maybeInput.error();
     if (const auto ptr = *maybeInput; ptr != map.end()) {
-        for (const auto& f : ptr->second) {
-            if (const auto part = getPath(f); part)
+        auto p = ptr->second;
+        for (auto p = ptr->second; p; p = p->next) {
+            if (const auto part = getPath(p->val); part)
                 parts_.push_back(*part);
             else
                 part.error();
@@ -60,7 +61,7 @@ Error UtilAssemblerMulti::run() const
     return None;
 }
 
-Error UtilAssemblerMulti::setFlags(const ArgMap& map)
+Error UtilAssemblerMulti::setFlags(const ArgMapN& map)
 {
     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
     if (!maybeQuiet)

@@ -25,11 +25,11 @@
 
 namespace fs = std::filesystem;
 
-Maybe<ty::Safelist<std::string>> UtilAssembler::loadFileNames() const
+Maybe<ty::list<std::string>> UtilAssembler::loadFileNames() const
 {
-    ty::Safelist<std::string> f;
+    ty::list<std::string> files;
     if (!fs::exists(in_) || !fs::is_directory(in_))
-        return make_bad<ty::Safelist<std::string>>("Not a directory: " + in_);
+        return make_bad<ty::list<std::string>>("Not a directory: " + in_);
     const std::string completeExt = std::string(".") + ext_;
     for (const auto& file : fs::directory_iterator(in_)) {
         const auto& ext = file.path().extension().string();
@@ -37,11 +37,11 @@ Maybe<ty::Safelist<std::string>> UtilAssembler::loadFileNames() const
         if (((!useExt_ && ext.empty()) || ext == completeExt) &&
                 (name_.empty() || name_ == stemToName(stem))) {
             const auto& name = file.path().filename().string();
-            f = push(name, f);
+            files = push(name, files);
         }
     }
-    ty::sort(f);
-    return f;
+    ty::sort(files);
+    return files;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
@@ -52,7 +52,7 @@ std::string UtilAssembler::stemToName(const std::string& stem) const
     return std::string(stem.begin(), ptr);
 }
 
-Error UtilAssembler::setArgs(const ArgMap& map)
+Error UtilAssembler::setArgs(const ArgMapN& map)
 {
     const auto baseError = UtilBaseSingle::setArgs(map);
     if (baseError)
@@ -67,17 +67,17 @@ Error UtilAssembler::setArgs(const ArgMap& map)
     return None;
 }
 
-Error UtilAssembler::writeAssemble(ty::Safelist<std::string> l,
+Error UtilAssembler::writeAssemble(ty::list<std::string> files,
         std::ofstream& out) const
 {
-    if (!l)
+    if (!files)
         return None;
-    const std::string path = fs::path(in_) / l->val;
+    const std::string path = fs::path(in_) / files->val;
     std::ifstream file(path, std::ios::binary);
     if (!file)
         return "Failed to open: " + path + "\nDiscard output";
     out << file.rdbuf();
-    return writeAssemble(l->next, out);
+    return writeAssemble(files->next, out);
 }
 
 Error UtilAssembler::run() const 
@@ -95,10 +95,9 @@ Error UtilAssembler::run() const
     if (!silence_)
         std::cout << "\033[32m->\033[0m" << out_ << "\n";
     return writeAssemble(*maybeFiles, outFile);
-    return None;
 }
 
-Error UtilAssembler::setFlags(const ArgMap& map)
+Error UtilAssembler::setFlags(const ArgMapN& map)
 {
     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
     if (!maybeQuiet)

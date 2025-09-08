@@ -21,38 +21,39 @@
 #include "src/types.hh"
 #include "src/helpers.hh"
 #include <unordered_map>
-#include <vector>
 
-Error Parser::runParse(const Args& args)
+Error Parser::runParse(const ArgN& args)
 {
-    for (auto ptr = args.begin(); ptr != args.end(); ptr++) {
-        const auto& left = *ptr;
-        if (isMode(left)) {
-            if (!mode_.empty())
-                return "Two modes";
-            else 
-                mode_ = left;
-        }
-        else if (isOpt(left)) {
-            if (argMap_.find(left) != argMap_.end())
-                return "Duplicate " + left;
-            argMap_[left];
-            ptr++;
-            while (ptr != args.end() && noLeadingHyphen(*ptr))
-                argMap_[left].push_back(*ptr++);
-            ptr--;
-        }
-        else if (!left.empty())
-            return "Bad arg " + left;
+    if (!args)
+        return None;
+    const auto& left = args->val;
+    const auto& next = args->next;
+    if (isMode(left)) {
+        if(!mode_.empty())
+            return "Two Modes";
         else
-            return "Empty arg";
+            mode_ = left;
     }
-    return None;
+    else if (isOpt(left)) {
+        if (argMapN_.find(left) != argMapN_.end())
+            return "Duplicate " + left;
+        auto curr = args->next;
+        ArgN acc = nullptr;
+        for (; curr && noLeadingHyphen(curr->val); curr = curr->next)
+            acc = push(curr->val, acc);
+        argMapN_[left] = ty::reverse(acc);
+        return runParse(curr);
+    }
+    else if (!left.empty())
+        return "Bad arg " + left;
+    else
+        return "Empty arg";
+    return runParse(next);
 }
 
 bool Parser::printHelper() const
 { 
-    return containsMap(argMap_, {"-h", "--help"});
+    return containsMap(argMapN_, {"-h", "--help"});
 }
 
 bool Parser::noLeadingHyphen(const std::string& str) const
@@ -60,21 +61,21 @@ bool Parser::noLeadingHyphen(const std::string& str) const
     return str.size() > 0 && str[0] != '-';
 }
 
-std::vector<std::string> Parser::MapOr(const ArgMap map, const ArgOr& options)
+ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options)
     const
 {
     if (const auto ptr = map.find(options.first); ptr != map.end())
         return ptr->second;
     if (const auto ptr = map.find(options.second); ptr != map.end())
         return ptr->second;
-    return std::vector<std::string>();
+    return nullptr;
 }
 
 Parser::Mode Parser::getMode(const std::string& mode) const
 {
     if (mode == "-A" || mode == "--Assemble") {
-        const auto& val = MapOr(argMap_, {"--input", "-i"});
-        return val.size() > 1 ? Mode::ASM_MULTI : Mode::ASM;
+        const auto& val = MapOr(argMapN_, {"--input", "-i"});
+        return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
     }
     else if (mode == "-S" || mode == "--Stripe")
         return Mode::STRIPE;

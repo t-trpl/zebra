@@ -30,8 +30,8 @@ public:
     ~UtilAssemblerMulti() { }
     UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
     Error run() const override;
-    Error setFlags(const ArgMap& map) override;
-    Error setArgs(const ArgMap& map) override;
+    Error setFlags(const ArgMapN& map) override;
+    Error setArgs(const ArgMapN& map) override;
 };
 
 #endif /// UTIL_ASSEMBLER_MULTI_HH

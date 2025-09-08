@@ -20,10 +20,10 @@
 #ifndef Helpers_HH
 #define Helpers_HH
 
-bool containsMap(const ArgMap& map, const ArgOr& flag);
+bool containsMap(const ArgMapN& map, const ArgOr& flag);
 
-Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
+Maybe<bool> validFlag(const ArgMapN& map, const ArgOr& arg);
 
-Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg);
+Maybe<ArgMapN::const_iterator> argToValue(const ArgMapN& map, const ArgT& arg);
 
 #endif /// HELPERS_HH

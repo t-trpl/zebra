@@ -1,5 +1,5 @@
 /** 
- * File: Safelist.hh
+ * File: list.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -16,8 +16,8 @@
 
 #include <memory>
 
-#ifndef SAFE_LIST_HH
-#define SAFE_LIST_HH
+#ifndef LIST_HH
+#define LIST_HH
 
 namespace ty {
 
@@ -25,36 +25,37 @@ template <typename T>
 struct node;
 
 template <typename T>
-using Safelist = std::shared_ptr<node<T>>;
+using list = std::shared_ptr<node<T>>;
 
 template <typename T>
 struct node {
     T val;
-    Safelist<T> next = nullptr;
+    list<T> next = nullptr;
     node(const T& v) : val(v) { }
-    node(const T& v, Safelist<T> top) : val(v), next(top) { }
+    node(const T& v, list<T> top) : val(v), next(top) { }
 };
 
 template <typename T>
-Safelist<T> push(const T& val, Safelist<T> top)
+list<T> push(const T& val, list<T> top)
 {
     return std::make_shared<node<T>>(val, top);
 }
 
 template <typename T>
-Safelist<T> pop(Safelist<T> top)
+list<T> pop(list<T> top)
 {
     return top ? top->next : nullptr;
 }
 
 template <typename T>
-void sort(Safelist<T> head) {
+void sort(list<T> head)
+{
     if (!head)
         return;
     bool swapped;
     do {
         swapped = false;
-        Safelist<T> curr = head;
+        auto curr = head;
         while (curr->next) {
             if (curr->val > curr->next->val) {
                 std::swap(curr->val, curr->next->val);
@@ -64,13 +65,14 @@ void sort(Safelist<T> head) {
         }
     } while (swapped);
 }
+
 template <typename T>
-Safelist<T> reverse(Safelist<T> head)
+list<T> reverse(list<T> head)
 {
-    Safelist<T> prev = nullptr;
-    Safelist<T> curr = head;
+    list<T> prev = nullptr;
+    auto curr = head;
     while (curr) {
-        Safelist<T> next = curr->next;
+        auto next = curr->next;
         curr->next = prev;
         prev = curr;
         curr = next;
@@ -78,6 +80,12 @@ Safelist<T> reverse(Safelist<T> head)
     return prev; 
 }
 
+template <typename T>
+int count(list <T> head)
+{
+    return head ? 1 + count(head->next) : 0;
+}
+
 } /// ty
 
-#endif // SAFE_LIST_HH
+#endif // LIST_HH

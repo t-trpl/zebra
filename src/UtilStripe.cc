@@ -41,7 +41,7 @@ std::unordered_set<std::string> UtilStripe::getValidOptionsFlags() const
     };
 }
 
-Error UtilStripe::setArgs(const ArgMap& map)
+Error UtilStripe::setArgs(const ArgMapN& map)
 {
     const auto baseError = UtilBaseSingle::setArgs(map);
     if (baseError)
@@ -50,11 +50,12 @@ Error UtilStripe::setArgs(const ArgMap& map)
     if (!maybeSize)
         return maybeSize.error();
     if (const auto ptr = *maybeSize; ptr != map.end()) {
-        if (ptr->second.empty())
+        const auto c = count(ptr->second);
+        if (c == 0)
             return "No size";
-        if (ptr->second.size() > 1)
+        if (c > 1)
             return "Too many sizes";
-        const auto &size = ptr->second[0];
+        const auto &size = ptr->second->val;
         const auto bytes = stringToBytes(size);
         if (bytes)
             stripeSize_ = *bytes;
@@ -140,7 +141,7 @@ std::streamsize UtilStripe::readChunk(std::ifstream& file,
     return file.gcount();
 }
 
-Error UtilStripe::setFlags(const ArgMap& map)
+Error UtilStripe::setFlags(const ArgMapN& map)
 {
     const auto maybePad = validFlag(map, {"-np", "--no-padding"});
     if (!maybePad)

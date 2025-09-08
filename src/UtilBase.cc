@@ -20,7 +20,7 @@
 
 namespace fs = std::filesystem;
 
-Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
+Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
         std::string& ref, bool required)
 {
     const auto maybeOpt = argToValue(map, opt);
@@ -28,11 +28,12 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
     if (!maybeOpt)
         return maybeOpt.error();
     if (const auto ptr = *maybeOpt; ptr != map.end()) {
-        if (ptr->second.empty())
+        const auto c = count(ptr->second);
+        if (c == 0)
             return "Unmatched " + tag;
-        if (ptr->second.size() > 1)
+        if (c > 1)
             return "Too many " + tag + "s";
-        const auto val = ptr->second[0];
+        const auto val = ptr->second->val;
         if (!val.empty())
             ref = val;
         else
@@ -43,13 +44,13 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
     return None;
 }
 
-Error UtilBase::setMember(const ArgMap& map, const ArgT& opt,
+Error UtilBase::setMember(const ArgMapN& map, const ArgT& opt,
         std::string& memRef)
 {
     return setMemberBase(map, opt, memRef, false);
 }
 
-Error UtilBase::setMemberReqPath(const ArgMap& map, const ArgT& opt,
+Error UtilBase::setMemberReqPath(const ArgMapN& map, const ArgT& opt,
         std::string& memRef)
 {
     std::string interimPath;
@@ -76,7 +77,7 @@ std::string UtilBase::clean(const std::string& path) const
     return path;
 }
 
-Error UtilBase::checkForUnknown(const ArgMap& map) const
+Error UtilBase::checkForUnknown(const ArgMapN& map) const
 {
     const auto valid = getValidOptionsFlags();
     for (const auto& p : map)

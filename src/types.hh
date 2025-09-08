@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  */
 
-#include "src/Safelist.hh"
+#include "src/list.hh"
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -25,7 +25,9 @@
 
 using Files = std::vector<std::string>;
 
-using ArgMap = std::unordered_map<std::string, std::vector<std::string>>;
+using ArgN = ty::list<std::string>;
+
+using ArgMapN = std::unordered_map<std::string, ArgN>;
 
 using Error = std::optional<std::string>;
 
@@ -36,7 +38,5 @@ using ArgT = std::tuple<std::string, std::string, std::string>;
 using ArgOr = std::pair<std::string, std::string>;
 
 constexpr auto None = std::nullopt;
-
-using ArgN = ty::Safelist<std::string>;
 
 #endif /// TYPES_HH

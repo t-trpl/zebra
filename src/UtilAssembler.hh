@@ -16,7 +16,7 @@
 
 #include "src/UtilBaseSingle.hh"
 #include "src/Maybe.hh"
-#include "src/Safelist.hh"
+#include "src/list.hh"
 
 #ifndef UTIL_ASSEMBLER_HH
 #define UTIL_ASSEMBLER_HH
@@ -27,16 +27,16 @@ private:
     bool useExt_ = true;
     std::string name_ = "";
     std::string stemToName(const std::string& stem) const;
-    Maybe<ty::Safelist<std::string>> loadFileNames() const;
+    Maybe<ty::list<std::string>> loadFileNames() const;
     std::unordered_set<std::string> getValidOptionsFlags() const override;
-    Error writeAssemble(ty::Safelist<std::string> l, std::ofstream& out) const;
+    Error writeAssemble(ty::list<std::string> files, std::ofstream& out) const;
 public:
     UtilAssembler() { }
     ~UtilAssembler() { }
     UtilAssembler(const UtilAssembler&) = delete;
     Error run() const override;
-    Error setArgs(const ArgMap& map) override;
-    Error setFlags(const ArgMap& map) override;
+    Error setArgs(const ArgMapN& map) override;
+    Error setFlags(const ArgMapN& map) override;
 };
 
 #endif /// STRIPE_ASSEMBLER_HH

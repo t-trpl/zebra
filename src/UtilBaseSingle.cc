@@ -16,7 +16,7 @@
 
 #include "src/UtilBaseSingle.hh"
 
-Error UtilBaseSingle::setArgs(const ArgMap& map)
+Error UtilBaseSingle::setArgs(const ArgMapN& map)
 {
     const auto errorInput = setMemberReqPath(map, {"--input", "-i", "input"},
             in_);
