@@ -39,7 +39,7 @@ Error Parser::runParse(const ArgN& args)
             return "Duplicate " + left;
         auto curr = cdr(args);
         ArgN acc = nullptr;
-        for (; curr && noLeadingHyphen(curr->val); curr = cdr(curr))
+        for (; curr && noLeadingHyphen(car(curr)); curr = cdr(curr))
             acc = cons(car(curr), acc);
         argMapN_[left] = ty::reverse(acc);
         return runParse(curr);
