@@ -28,16 +28,21 @@ Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
     if (!maybeOpt)
         return maybeOpt.error();
     if (const auto ptr = *maybeOpt; ptr != map.end()) {
-        const auto c = count(ptr->second);
-        if (c == 0)
-            return "Unmatched " + tag;
-        if (c > 1)
-            return "Too many " + tag + "s";
-        const auto val = ptr->second->val;
-        if (!val.empty())
-            ref = val;
-        else
-            return "No " + tag;
+        const auto argn = ptr->second;
+        switch (count(argn)) {
+        case 0:
+            return "Unmatched "+ tag;
+        case 1: {
+            const auto val = argn->val;
+            if (!val.empty())
+                ref = val;
+            else
+                return "No " + tag;
+            break;
+        }
+        default:
+            return "Too many "+ tag + "s";
+        };
     }
     else if (required)
         return "Missing " + tag;
