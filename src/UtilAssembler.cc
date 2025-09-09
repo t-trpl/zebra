@@ -80,7 +80,7 @@ Error UtilAssembler::run() const
     std::ofstream outFile(out_);
     if (!outFile)
         return "Failed to open: " + out_;
-    const auto [size, err] = writeAssemble(*maybeFiles, outFile, 0);
+    const auto [size, err] = writeAssemble(*maybeFiles, outFile);
     if (!silence_)
         std::cout << "Wrote " << out_ << " " << size << " bytes\n";
     return err;

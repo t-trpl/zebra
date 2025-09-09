@@ -20,7 +20,6 @@
 #include "src/UtilAssemblerMulti.hh"
 #include "src/types.hh"
 #include "src/helpers.hh"
-#include <unordered_map>
 
 Error Parser::runParse(const ArgN args)
 {
@@ -37,7 +36,7 @@ Error Parser::runParse(const ArgN args)
     else if (isOpt(left)) {
         if (argMapN_.find(left) != argMapN_.end())
             return "Duplicate " + left;
-        const auto [next, acc] = getOption(cdr(args), left, nullptr);
+        const auto [next, acc] = getOption(cdr(args), left);
         argMapN_[left] = acc;
         return runParse(next);
     }
@@ -48,13 +47,18 @@ Error Parser::runParse(const ArgN args)
     return runParse(next);
 }
 
-std::pair<ArgN, ArgN> Parser::getOption(const ArgN args, const std::string& left,
-        const ArgN acc)
+std::pair<ArgN, ArgN> Parser::getOption(const ArgN args, const std::string& left)
+{
+    return getOptionI(args, left, nullptr);
+}
+
+std::pair<ArgN, ArgN> Parser::getOptionI(const ArgN args,
+        const std::string& left, const ArgN acc)
 {
     if (!args || leadingHyphen(car(args)))
         return std::make_pair(args, reverse(acc));
     const auto val = car(args);
-    return getOption(cdr(args), left, cons(val, acc));
+    return getOptionI(cdr(args), left, cons(val, acc));
 }
 
 bool Parser::printHelper() const
