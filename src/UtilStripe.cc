@@ -153,13 +153,11 @@ Error UtilStripe::setFlags(const ArgMapN& map)
         return maybePad.error();
     else if (*maybePad)
         padding_ = false;
-
     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
     if (!maybeQuiet)
         return maybeQuiet.error();
     else if (*maybeQuiet)
         silence_ = true;
-
     const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
     if (!maybeNoExt)
         return maybeNoExt.error();

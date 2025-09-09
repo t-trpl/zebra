@@ -22,12 +22,12 @@
 #include "src/helpers.hh"
 #include <unordered_map>
 
-Error Parser::runParse(const ArgN& args)
+Error Parser::runParse(const ArgN args)
 {
     if (!args)
         return None;
-    const auto& left = car(args);
-    const auto& next = cdr(args);
+    const auto left = car(args);
+    const auto next = cdr(args);
     if (isMode(left)) {
         if(!mode_.empty())
             return "Two Modes";
@@ -37,12 +37,9 @@ Error Parser::runParse(const ArgN& args)
     else if (isOpt(left)) {
         if (argMapN_.find(left) != argMapN_.end())
             return "Duplicate " + left;
-        auto curr = cdr(args);
-        ArgN acc = nullptr;
-        for (; curr && noLeadingHyphen(car(curr)); curr = cdr(curr))
-            acc = cons(car(curr), acc);
-        argMapN_[left] = ty::reverse(acc);
-        return runParse(curr);
+        const auto [next, acc] = getOption(cdr(args), left, nullptr);
+        argMapN_[left] = acc;
+        return runParse(next);
     }
     else if (!left.empty())
         return "Bad arg " + left;
@@ -51,14 +48,23 @@ Error Parser::runParse(const ArgN& args)
     return runParse(next);
 }
 
+std::pair<ArgN, ArgN> Parser::getOption(const ArgN args, const std::string& left,
+        const ArgN acc)
+{
+    if (!args || leadingHyphen(car(args)))
+        return std::make_pair(args, reverse(acc));
+    const auto val = car(args);
+    return getOption(cdr(args), left, cons(val, acc));
+}
+
 bool Parser::printHelper() const
 { 
     return containsMap(argMapN_, {"-h", "--help"});
 }
 
-bool Parser::noLeadingHyphen(const std::string& str) const
+bool Parser::leadingHyphen(const std::string& str) const
 {
-    return str.size() > 0 && str[0] != '-';
+    return str.size() > 0 && str[0] == '-';
 }
 
 ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options)

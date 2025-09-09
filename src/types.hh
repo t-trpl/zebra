@@ -23,8 +23,6 @@
 #ifndef TYPES_HH
 #define TYPES_HH
 
-using Files = std::vector<std::string>;
-
 using ArgN = ty::list<std::string>;
 
 using ArgMapN = std::unordered_map<std::string, ArgN>;

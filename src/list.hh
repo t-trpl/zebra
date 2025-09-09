@@ -36,25 +36,25 @@ struct node {
 };
 
 template <typename T>
-list<T> cons(const T& val, list<T> top)
+list<T> cons(const T& val, const list<T> top)
 {
     return std::make_shared<node<T>>(val, top);
 }
 
 template <typename T>
-list<T> cdr(list<T> head)
+list<T> cdr(const list<T> head)
 {
     return head ? head->next : nullptr;
 }
 
 template <typename T>
-T car(list<T> head)
+T car(const list<T> head)
 {
     return head->val;
 }
 
 template <typename T>
-void sort(list<T> head)
+void sort(const list<T> head)
 {
     if (!head)
         return;
@@ -75,19 +75,16 @@ void sort(list<T> head)
 template <typename T>
 list<T> reverse(list<T> head)
 {
-    list<T> prev = nullptr;
-    auto curr = head;
-    while (curr) {
-        auto next = curr->next;
-        curr->next = prev;
-        prev = curr;
-        curr = next;
-    }
-    return prev; 
+    if (!head || !head->next)
+        return head;
+    auto rh = reverse(head->next);
+    head->next->next = head;
+    head->next = nullptr;
+    return rh;
 }
 
 template <typename T>
-int count(list <T> head)
+int count(const list <T> head)
 {
     return head ? 1 + count(head->next) : 0;
 }

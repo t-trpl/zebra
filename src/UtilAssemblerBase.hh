@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerMulti.hh
+ * File: UtilAssemblerBase.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,26 +14,23 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBase.hh"
-#include "src/UtilAssemblerBase.hh"
 #include "src/list.hh"
-#include <string>
+#include "src/types.hh"
 
-#ifndef UTIL_ASSEMBLER_MULTI_HH
-#define UTIL_ASSEMBLER_MULTI_HH
+#ifndef UTIL_ASSEMBLER_BASE_HH
+#define UTIL_ASSEMBLER_BASE_HH
 
-class UtilAssemblerMulti : public UtilBase, public UtilAssemblerBase {
-private:
-    FilesL files_;
-    std::string out_;
-    std::unordered_set<std::string> getValidOptionsFlags() const override;
+using WriteStatus = std::pair<std::streamsize, Error>;
+using FilesL = ty::list<std::string>;
+
+class UtilAssemblerBase {
+protected:
+    WriteStatus writeAssemble(FilesL files, std::ofstream& out,
+            const std::streamsize acc) const;
 public:
-    UtilAssemblerMulti() { }
-    ~UtilAssemblerMulti() { }
-    UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
-    Error run() const override;
-    Error setFlags(const ArgMapN& map) override;
-    Error setArgs(const ArgMapN& map) override;
+    UtilAssemblerBase() { }
+    ~UtilAssemblerBase() { }
+    UtilAssemblerBase(const UtilAssemblerBase&) = delete;
 };
 
-#endif /// UTIL_ASSEMBLER_MULTI_HH
+#endif /// UTIL_ASSEMBLER_BASE_HH

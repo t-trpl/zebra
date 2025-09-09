@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerMulti.hh
+ * File: UtilAssemblerBase.cc
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,26 +14,21 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBase.hh"
 #include "src/UtilAssemblerBase.hh"
-#include "src/list.hh"
-#include <string>
+#include <fstream>
 
-#ifndef UTIL_ASSEMBLER_MULTI_HH
-#define UTIL_ASSEMBLER_MULTI_HH
+WriteStatus UtilAssemblerBase::writeAssemble(FilesL files, std::ofstream& out,
+        const std::streamsize acc) const
+{
+    if (!files)
+        return {acc, None};
+    const std::string path = car(files);
+    std::ifstream file(path, std::ios::binary | std::ios::ate);
+    if (!file)
+        return {acc, "Failed to open: " + path + "\nDiscard output"};
+    std::streamsize size = file.tellg();
+    file.seekg(0, std::ios::beg);
+    out << file.rdbuf();
+    return writeAssemble(files->next, out, acc + size);
+}
 
-class UtilAssemblerMulti : public UtilBase, public UtilAssemblerBase {
-private:
-    FilesL files_;
-    std::string out_;
-    std::unordered_set<std::string> getValidOptionsFlags() const override;
-public:
-    UtilAssemblerMulti() { }
-    ~UtilAssemblerMulti() { }
-    UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
-    Error run() const override;
-    Error setFlags(const ArgMapN& map) override;
-    Error setArgs(const ArgMapN& map) override;
-};
-
-#endif /// UTIL_ASSEMBLER_MULTI_HH

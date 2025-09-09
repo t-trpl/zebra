@@ -26,13 +26,14 @@ Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
     if (!maybeInput)
         return maybeInput.error();
     if (const auto ptr = *maybeInput; ptr != map.end()) {
-        auto p = ptr->second;
+        FilesL acc = nullptr;
         for (auto p = ptr->second; p; p = cdr(p)) {
             if (const auto part = getPath(car(p)); part)
-                parts_.push_back(*part);
+                acc = cons(*part, acc);
             else
                 part.error();
         }
+        files_ = reverse(acc);
     }
     else
         return "Missing Input";
@@ -50,15 +51,10 @@ Error UtilAssemblerMulti::run() const
     std::ofstream outFile(out_);
     if (!outFile)
         return "Failed to open: " + out_;
+    const auto [size, err] = writeAssemble(files_, outFile, 0);
     if (!silence_)
-        std::cout << "\033[32m->\033[0m" << out_ << "\n";
-    for (const auto& p : parts_) {
-        std::ifstream file(p, std::ios::binary);
-        if (!file)
-            return "Failed to open: " + p + "\nDiscard output";
-        outFile << file.rdbuf();
-    }
-    return None;
+        std::cout << "Wrote " << out_ << " " << size << " bytes\n";
+    return err;
 }
 
 Error UtilAssemblerMulti::setFlags(const ArgMapN& map)

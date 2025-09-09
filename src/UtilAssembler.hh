@@ -15,13 +15,14 @@
  */
 
 #include "src/UtilBaseSingle.hh"
+#include "src/UtilAssemblerBase.hh"
 #include "src/Maybe.hh"
 #include "src/list.hh"
 
 #ifndef UTIL_ASSEMBLER_HH
 #define UTIL_ASSEMBLER_HH
 
-class UtilAssembler : public UtilBaseSingle {
+class UtilAssembler : public UtilBaseSingle, public UtilAssemblerBase {
 private:
     std::string ext_ = "stripe";
     bool useExt_ = true;
@@ -29,7 +30,6 @@ private:
     std::string stemToName(const std::string& stem) const;
     Maybe<ty::list<std::string>> loadFileNames() const;
     std::unordered_set<std::string> getValidOptionsFlags() const override;
-    Error writeAssemble(ty::list<std::string> files, std::ofstream& out) const;
 public:
     UtilAssembler() { }
     ~UtilAssembler() { }
@@ -39,4 +39,4 @@ public:
     Error setFlags(const ArgMapN& map) override;
 };
 
-#endif /// STRIPE_ASSEMBLER_HH
+#endif /// UTIL_ASSEMBLER_HH

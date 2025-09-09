@@ -41,13 +41,15 @@ private:
     Mode getMode(const std::string& mode) const;
     template<typename T> Maybe<UtilPtr> createPtr() const;
     ArgN MapOr(const ArgMapN map, const ArgOr& options) const;
-    bool noLeadingHyphen(const std::string& str) const;
+    bool leadingHyphen(const std::string& str) const;
+    std::pair<ArgN, ArgN> getOption(const ArgN args, const std::string& left,
+            const ArgN acc);
 public:
     Parser() { }
     ~Parser() { }
     Parser(const Parser&) = delete;
     Maybe<UtilPtr> createUtil() const;
-    Error runParse(const ArgN& args);
+    Error runParse(const ArgN args);
     void printBanner() const;
     bool printHelper() const;
 };

@@ -17,8 +17,8 @@
 #include "src/types.hh"
 #include "src/Maybe.hh"
 
-#ifndef Helpers_HH
-#define Helpers_HH
+#ifndef HELPERS_HH
+#define HELPERS_HH
 
 bool containsMap(const ArgMapN& map, const ArgOr& flag);
 
