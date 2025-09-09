@@ -32,7 +32,6 @@ WriteStatus UtilAssemblerBase::writeAssembleI(FilesL files, std::ofstream& out,
     return writeAssembleI(files->next, out, acc + size);
 }
 
-
 WriteStatus UtilAssemblerBase::writeAssemble(FilesL files, std::ofstream& out)
     const
 {
