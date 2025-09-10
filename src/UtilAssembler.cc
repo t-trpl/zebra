@@ -19,23 +19,16 @@
 #include "src/types.hh"
 #include "src/utils.hh"
 #include "src/helpers.hh"
-#include <filesystem>
 #include <fstream>
 #include <iostream>
-
-namespace fs = std::filesystem;
 
 Maybe<FilesL> UtilAssembler::stripeNames() const
 {
      FilesL files;
      if (!fs::exists(in_) || !fs::is_directory(in_))
           return make_bad<FilesL>("Not a directory: " + in_);
-     const std::string completeExt = std::string(".") + ext_;
      for (const auto& file : fs::directory_iterator(in_)) {
-          const auto& ext = file.path().extension().string();
-          const auto& stem = file.path().stem().string();
-          if (((!useExt_ && ext.empty()) || ext == completeExt) &&
-                    (name_.empty() || name_ == stemToName(stem))) {
+          if (matchExt(file) && matchName(file)) {
                const auto& name = file.path().filename().string();
                const auto& path = in_ + '/' + name;
                files = cons(path, files);
@@ -43,6 +36,19 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
      }
      sort(files);
      return files;
+}
+
+bool UtilAssembler::matchExt(const fs::directory_entry& file) const
+{
+     const auto& ext = file.path().extension().string();
+     const auto expected = "." + in_;
+     return (!useExt_ && ext.empty()) || ext == expected;
+}
+
+bool UtilAssembler::matchName(const fs::directory_entry& file) const
+{
+     const auto& stem = file.path().stem().string();
+     return name_.empty() || name_ == stemToName(stem);
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const

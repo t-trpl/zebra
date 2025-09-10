@@ -18,9 +18,12 @@
 #include "src/UtilAssemblerBase.hh"
 #include "src/Maybe.hh"
 #include "src/list.hh"
+#include <filesystem>
 
 #ifndef UTIL_ASSEMBLER_HH
 #define UTIL_ASSEMBLER_HH
+
+namespace fs = std::filesystem;
 
 class UtilAssembler final : public UtilBaseSingle
                           , public UtilAssemblerBase {
@@ -31,6 +34,8 @@ private:
      std::string stemToName(const std::string& stem) const;
      Maybe<FilesL> stripeNames() const;
      std::unordered_set<std::string> validArgs() const override;
+     bool matchExt(const fs::directory_entry& ext) const;
+     bool matchName(const fs::directory_entry& stem) const;
 public:
      UtilAssembler() { }
      ~UtilAssembler() { }
