@@ -33,7 +33,7 @@ WriteStatus UtilAssemblerBase::writeAssembleI(FilesL files, std::ofstream& out,
 }
 
 WriteStatus UtilAssemblerBase::writeAssemble(FilesL files, std::ofstream& out)
-    const
+        const
 {
     return writeAssembleI(files, out, 0);
 }

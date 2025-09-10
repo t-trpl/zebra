@@ -24,7 +24,7 @@
 #ifndef UTIL_STRIPE_HH
 #define UTIL_STRIPE_HH
 
-class UtilStripe : public UtilBaseSingle {
+class UtilStripe final : public UtilBaseSingle {
 private:
     size_t stripeSize_ = 3'000'000;
     std::string name_ = "";
@@ -37,7 +37,7 @@ private:
     Maybe<size_t> stringToBytes(const std::string& size) const;
     size_t stripesStrLen(const size_t& rem) const;
     std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
-        const;
+            const;
     std::unordered_set<std::string> getValidOptionsFlags() const override;
     std::string getStripePath(const size_t& num, const size_t& max) const;
 public:

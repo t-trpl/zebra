@@ -31,7 +31,7 @@ protected:
     WriteStatus writeAssemble(FilesL files, std::ofstream& out) const;
 public:
     UtilAssemblerBase() { }
-    ~UtilAssemblerBase() { }
+    virtual ~UtilAssemblerBase() { }
     UtilAssemblerBase(const UtilAssemblerBase&) = delete;
 };
 

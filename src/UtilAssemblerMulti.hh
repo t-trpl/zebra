@@ -22,7 +22,8 @@
 #ifndef UTIL_ASSEMBLER_MULTI_HH
 #define UTIL_ASSEMBLER_MULTI_HH
 
-class UtilAssemblerMulti : public UtilBase, public UtilAssemblerBase {
+class UtilAssemblerMulti final : public UtilBase
+                               , public UtilAssemblerBase {
 private:
     FilesL files_;
     std::string out_;

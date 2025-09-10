@@ -22,7 +22,8 @@
 #ifndef UTIL_ASSEMBLER_HH
 #define UTIL_ASSEMBLER_HH
 
-class UtilAssembler : public UtilBaseSingle, public UtilAssemblerBase {
+class UtilAssembler final : public UtilBaseSingle
+                          , public UtilAssemblerBase {
 private:
     std::string ext_ = "stripe";
     bool useExt_ = true;

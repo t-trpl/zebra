@@ -41,7 +41,7 @@ Maybe<FilesL> UtilAssembler::loadFileNames() const
             files = cons(path, files);
         }
     }
-    ty::sort(files);
+    sort(files);
     return files;
 }
 
