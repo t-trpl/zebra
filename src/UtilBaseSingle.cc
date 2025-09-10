@@ -18,11 +18,11 @@
 
 Error UtilBaseSingle::setArgs(const ArgMapN& map)
 {
-     const auto errInput = setMemberReqPath(map, {"--input", "-i", "input"},
+     const auto errInput = setMemberPath(map, {"--input", "-i", "input"},
                in_);
      if (errInput)
           return *errInput;
-     const auto errOutput = setMemberReqPath(map, {"--output", "-o", "output"},
+     const auto errOutput = setMemberPath(map, {"--output", "-o", "output"},
                out_);
      if (errOutput)
           return *errOutput;

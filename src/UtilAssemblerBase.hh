@@ -25,10 +25,10 @@ using FilesL = ty::list<std::string>;
 
 class UtilAssemblerBase {
 private:
-     WriteStatus writeAssembleI(FilesL files, std::ofstream& out,
+     WriteStatus writeStripeI(FilesL files, std::ofstream& out,
                const std::streamsize acc) const;
 protected:
-     WriteStatus writeAssemble(FilesL files, std::ofstream& out) const;
+     WriteStatus writeStripe(FilesL files, std::ofstream& out) const;
 public:
      UtilAssemblerBase() { }
      virtual ~UtilAssemblerBase() { }

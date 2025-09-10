@@ -29,8 +29,8 @@ private:
      bool useExt_ = true;
      std::string name_ = "";
      std::string stemToName(const std::string& stem) const;
-     Maybe<FilesL> loadFileNames() const;
-     std::unordered_set<std::string> getValidOptionsFlags() const override;
+     Maybe<FilesL> getStripeNames() const;
+     std::unordered_set<std::string> validArgs() const override;
 public:
      UtilAssembler() { }
      ~UtilAssembler() { }

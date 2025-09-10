@@ -17,7 +17,7 @@
 #include "src/UtilAssemblerBase.hh"
 #include <fstream>
 
-WriteStatus UtilAssemblerBase::writeAssembleI(FilesL files, std::ofstream& out,
+WriteStatus UtilAssemblerBase::writeStripeI(FilesL files, std::ofstream& out,
           const std::streamsize acc) const
 {
      if (!files)
@@ -29,11 +29,11 @@ WriteStatus UtilAssemblerBase::writeAssembleI(FilesL files, std::ofstream& out,
      std::streamsize size = file.tellg();
      file.seekg(0, std::ios::beg);
      out << file.rdbuf();
-     return writeAssembleI(files->next, out, acc + size);
+     return writeStripeI(files->next, out, acc + size);
 }
 
-WriteStatus UtilAssemblerBase::writeAssemble(FilesL files, std::ofstream& out)
+WriteStatus UtilAssemblerBase::writeStripe(FilesL files, std::ofstream& out)
           const
 {
-     return writeAssembleI(files, out, 0);
+     return writeStripeI(files, out, 0);
 }

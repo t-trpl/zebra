@@ -37,7 +37,7 @@ Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
      }
      else
           return "Missing Input";
-     const auto errOutput = setMemberReqPath(map, {"--output", "-o", "output"},
+     const auto errOutput = setMemberPath(map, {"--output", "-o", "output"},
                out_);
      if (errOutput)
           return *errOutput;
@@ -51,7 +51,7 @@ Error UtilAssemblerMulti::run() const
      std::ofstream outFile(out_);
      if (!outFile)
           return "Failed to open: " + out_;
-     const auto [size, err] = writeAssemble(files_, outFile);
+     const auto [size, err] = writeStripe(files_, outFile);
      if (!silence_)
           std::cout << "Wrote " << out_ << " " << size << " bytes\n";
      return err;
@@ -67,7 +67,7 @@ Error UtilAssemblerMulti::setFlags(const ArgMapN& map)
      return None;
 }
 
-std::unordered_set<std::string> UtilAssemblerMulti::getValidOptionsFlags() const
+std::unordered_set<std::string> UtilAssemblerMulti::validArgs() const
 {
      return {
           "-i", "--input",

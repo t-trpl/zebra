@@ -27,7 +27,7 @@
 
 namespace fs = std::filesystem;
 
-std::unordered_set<std::string> UtilStripe::getValidOptionsFlags() const
+std::unordered_set<std::string> UtilStripe::validArgs() const
 {
      return {
           "-i", "--input",
@@ -121,15 +121,15 @@ size_t UtilStripe::maxNameLength(const std::streamsize& size) const
      return stripesStrLen(pieces);
 }
 
-std::streamsize UtilStripe::getFileSize(const std::string& location) const
+std::streamsize UtilStripe::fileSize(std::ifstream& file) const
 {
-     std::ifstream file(location, std::ios::binary | std::ios::ate);
-     if (!file)
-          return -1;
-     return file.tellg(); 
+     file.seekg(0, std::ios::end);
+     std::streamsize size = file.tellg();
+     file.seekg(0, std::ios::beg);
+     return size; 
 }
 
-std::string UtilStripe::getFileName(const int& number, 
+std::string UtilStripe::fileName(const int& number, 
           const size_t& len) const
 {
      const std::string strn = std::to_string(number);
@@ -166,10 +166,10 @@ Error UtilStripe::setFlags(const ArgMapN& map)
      return None;
 }
 
-std::string UtilStripe::getStripePath(const size_t& num, const size_t& max)
+std::string UtilStripe::stripePath(const size_t& num, const size_t& max)
           const
 {
-     const auto name = getFileName(num, max);
+     const auto name = fileName(num, max);
      const std::string fullName = useExt_ ? (name + "." + ext_) : name;
      const std::string path = fs::path(out_) / fullName;
      return path;
@@ -186,16 +186,16 @@ Error UtilStripe::run() const
      std::ifstream file(in_, std::ios::binary);
      if (!file)
           return "Invalid File";
-     const auto fileSize = getFileSize(in_);
-     if (fileSize == -1)
+     const auto fsize = fileSize(file);
+     if (fsize == -1)
           return "Empty file?";
-     const auto maxName = maxNameLength(fileSize);
+     const auto maxName = maxNameLength(fsize);
      std::vector<char> buffer(stripeSize_);
      int chunkNumber = 0;
      for (auto bytes = readChunk(file, buffer);
           bytes;
           bytes = readChunk(file, buffer)) {
-          const auto path = getStripePath(chunkNumber++, maxName);
+          const auto path = stripePath(chunkNumber++, maxName);
           std::ofstream outFile(path);
           if (!outFile)
                return "Failed to write: " + path;

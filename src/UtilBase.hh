@@ -31,10 +31,10 @@ protected:
      Maybe<std::string> getPath(const std::string& p) const;
      bool isSlash(const char c) const;
      std::string clean(const std::string& path) const;
-     Error setMemberReqPath(const ArgMapN& map, const ArgT& opt,
+     Error setMemberPath(const ArgMapN& map, const ArgT& opt,
                std::string& memRef);
      Error setMember(const ArgMapN& map, const ArgT& opt, std::string& memRef);
-     virtual std::unordered_set<std::string> getValidOptionsFlags() const = 0;
+     virtual std::unordered_set<std::string> validArgs() const = 0;
 public:
      UtilBase() { } 
      virtual ~UtilBase() { }

@@ -27,7 +27,7 @@ class UtilAssemblerMulti final : public UtilBase
 private:
      FilesL files_;
      std::string out_;
-     std::unordered_set<std::string> getValidOptionsFlags() const override;
+     std::unordered_set<std::string> validArgs() const override;
 public:
      UtilAssemblerMulti() { }
      ~UtilAssemblerMulti() { }

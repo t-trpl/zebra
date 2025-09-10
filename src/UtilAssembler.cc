@@ -25,7 +25,7 @@
 
 namespace fs = std::filesystem;
 
-Maybe<FilesL> UtilAssembler::loadFileNames() const
+Maybe<FilesL> UtilAssembler::getStripeNames() const
 {
      FilesL files;
      if (!fs::exists(in_) || !fs::is_directory(in_))
@@ -72,7 +72,7 @@ Error UtilAssembler::run() const
 {
      if (!silence_)
           std::cout << util::banner << "\nAssembling\n";
-     const auto maybeFiles = loadFileNames();
+     const auto maybeFiles = getStripeNames();
      if (!maybeFiles)
           return maybeFiles.error();
      if (!*maybeFiles)
@@ -80,7 +80,7 @@ Error UtilAssembler::run() const
      std::ofstream outFile(out_);
      if (!outFile)
           return "Failed to open: " + out_;
-     const auto [size, err] = writeAssemble(*maybeFiles, outFile);
+     const auto [size, err] = writeStripe(*maybeFiles, outFile);
      if (!silence_)
           std::cout << "Wrote " << out_ << " " << size << " bytes\n";
      return err;
@@ -101,7 +101,7 @@ Error UtilAssembler::setFlags(const ArgMapN& map)
      return None;
 }
 
-std::unordered_set<std::string> UtilAssembler::getValidOptionsFlags() const
+std::unordered_set<std::string> UtilAssembler::validArgs() const
 {
      return {
           "-i", "--input",

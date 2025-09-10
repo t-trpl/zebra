@@ -24,7 +24,7 @@ Error run(const ArgN args)
      const auto parseError = p.runParse(args);
      if (parseError)
           return *parseError;
-     if (p.printHelper())
+     if (p.checkHelp())
           return util::help;
      const auto util = p.createUtil();
      if (!util)

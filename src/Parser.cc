@@ -36,7 +36,7 @@ Error Parser::runParse(const ArgN args)
      else if (isOpt(left)) {
           if (argMapN_.find(left) != argMapN_.end())
                return "Duplicate " + left;
-          const auto [next, acc] = getOption(cdr(args), left);
+          const auto [next, acc] = getOption(cdr(args));
           argMapN_[left] = acc;
           return runParse(next);
      }
@@ -47,21 +47,20 @@ Error Parser::runParse(const ArgN args)
      return runParse(next);
 }
 
-OptData Parser::getOption(const ArgN args, const std::string& left) const
+OptData Parser::getOption(const ArgN args) const
 {
-     return getOptionI(args, left, nullptr);
+     return getOptionI(args, nullptr);
 }
 
-OptData Parser::getOptionI(const ArgN args, const std::string& left,
-          const ArgN acc) const
+OptData Parser::getOptionI(const ArgN args, const ArgN acc) const
 {
      if (!args || leadingHyphen(car(args)))
           return {args, reverse(acc)};
      const auto val = car(args);
-     return getOptionI(cdr(args), left, cons(val, acc));
+     return getOptionI(cdr(args), cons(val, acc));
 }
 
-bool Parser::printHelper() const
+bool Parser::checkHelp() const
 { 
      return containsMap(argMapN_, {"-h", "--help"});
 }

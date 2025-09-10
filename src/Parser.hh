@@ -43,16 +43,15 @@ private:
      template<typename T> Maybe<UtilPtr> createPtr() const;
      ArgN MapOr(const ArgMapN map, const ArgOr& options) const;
      bool leadingHyphen(const std::string& str) const;
-     OptData getOption(const ArgN args, const std::string& left) const;
-     OptData getOptionI(const ArgN args, const std::string& left,
-               const ArgN acc) const;
+     OptData getOption(const ArgN args) const;
+     OptData getOptionI(const ArgN args, const ArgN acc) const;
 public:
      Parser() { }
      ~Parser() { }
      Parser(const Parser&) = delete;
      Maybe<UtilPtr> createUtil() const;
      Error runParse(const ArgN args);
-     bool printHelper() const;
+     bool checkHelp() const;
 };
 
 template<typename T>

@@ -55,7 +55,7 @@ Error UtilBase::setMember(const ArgMapN& map, const ArgT& opt,
      return setMemberBase(map, opt, memRef, false);
 }
 
-Error UtilBase::setMemberReqPath(const ArgMapN& map, const ArgT& opt,
+Error UtilBase::setMemberPath(const ArgMapN& map, const ArgT& opt,
           std::string& memRef)
 {
      std::string interimPath;
@@ -84,7 +84,7 @@ std::string UtilBase::clean(const std::string& path) const
 
 Error UtilBase::checkForUnknown(const ArgMapN& map) const
 {
-     const auto valid = getValidOptionsFlags();
+     const auto valid = validArgs();
      for (const auto& p : map)
           if (valid.find(p.first) == valid.end())
                return "Unrecognized " + p.first;

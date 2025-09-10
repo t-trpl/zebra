@@ -31,15 +31,15 @@ private:
      std::string ext_ = "stripe";
      bool padding_ = true;
      bool useExt_ = true;
-     std::streamsize getFileSize(const std::string& location) const;
+     std::streamsize fileSize(std::ifstream& file) const;
      size_t maxNameLength(const std::streamsize& size) const ;
-     std::string getFileName(const int& number, const size_t& len) const;
+     std::string fileName(const int& number, const size_t& len) const;
      Maybe<size_t> stringToBytes(const std::string& size) const;
      size_t stripesStrLen(const size_t& rem) const;
      std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
                const;
-     std::unordered_set<std::string> getValidOptionsFlags() const override;
-     std::string getStripePath(const size_t& num, const size_t& max) const;
+     std::unordered_set<std::string> validArgs() const override;
+     std::string stripePath(const size_t& num, const size_t& max) const;
 public:
      UtilStripe() { }
      ~UtilStripe() { }
