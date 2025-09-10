@@ -71,8 +71,7 @@ bool Parser::leadingHyphen(const std::string& str) const
      return str.size() > 0 && str[0] == '-';
 }
 
-ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options)
-          const
+ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options) const
 {
      if (const auto ptr = map.find(options.first); ptr != map.end())
           return ptr->second;
