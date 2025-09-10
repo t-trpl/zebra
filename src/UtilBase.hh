@@ -28,7 +28,7 @@ private:
                bool required);
 protected:
      bool silence_ = false;
-     Maybe<std::string> getPath(const std::string& p) const;
+     Maybe<std::string> toPath(const std::string& p) const;
      bool isSlash(const char c) const;
      std::string clean(const std::string& path) const;
      Error setMemberPath(const ArgMapN& map, const ArgT& opt,

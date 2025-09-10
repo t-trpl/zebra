@@ -28,7 +28,7 @@ Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
      if (const auto ptr = *maybeInput; ptr != map.end()) {
           FilesL acc = nullptr;
           for (auto p = ptr->second; p; p = cdr(p)) {
-               if (const auto part = getPath(car(p)); part)
+               if (const auto part = toPath(car(p)); part)
                     acc = cons(*part, acc);
                else
                     part.error();

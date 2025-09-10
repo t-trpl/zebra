@@ -25,7 +25,7 @@
 
 namespace fs = std::filesystem;
 
-Maybe<FilesL> UtilAssembler::getStripeNames() const
+Maybe<FilesL> UtilAssembler::stripeNames() const
 {
      FilesL files;
      if (!fs::exists(in_) || !fs::is_directory(in_))
@@ -72,7 +72,7 @@ Error UtilAssembler::run() const
 {
      if (!silence_)
           std::cout << util::banner << "\nAssembling\n";
-     const auto maybeFiles = getStripeNames();
+     const auto maybeFiles = stripeNames();
      if (!maybeFiles)
           return maybeFiles.error();
      if (!*maybeFiles)

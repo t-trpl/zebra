@@ -62,7 +62,7 @@ Error UtilBase::setMemberPath(const ArgMapN& map, const ArgT& opt,
      const auto err = setMemberBase(map, opt, interimPath, true); 
      if (err)
           return err;
-     const auto path = getPath(interimPath);
+     const auto path = toPath(interimPath);
      if (!path)
           return path.error();
      memRef = *path;
@@ -91,7 +91,7 @@ Error UtilBase::checkForUnknown(const ArgMapN& map) const
      return None;
 }
 
-Maybe<std::string> UtilBase::getPath(const std::string& p) const
+Maybe<std::string> UtilBase::toPath(const std::string& p) const
 {
      if (p.empty())
           return make_bad<std::string>("No path provided");

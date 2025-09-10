@@ -39,12 +39,12 @@ private:
      bool isLower(const char c) const;
      bool isMode(const std::string& left) const;
      bool isOpt(const std::string& str) const;
-     Mode getMode(const std::string& mode) const;
+     Mode toMode(const std::string& mode) const;
      template<typename T> Maybe<UtilPtr> createPtr() const;
      ArgN MapOr(const ArgMapN map, const ArgOr& options) const;
      bool leadingHyphen(const std::string& str) const;
-     OptData getOption(const ArgN args) const;
-     OptData getOptionI(const ArgN args, const ArgN acc) const;
+     OptData nextOption(const ArgN args) const;
+     OptData nextOptionI(const ArgN args, const ArgN acc) const;
 public:
      Parser() { }
      ~Parser() { }

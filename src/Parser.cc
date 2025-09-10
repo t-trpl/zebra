@@ -26,7 +26,6 @@ Error Parser::runParse(const ArgN args)
      if (!args)
           return None;
      const auto left = car(args);
-     const auto next = cdr(args);
      if (isMode(left)) {
           if(!mode_.empty())
                return "Two Modes";
@@ -36,7 +35,7 @@ Error Parser::runParse(const ArgN args)
      else if (isOpt(left)) {
           if (argMapN_.find(left) != argMapN_.end())
                return "Duplicate " + left;
-          const auto [next, acc] = getOption(cdr(args));
+          const auto [next, acc] = nextOption(cdr(args));
           argMapN_[left] = acc;
           return runParse(next);
      }
@@ -44,20 +43,20 @@ Error Parser::runParse(const ArgN args)
           return "Bad arg " + left;
      else
           return "Empty arg";
-     return runParse(next);
+     return runParse(cdr(args));
 }
 
-OptData Parser::getOption(const ArgN args) const
+OptData Parser::nextOption(const ArgN args) const
 {
-     return getOptionI(args, nullptr);
+     return nextOptionI(args, nullptr);
 }
 
-OptData Parser::getOptionI(const ArgN args, const ArgN acc) const
+OptData Parser::nextOptionI(const ArgN args, const ArgN acc) const
 {
      if (!args || leadingHyphen(car(args)))
           return {args, reverse(acc)};
      const auto val = car(args);
-     return getOptionI(cdr(args), cons(val, acc));
+     return nextOptionI(cdr(args), cons(val, acc));
 }
 
 bool Parser::checkHelp() const
@@ -79,7 +78,7 @@ ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options) const
      return nullptr;
 }
 
-Parser::Mode Parser::getMode(const std::string& mode) const
+Parser::Mode Parser::toMode(const std::string& mode) const
 {
      if (mode == "-A" || mode == "--Assemble") {
           const auto& val = MapOr(argMapN_, {"--input", "-i"});
@@ -136,7 +135,7 @@ bool Parser::isLower(const char c) const
 
 Maybe<UtilPtr> Parser::createUtil() const
 {
-     const auto mode = getMode(mode_);
+     const auto mode = toMode(mode_);
      switch (mode) {
      case Mode::STRIPE :
           return createPtr<UtilStripe>();

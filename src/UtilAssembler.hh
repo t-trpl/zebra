@@ -29,7 +29,7 @@ private:
      bool useExt_ = true;
      std::string name_ = "";
      std::string stemToName(const std::string& stem) const;
-     Maybe<FilesL> getStripeNames() const;
+     Maybe<FilesL> stripeNames() const;
      std::unordered_set<std::string> validArgs() const override;
 public:
      UtilAssembler() { }
