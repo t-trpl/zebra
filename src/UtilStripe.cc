@@ -166,7 +166,8 @@ Error UtilStripe::setFlags(const ArgMapN& map)
     return None;
 }
 
-std::string UtilStripe::getStripePath(const size_t& num, const size_t& max) const
+std::string UtilStripe::getStripePath(const size_t& num, const size_t& max)
+    const
 {
     const auto name = getFileName(num, max);
     const std::string fullName = useExt_ ? (name + "." + ext_) : name;

@@ -29,8 +29,6 @@ using ArgMapN = std::unordered_map<std::string, ArgN>;
 
 using Error = std::optional<std::string>;
 
-using Args = std::vector<std::string>;
-
 using ArgT = std::tuple<std::string, std::string, std::string>;
 
 using ArgOr = std::pair<std::string, std::string>;

@@ -47,16 +47,16 @@ Error Parser::runParse(const ArgN args)
     return runParse(next);
 }
 
-std::pair<ArgN, ArgN> Parser::getOption(const ArgN args, const std::string& left)
+OptData Parser::getOption(const ArgN args, const std::string& left) const
 {
     return getOptionI(args, left, nullptr);
 }
 
-std::pair<ArgN, ArgN> Parser::getOptionI(const ArgN args,
-        const std::string& left, const ArgN acc)
+OptData Parser::getOptionI(const ArgN args, const std::string& left,
+        const ArgN acc) const
 {
     if (!args || leadingHyphen(car(args)))
-        return std::make_pair(args, reverse(acc));
+        return {args, reverse(acc)};
     const auto val = car(args);
     return getOptionI(cdr(args), left, cons(val, acc));
 }

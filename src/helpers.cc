@@ -18,7 +18,8 @@
 
 bool containsMap(const ArgMapN& map, const ArgOr& arg)
 {
-    return map.find(arg.first) != map.end() || map.find(arg.second) != map.end();
+    return map.find(arg.first) != map.end() ||
+            map.find(arg.second) != map.end();
 }
 
 Maybe<bool> validFlag(const ArgMapN& map, const ArgOr& arg)

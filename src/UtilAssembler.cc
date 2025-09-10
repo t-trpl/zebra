@@ -25,11 +25,11 @@
 
 namespace fs = std::filesystem;
 
-Maybe<ty::list<std::string>> UtilAssembler::loadFileNames() const
+Maybe<FilesL> UtilAssembler::loadFileNames() const
 {
-    ty::list<std::string> files;
+    FilesL files;
     if (!fs::exists(in_) || !fs::is_directory(in_))
-        return make_bad<ty::list<std::string>>("Not a directory: " + in_);
+        return make_bad<FilesL>("Not a directory: " + in_);
     const std::string completeExt = std::string(".") + ext_;
     for (const auto& file : fs::directory_iterator(in_)) {
         const auto& ext = file.path().extension().string();
