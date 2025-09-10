@@ -20,36 +20,36 @@
 
 Error run(const ArgN args)
 {
-    Parser p;
-    const auto parseError = p.runParse(args);
-    if (parseError)
-        return *parseError;
-    if (p.printHelper())
-        return util::help;
-    const auto util = p.createUtil();
-    if (!util)
-        return util.error();
-    const auto error = (*util)->run();
-    if (error)
-        return *error;
-    return None;
+     Parser p;
+     const auto parseError = p.runParse(args);
+     if (parseError)
+          return *parseError;
+     if (p.printHelper())
+          return util::help;
+     const auto util = p.createUtil();
+     if (!util)
+          return util.error();
+     const auto error = (*util)->run();
+     if (error)
+          return *error;
+     return None;
 }
 
 ArgN argsToArgN(int argc, char* argv[])
 {
-    ArgN n = nullptr;
-    for (int i = 1; i < argc; i++)
-        n = cons(std::string(argv[i]), n);
-    return ty::reverse(n);
+     ArgN n = nullptr;
+     for (int i = 1; i < argc; i++)
+          n = cons(std::string(argv[i]), n);
+     return reverse(n);
 }
 
 int main(int argc, char* argv[])
 {
-    const ArgN args = argsToArgN(argc, argv);
-    const auto error = run(args);
-    if (error) {
-        std::cout << *error << "\n";
-        return 1;
-    }
-    return 0;
+     const ArgN args = argsToArgN(argc, argv);
+     const auto error = run(args);
+     if (error) {
+          std::cout << *error << "\n";
+          return 1;
+     }
+     return 0;
 }

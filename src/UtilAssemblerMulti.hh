@@ -25,16 +25,16 @@
 class UtilAssemblerMulti final : public UtilBase
                                , public UtilAssemblerBase {
 private:
-    FilesL files_;
-    std::string out_;
-    std::unordered_set<std::string> getValidOptionsFlags() const override;
+     FilesL files_;
+     std::string out_;
+     std::unordered_set<std::string> getValidOptionsFlags() const override;
 public:
-    UtilAssemblerMulti() { }
-    ~UtilAssemblerMulti() { }
-    UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
-    Error run() const override;
-    Error setFlags(const ArgMapN& map) override;
-    Error setArgs(const ArgMapN& map) override;
+     UtilAssemblerMulti() { }
+     ~UtilAssemblerMulti() { }
+     UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
+     Error run() const override;
+     Error setFlags(const ArgMapN& map) override;
+     Error setArgs(const ArgMapN& map) override;
 };
 
 #endif /// UTIL_ASSEMBLER_MULTI_HH

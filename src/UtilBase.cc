@@ -21,83 +21,83 @@
 namespace fs = std::filesystem;
 
 Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
-        std::string& ref, bool required)
+          std::string& ref, bool required)
 {
-    const auto maybeOpt = argToValue(map, opt);
-    const auto tag = std::get<2>(opt);
-    if (!maybeOpt)
-        return maybeOpt.error();
-    if (const auto ptr = *maybeOpt; ptr != map.end()) {
-        const auto argn = ptr->second;
-        switch (count(argn)) {
-        case 0:
-            return "Unmatched "+ tag;
-        case 1: {
-            const auto val = car(argn);
-            if (!val.empty())
-                ref = val;
-            else
-                return "No " + tag;
-            break;
-        }
-        default:
-            return "Too many "+ tag + "s";
-        };
-    }
-    else if (required)
-        return "Missing " + tag;
-    return None;
+     const auto maybeOpt = argToValue(map, opt);
+     const auto tag = std::get<2>(opt);
+     if (!maybeOpt)
+          return maybeOpt.error();
+     if (const auto ptr = *maybeOpt; ptr != map.end()) {
+          const auto argn = ptr->second;
+          switch (count(argn)) {
+          case 0:
+               return "Unmatched "+ tag;
+          case 1: {
+               const auto val = car(argn);
+               if (!val.empty())
+                    ref = val;
+               else
+                    return "No " + tag;
+               break;
+          }
+          default:
+               return "Too many "+ tag + "s";
+          };
+     }
+     else if (required)
+          return "Missing " + tag;
+     return None;
 }
 
 Error UtilBase::setMember(const ArgMapN& map, const ArgT& opt,
-        std::string& memRef)
+          std::string& memRef)
 {
-    return setMemberBase(map, opt, memRef, false);
+     return setMemberBase(map, opt, memRef, false);
 }
 
 Error UtilBase::setMemberReqPath(const ArgMapN& map, const ArgT& opt,
-        std::string& memRef)
+          std::string& memRef)
 {
-    std::string interimPath;
-    const auto err = setMemberBase(map, opt, interimPath, true); 
-    if (err)
-        return err;
-    const auto path = getPath(interimPath);
-    if (!path)
-        return path.error();
-    memRef = *path;
-    return None;
+     std::string interimPath;
+     const auto err = setMemberBase(map, opt, interimPath, true); 
+     if (err)
+          return err;
+     const auto path = getPath(interimPath);
+     if (!path)
+          return path.error();
+     memRef = *path;
+     return None;
 }
 
 bool UtilBase::isSlash(const char c) const
 {
-    return c == '/' || c == '\\';
+     return c == '/' || c == '\\';
 }
 
 std::string UtilBase::clean(const std::string& path) const 
 {
-    const int last = path.size() - 1;
-    if (last > 0 && isSlash(path[last]))
-        return path.substr(0, last);
-    return path;
+     const int last = path.size() - 1;
+     if (last > 0 && isSlash(path[last]))
+          return path.substr(0, last);
+     return path;
 }
 
 Error UtilBase::checkForUnknown(const ArgMapN& map) const
 {
-    const auto valid = getValidOptionsFlags();
-    for (const auto& p : map)
-        if (valid.find(p.first) == valid.end())
-            return "Unrecognized " + p.first;
-    return None;
+     const auto valid = getValidOptionsFlags();
+     for (const auto& p : map)
+          if (valid.find(p.first) == valid.end())
+               return "Unrecognized " + p.first;
+     return None;
 }
 
-Maybe<std::string> UtilBase::getPath(const std::string& loc) const
+Maybe<std::string> UtilBase::getPath(const std::string& p) const
 {
-    if (loc.empty())
-        return make_bad<std::string>("No path provided");
-    const std::string cwd = fs::current_path().string();
-    const std::string path = !isSlash(loc[0]) ? std::string(fs::path(cwd) / loc)
-                                              : loc;
-    const auto cleaned = clean(path);
-    return cleaned;
+     if (p.empty())
+          return make_bad<std::string>("No path provided");
+     const std::string cwd = fs::current_path().string();
+     const std::string path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p)
+                                             : p;
+     const auto cleaned = clean(path);
+     return cleaned;
 }

@@ -18,22 +18,22 @@
 #include <fstream>
 
 WriteStatus UtilAssemblerBase::writeAssembleI(FilesL files, std::ofstream& out,
-        const std::streamsize acc) const
+          const std::streamsize acc) const
 {
-    if (!files)
-        return { acc, None };
-    const std::string path = car(files);
-    std::ifstream file(path, std::ios::binary | std::ios::ate);
-    if (!file)
-        return {acc, "Failed to open: " + path + "\nDiscard output"};
-    std::streamsize size = file.tellg();
-    file.seekg(0, std::ios::beg);
-    out << file.rdbuf();
-    return writeAssembleI(files->next, out, acc + size);
+     if (!files)
+          return { acc, None };
+     const std::string path = car(files);
+     std::ifstream file(path, std::ios::binary | std::ios::ate);
+     if (!file)
+          return {acc, "Failed to open: " + path + "\nDiscard output"};
+     std::streamsize size = file.tellg();
+     file.seekg(0, std::ios::beg);
+     out << file.rdbuf();
+     return writeAssembleI(files->next, out, acc + size);
 }
 
 WriteStatus UtilAssemblerBase::writeAssemble(FilesL files, std::ofstream& out)
-        const
+          const
 {
-    return writeAssembleI(files, out, 0);
+     return writeAssembleI(files, out, 0);
 }

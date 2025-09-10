@@ -22,13 +22,13 @@
 
 class UtilBaseSingle : public UtilBase {
 protected:
-    std::string in_;
-    std::string out_;
+     std::string in_;
+     std::string out_;
 public:
-    UtilBaseSingle() { } 
-    virtual ~UtilBaseSingle() { }
-    UtilBaseSingle(const UtilBaseSingle&) = delete;
-    virtual Error setArgs(const ArgMapN& map) override;
+     UtilBaseSingle() { } 
+     virtual ~UtilBaseSingle() { }
+     UtilBaseSingle(const UtilBaseSingle&) = delete;
+     virtual Error setArgs(const ArgMapN& map) override;
 };
 
 #endif /// UTIL_BASE_SINGLE_HH

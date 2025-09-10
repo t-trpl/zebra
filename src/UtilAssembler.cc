@@ -27,88 +27,88 @@ namespace fs = std::filesystem;
 
 Maybe<FilesL> UtilAssembler::loadFileNames() const
 {
-    FilesL files;
-    if (!fs::exists(in_) || !fs::is_directory(in_))
-        return make_bad<FilesL>("Not a directory: " + in_);
-    const std::string completeExt = std::string(".") + ext_;
-    for (const auto& file : fs::directory_iterator(in_)) {
-        const auto& ext = file.path().extension().string();
-        const auto& stem = file.path().stem().string();
-        if (((!useExt_ && ext.empty()) || ext == completeExt) &&
-                (name_.empty() || name_ == stemToName(stem))) {
-            const auto& name = file.path().filename().string();
-            const auto& path = in_ + '/' + name;
-            files = cons(path, files);
-        }
-    }
-    sort(files);
-    return files;
+     FilesL files;
+     if (!fs::exists(in_) || !fs::is_directory(in_))
+          return make_bad<FilesL>("Not a directory: " + in_);
+     const std::string completeExt = std::string(".") + ext_;
+     for (const auto& file : fs::directory_iterator(in_)) {
+          const auto& ext = file.path().extension().string();
+          const auto& stem = file.path().stem().string();
+          if (((!useExt_ && ext.empty()) || ext == completeExt) &&
+                    (name_.empty() || name_ == stemToName(stem))) {
+               const auto& name = file.path().filename().string();
+               const auto& path = in_ + '/' + name;
+               files = cons(path, files);
+          }
+     }
+     sort(files);
+     return files;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
 {
-    auto ptr = stem.end() - 1;
-    while (ptr > stem.begin() && std::isdigit(*ptr))
-        ptr--;
-    return std::string(stem.begin(), ptr);
+     auto ptr = stem.end() - 1;
+     while (ptr > stem.begin() && std::isdigit(*ptr))
+          ptr--;
+     return std::string(stem.begin(), ptr);
 }
 
 Error UtilAssembler::setArgs(const ArgMapN& map)
 {
-    const auto baseError = UtilBaseSingle::setArgs(map);
-    if (baseError)
-        return *baseError;
-    const auto errorExtension = setMember(map,
-            {"--extension", "-e", "extension"}, ext_);
-    if (errorExtension)
-        return *errorExtension;
-    const auto errorName = setMember(map, {"--name", "-n", "name"}, name_);
-    if (errorName)
-        return *errorName;
-    return None;
+     const auto errBase = UtilBaseSingle::setArgs(map);
+     if (errBase)
+          return *errBase;
+     const auto errExtension = setMember(map,
+               {"--extension", "-e", "extension"}, ext_);
+     if (errExtension)
+          return *errExtension;
+     const auto errName = setMember(map, {"--name", "-n", "name"}, name_);
+     if (errName)
+          return *errName;
+     return None;
 }
 
 Error UtilAssembler::run() const 
 {
-    if (!silence_)
-      std::cout << util::banner << "\nAssembling\n";
-    const auto maybeFiles = loadFileNames();
-    if (!maybeFiles)
-        return maybeFiles.error();
-    if (!*maybeFiles)
-        return "No Pieces";
-    std::ofstream outFile(out_);
-    if (!outFile)
-        return "Failed to open: " + out_;
-    const auto [size, err] = writeAssemble(*maybeFiles, outFile);
-    if (!silence_)
-        std::cout << "Wrote " << out_ << " " << size << " bytes\n";
-    return err;
+     if (!silence_)
+          std::cout << util::banner << "\nAssembling\n";
+     const auto maybeFiles = loadFileNames();
+     if (!maybeFiles)
+          return maybeFiles.error();
+     if (!*maybeFiles)
+          return "No Pieces";
+     std::ofstream outFile(out_);
+     if (!outFile)
+          return "Failed to open: " + out_;
+     const auto [size, err] = writeAssemble(*maybeFiles, outFile);
+     if (!silence_)
+          std::cout << "Wrote " << out_ << " " << size << " bytes\n";
+     return err;
 }
 
 Error UtilAssembler::setFlags(const ArgMapN& map)
 {
-    const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-    if (!maybeQuiet)
-        return maybeQuiet.error();
-    if (*maybeQuiet)
-        silence_ = true;
-    const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
-    if (!maybeNoExt)
-        return maybeNoExt.error();
-    if (*maybeNoExt)
-        useExt_ = false;
-    return None;
+     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
+     if (!maybeQuiet)
+          return maybeQuiet.error();
+     if (*maybeQuiet)
+          silence_ = true;
+     const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
+     if (!maybeNoExt)
+          return maybeNoExt.error();
+     if (*maybeNoExt)
+          useExt_ = false;
+     return None;
 }
 
 std::unordered_set<std::string> UtilAssembler::getValidOptionsFlags() const
 {
-    return {
-        "-i", "--input",
-        "-o", "--output",
-        "-e", "--extension",
-        "-n", "--name",
-        "-q", "--quiet",
-        "-ne", "--no-extension",
-    };
+     return {
+          "-i", "--input",
+          "-o", "--output",
+          "-e", "--extension",
+          "-n", "--name",
+          "-q", "--quiet",
+          "-ne", "--no-extension",
+     };
 }

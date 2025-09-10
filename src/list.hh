@@ -29,64 +29,64 @@ using list = std::shared_ptr<node<T>>;
 
 template <typename T>
 struct node {
-    T val;
-    list<T> next = nullptr;
-    node(const T& v) : val(v) { }
-    node(const T& v, list<T> head) : val(v), next(head) { }
+     T val;
+     list<T> next = nullptr;
+     node(const T& v) : val(v) { }
+     node(const T& v, list<T> head) : val(v), next(head) { }
 };
 
 template <typename T>
 list<T> cons(const T& val, const list<T> top)
 {
-    return std::make_shared<node<T>>(val, top);
+     return std::make_shared<node<T>>(val, top);
 }
 
 template <typename T>
 list<T> cdr(const list<T> head)
 {
-    return head ? head->next : nullptr;
+     return head ? head->next : nullptr;
 }
 
 template <typename T>
 T car(const list<T> head)
 {
-    return head->val;
+     return head->val;
 }
 
 template <typename T>
 void sort(const list<T> head)
 {
-    if (!head)
-        return;
-    bool swapped;
-    do {
-        swapped = false;
-        auto curr = head;
-        while (curr->next) {
-            if (curr->val > curr->next->val) {
-                std::swap(curr->val, curr->next->val);
-                swapped = true;
-            }
-            curr = curr->next;
-        }
-    } while (swapped);
+     if (!head)
+          return;
+     bool swapped;
+     do {
+          swapped = false;
+          auto curr = head;
+          while (curr->next) {
+               if (curr->val > curr->next->val) {
+                    std::swap(curr->val, curr->next->val);
+                    swapped = true;
+               }
+               curr = curr->next;
+          }
+     } while (swapped);
 }
 
 template <typename T>
 list<T> reverse(list<T> head)
 {
-    if (!head || !head->next)
-        return head;
-    auto rh = reverse(head->next);
-    head->next->next = head;
-    head->next = nullptr;
-    return rh;
+     if (!head || !head->next)
+          return head;
+     auto rh = reverse(head->next);
+     head->next->next = head;
+     head->next = nullptr;
+     return rh;
 }
 
 template <typename T>
 int count(const list <T> head)
 {
-    return head ? 1 + count(head->next) : 0;
+     return head ? 1 + count(head->next) : 0;
 }
 
 } /// ty

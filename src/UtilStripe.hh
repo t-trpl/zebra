@@ -26,27 +26,27 @@
 
 class UtilStripe final : public UtilBaseSingle {
 private:
-    size_t stripeSize_ = 3'000'000;
-    std::string name_ = "";
-    std::string ext_ = "stripe";
-    bool padding_ = true;
-    bool useExt_ = true;
-    std::streamsize getFileSize(const std::string& location) const;
-    size_t maxNameLength(const std::streamsize& size) const ;
-    std::string getFileName(const int& number, const size_t& len) const;
-    Maybe<size_t> stringToBytes(const std::string& size) const;
-    size_t stripesStrLen(const size_t& rem) const;
-    std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
-            const;
-    std::unordered_set<std::string> getValidOptionsFlags() const override;
-    std::string getStripePath(const size_t& num, const size_t& max) const;
+     size_t stripeSize_ = 3'000'000;
+     std::string name_ = "";
+     std::string ext_ = "stripe";
+     bool padding_ = true;
+     bool useExt_ = true;
+     std::streamsize getFileSize(const std::string& location) const;
+     size_t maxNameLength(const std::streamsize& size) const ;
+     std::string getFileName(const int& number, const size_t& len) const;
+     Maybe<size_t> stringToBytes(const std::string& size) const;
+     size_t stripesStrLen(const size_t& rem) const;
+     std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
+               const;
+     std::unordered_set<std::string> getValidOptionsFlags() const override;
+     std::string getStripePath(const size_t& num, const size_t& max) const;
 public:
-    UtilStripe() { }
-    ~UtilStripe() { }
-    UtilStripe(const UtilStripe&) = delete;
-    Error run() const override;
-    Error setArgs(const ArgMapN& map) override;
-    Error setFlags(const ArgMapN& map) override;
+     UtilStripe() { }
+     ~UtilStripe() { }
+     UtilStripe(const UtilStripe&) = delete;
+     Error run() const override;
+     Error setArgs(const ArgMapN& map) override;
+     Error setFlags(const ArgMapN& map) override;
 };
 
 #endif /// UTIL_STRIPE_HH

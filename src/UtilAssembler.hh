@@ -25,19 +25,19 @@
 class UtilAssembler final : public UtilBaseSingle
                           , public UtilAssemblerBase {
 private:
-    std::string ext_ = "stripe";
-    bool useExt_ = true;
-    std::string name_ = "";
-    std::string stemToName(const std::string& stem) const;
-    Maybe<FilesL> loadFileNames() const;
-    std::unordered_set<std::string> getValidOptionsFlags() const override;
+     std::string ext_ = "stripe";
+     bool useExt_ = true;
+     std::string name_ = "";
+     std::string stemToName(const std::string& stem) const;
+     Maybe<FilesL> loadFileNames() const;
+     std::unordered_set<std::string> getValidOptionsFlags() const override;
 public:
-    UtilAssembler() { }
-    ~UtilAssembler() { }
-    UtilAssembler(const UtilAssembler&) = delete;
-    Error run() const override;
-    Error setArgs(const ArgMapN& map) override;
-    Error setFlags(const ArgMapN& map) override;
+     UtilAssembler() { }
+     ~UtilAssembler() { }
+     UtilAssembler(const UtilAssembler&) = delete;
+     Error run() const override;
+     Error setArgs(const ArgMapN& map) override;
+     Error setFlags(const ArgMapN& map) override;
 };
 
 #endif /// UTIL_ASSEMBLER_HH
