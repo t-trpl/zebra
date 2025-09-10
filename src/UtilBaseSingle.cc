@@ -18,8 +18,7 @@
 
 Error UtilBaseSingle::setArgs(const ArgMapN& map)
 {
-     const auto errInput = setMemberPath(map, {"--input", "-i", "input"},
-               in_);
+     const auto errInput = setMemberPath(map, {"--input", "-i", "input"}, in_);
      if (errInput)
           return *errInput;
      const auto errOutput = setMemberPath(map, {"--output", "-o", "output"},
