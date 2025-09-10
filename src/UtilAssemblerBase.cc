@@ -21,7 +21,7 @@ WriteStatus UtilAssemblerBase::writeAssembleI(FilesL files, std::ofstream& out,
         const std::streamsize acc) const
 {
     if (!files)
-        return {acc, None};
+        return { acc, None };
     const std::string path = car(files);
     std::ifstream file(path, std::ios::binary | std::ios::ate);
     if (!file)

@@ -91,12 +91,12 @@ Error UtilAssembler::setFlags(const ArgMapN& map)
     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
     if (!maybeQuiet)
         return maybeQuiet.error();
-    else if (*maybeQuiet)
+    if (*maybeQuiet)
         silence_ = true;
     const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
     if (!maybeNoExt)
         return maybeNoExt.error();
-    else if (*maybeNoExt)
+    if (*maybeNoExt)
         useExt_ = false;
     return None;
 }
