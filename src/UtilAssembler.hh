@@ -34,8 +34,8 @@ private:
      std::string stemToName(const std::string& stem) const;
      Maybe<FilesL> stripeNames() const;
      std::unordered_set<std::string> validArgs() const override;
-     bool matchExt(const fs::directory_entry& ext) const;
-     bool matchName(const fs::directory_entry& stem) const;
+     bool matchExt(const fs::directory_entry& file) const;
+     bool matchName(const fs::directory_entry& file) const;
 public:
      UtilAssembler() { }
      ~UtilAssembler() { }

@@ -21,7 +21,7 @@ WriteStatus UtilAssemblerBase::writeStripeI(FilesL files, std::ofstream& out,
           const std::streamsize acc) const
 {
      if (!files)
-          return { acc, None };
+          return {acc, None};
      const std::string path = car(files);
      std::ifstream file(path, std::ios::binary | std::ios::ate);
      if (!file)
@@ -29,7 +29,7 @@ WriteStatus UtilAssemblerBase::writeStripeI(FilesL files, std::ofstream& out,
      std::streamsize size = file.tellg();
      file.seekg(0, std::ios::beg);
      out << file.rdbuf();
-     return writeStripeI(files->next, out, acc + size);
+     return writeStripeI(cdr(files), out, acc + size);
 }
 
 WriteStatus UtilAssemblerBase::writeStripe(FilesL files, std::ofstream& out)
