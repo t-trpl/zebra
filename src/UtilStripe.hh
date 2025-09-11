@@ -32,10 +32,10 @@ private:
      bool padding_ = true;
      bool useExt_ = true;
      std::streamsize fileSize(std::ifstream& file) const;
-     size_t maxNameLength(const std::streamsize& size) const ;
+     size_t stripeLength(const std::streamsize& size) const ;
      std::string fileName(const int& number, const size_t& len) const;
      Maybe<size_t> stringToBytes(const std::string& size) const;
-     size_t stripesStrLen(const size_t& rem) const;
+     size_t numberLength(const size_t& rem) const;
      std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
                const;
      std::unordered_set<std::string> validArgs() const override;

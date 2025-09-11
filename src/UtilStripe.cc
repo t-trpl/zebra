@@ -110,15 +110,15 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
      return bytes;
 }
 
-size_t UtilStripe::stripesStrLen(const size_t& rem) const
+size_t UtilStripe::numberLength(const size_t& rem) const
 {
-     return rem > 0 ? 1 + stripesStrLen(rem / 10) : 0;
+     return rem > 0 ? 1 + numberLength(rem / 10) : 0;
 }
 
-size_t UtilStripe::maxNameLength(const std::streamsize& size) const
+size_t UtilStripe::stripeLength(const std::streamsize& size) const
 {
      const size_t pieces = size / stripeSize_ + (size % stripeSize_ > 0); 
-     return stripesStrLen(pieces);
+     return numberLength(pieces);
 }
 
 std::streamsize UtilStripe::fileSize(std::ifstream& file) const
@@ -189,13 +189,13 @@ Error UtilStripe::run() const
      const auto fsize = fileSize(file);
      if (fsize == -1)
           return "Empty file?";
-     const auto maxName = maxNameLength(fsize);
+     const auto length = stripeLength(fsize);
      std::vector<char> buffer(stripeSize_);
      int chunkNumber = 0;
      for (auto bytes = readChunk(file, buffer);
           bytes;
           bytes = readChunk(file, buffer)) {
-          const auto path = stripePath(chunkNumber++, maxName);
+          const auto path = stripePath(chunkNumber++, length);
           std::ofstream outFile(path);
           if (!outFile)
                return "Failed to write: " + path;
