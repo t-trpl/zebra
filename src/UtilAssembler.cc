@@ -29,9 +29,8 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
           return make_bad<FilesL>("Not a directory: " + in_);
      for (const auto& file : fs::directory_iterator(in_)) {
           if (matchExt(file) && matchName(file)) {
-               const auto& name = file.path().filename().string();
-               const auto& path = in_ + '/' + name;
-               files = cons(path, files);
+               const auto path = fs::path(in_) / file.path().filename();
+               files = cons(path.string(), files);
           }
      }
      sort(files);
@@ -86,7 +85,10 @@ Error UtilAssembler::run() const
      std::ofstream outFile(out_);
      if (!outFile)
           return "Failed to open: " + out_;
-     const auto [size, err] = writeStripe(*maybeFiles, outFile);
+     const auto err = writeStripe(*maybeFiles, outFile);
+     if (err)
+          return *err;
+     const auto size = outFile.tellp();
      if (!silence_)
           std::cout << "Wrote " << out_ << " " << size << " bytes\n";
      return err;

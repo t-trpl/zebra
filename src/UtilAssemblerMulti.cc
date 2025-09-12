@@ -51,7 +51,10 @@ Error UtilAssemblerMulti::run() const
      std::ofstream outFile(out_);
      if (!outFile)
           return "Failed to open: " + out_;
-     const auto [size, err] = writeStripe(files_, outFile);
+     const auto err = writeStripe(files_, outFile);
+     if (err)
+          return *err;
+     const auto size = outFile.tellp();
      if (!silence_)
           std::cout << "Wrote " << out_ << " " << size << " bytes\n";
      return err;

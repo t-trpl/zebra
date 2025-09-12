@@ -17,23 +17,14 @@
 #include "src/UtilAssemblerBase.hh"
 #include <fstream>
 
-WriteStatus UtilAssemblerBase::writeStripeI(FilesL files, std::ofstream& out,
-          const std::streamsize acc) const
+Error UtilAssemblerBase::writeStripe(FilesL files, std::ofstream& out) const
 {
      if (!files)
-          return {acc, None};
+          return None;
      const std::string path = car(files);
-     std::ifstream file(path, std::ios::binary | std::ios::ate);
+     std::ifstream file(path, std::ios::binary);
      if (!file)
-          return {acc, "Failed to open: " + path + "\nDiscard output"};
-     std::streamsize size = file.tellg();
-     file.seekg(0, std::ios::beg);
+          return "Failed to open: " + path + "\nDiscard output";
      out << file.rdbuf();
-     return writeStripeI(cdr(files), out, acc + size);
-}
-
-WriteStatus UtilAssemblerBase::writeStripe(FilesL files, std::ofstream& out)
-          const
-{
-     return writeStripeI(files, out, 0);
+     return writeStripe(cdr(files), out);
 }

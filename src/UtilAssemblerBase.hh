@@ -20,15 +20,11 @@
 #ifndef UTIL_ASSEMBLER_BASE_HH
 #define UTIL_ASSEMBLER_BASE_HH
 
-using WriteStatus = std::pair<std::streamsize, Error>;
 using FilesL = ty::list<std::string>;
 
 class UtilAssemblerBase {
-private:
-     WriteStatus writeStripeI(FilesL files, std::ofstream& out,
-               const std::streamsize acc) const;
 protected:
-     WriteStatus writeStripe(FilesL files, std::ofstream& out) const;
+     Error writeStripe(FilesL files, std::ofstream& out) const;
 public:
      UtilAssemblerBase() { }
      virtual ~UtilAssemblerBase() { }
