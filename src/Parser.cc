@@ -69,7 +69,7 @@ bool Parser::leadingHyphen(const std::string& str) const
      return str.size() > 0 && str[0] == '-';
 }
 
-ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options) const
+ArgN Parser::mapOr(const ArgMapN map, const ArgOr& options) const
 {
      if (const auto ptr = map.find(options.first); ptr != map.end())
           return ptr->second;
@@ -81,7 +81,7 @@ ArgN Parser::MapOr(const ArgMapN map, const ArgOr& options) const
 Parser::Mode Parser::toMode(const std::string& mode) const
 {
      if (mode == "-A" || mode == "--Assemble") {
-          const auto& val = MapOr(argMapN_, {"--input", "-i"});
+          const auto& val = mapOr(argMapN_, {"--input", "-i"});
           return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
      }
      else if (mode == "-S" || mode == "--Stripe")
