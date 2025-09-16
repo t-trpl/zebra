@@ -26,7 +26,8 @@ A portable C++17 command-line utility to stripe and reassemble files easily. Sim
    ```
 2. Run the build script
    ```bash
-   chmod +x zebra/abuild.sh &&
-   zebra/abuild.sh
+   cd zebra &&
+   chmod +x abuild.sh &&
+   ./abuild.sh
    ```
 3. Binary location ./build/zebra
