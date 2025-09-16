@@ -1,13 +1,13 @@
 # zebra
 
-A portable C++17 command-line utility to stripe and reassemble files easily. Similar to GNU split.
+A portable C++17 command-line utility to stripe and reassemble easily. Similar to GNU split.
 
 ---
 
 ## Modes
 
 - **Stripe** - Stripe files into pieces
-- **Assemble** - Assemble pieces from a directory
+- **Assemble** - Assemble stripes (or matching files) from a directory
 - **Assemble Multi** - Assemble all files provided as arguments
 
 ---
@@ -27,6 +27,6 @@ A portable C++17 command-line utility to stripe and reassemble files easily. Sim
 2. Run the build script
    ```bash
    chmod +x zebra/abuild.sh &&
-   ./abuild.sh
+   zebra/abuild.sh
    ```
 3. Binary location ./build/zebra
