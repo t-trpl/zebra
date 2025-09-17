@@ -15,7 +15,6 @@
  */
 
 #include <memory>
-#include <functional>
 
 #ifndef LIST_HH
 #define LIST_HH
@@ -90,30 +89,28 @@ list<T> sortN(const list<T> head)
 }
 
 template <typename T>
-list<T> reverse(list<T> head)
+void reverse(list<T>& head)
 {
-     if (!head || !head->next)
-          return head;
-     auto rh = reverse(head->next);
-     head->next->next = head;
-     head->next = nullptr;
-     return rh;
+    if (!head || !head->next)
+        return;
+    auto first = head;
+    auto rest = head->next;
+    reverse(rest);
+    first->next->next = first;
+    first->next = nullptr;
+    head = rest;
 }
 
 template <typename T>
 list<T> reverseN(const list<T> head)
 {
-     using RFn = std::function<list<T>(list<T>, list<T>)>; 
-     RFn impl = [&impl](const list<T> head, const list<T> acc) {
-          if (!head)
-               return acc;
-          return impl(cdr(head), cons(head->val, acc));
-     };
-     return impl(head, list<T>{});
+     auto newHead = duplicate(head);
+     reverse(newHead);
+     return newHead;
 }
 
 template <typename T>
-int count(const list <T> head)
+int count(const list<T> head)
 {
      return head ? 1 + count(head->next) : 0;
 }
