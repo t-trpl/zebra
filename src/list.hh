@@ -36,9 +36,9 @@ struct node {
 };
 
 template <typename T>
-list<T> cons(const T& val, const list<T> top)
+list<T> cons(const T& val, const list<T> head)
 {
-     return std::make_shared<node<T>>(val, top);
+     return std::make_shared<node<T>>(val, head);
 }
 
 template <typename T>
