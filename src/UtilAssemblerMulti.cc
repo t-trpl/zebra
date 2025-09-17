@@ -33,7 +33,7 @@ Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
                else
                     part.error();
           }
-          files_ = reverse(acc);
+          files_ = reverseN(acc);
      }
      else
           return "Missing Input";

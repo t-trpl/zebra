@@ -33,7 +33,7 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
                files = cons(path.string(), files);
           }
      }
-     sort(files);
+     sortN(files);
      return files;
 }
 

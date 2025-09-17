@@ -54,7 +54,7 @@ OptData Parser::nextOption(const ArgN args) const
 OptData Parser::nextOptionI(const ArgN args, const ArgN acc) const
 {
      if (!args || leadingHyphen(car(args)))
-          return {args, reverse(acc)};
+          return {args, reverseN(acc)};
      const auto val = car(args);
      return nextOptionI(cdr(args), cons(val, acc));
 }
