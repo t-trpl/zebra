@@ -58,7 +58,7 @@ list<T> duplicate(const list<T> head)
 {
      if (!head)
           return nullptr;
-     return cons(car(head), duplicate(cdr(head)));
+     return std::make_shared<node<T>>(head->val, duplicate(head->next));
 }
 
 template <typename T>
