@@ -32,8 +32,8 @@ template <typename T>
 struct Node {
      T val;
      list<T> next = nullptr;
-     node(const T& v) : val(v) { }
-     node(const T& v, list<T> head) : val(v), next(head) { }
+     Node(const T& v) : val(v) { }
+     Node(const T& v, list<T> head) : val(v), next(head) { }
 };
 
 template <typename T>
