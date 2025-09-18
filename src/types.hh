@@ -14,7 +14,7 @@
  * GNU General Public License for more details.
  */
 
-#include "src/list.hh"
+#include "src/List.hh"
 #include <vector>
 #include <unordered_map>
 #include <string>
@@ -23,9 +23,9 @@
 #ifndef TYPES_HH
 #define TYPES_HH
 
-using ArgN = ty::list<std::string>;
+using ArgList = ty::List<std::string>;
 
-using ArgMapN = std::unordered_map<std::string, ArgN>;
+using ArgMap = std::unordered_map<std::string, ArgList>;
 
 using Error = std::optional<std::string>;
 

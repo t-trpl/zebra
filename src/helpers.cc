@@ -16,13 +16,13 @@
 
 #include "src/helpers.hh"
 
-bool containsMap(const ArgMapN& map, const ArgOr& arg)
+bool containsMap(const ArgMap& map, const ArgOr& arg)
 {
      return map.find(arg.first) != map.end() ||
                map.find(arg.second) != map.end();
 }
 
-Maybe<bool> validFlag(const ArgMapN& map, const ArgOr& arg)
+Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
 {
      const auto f = map.find(arg.first);
      const auto s = map.find(arg.second);
@@ -37,14 +37,14 @@ Maybe<bool> validFlag(const ArgMapN& map, const ArgOr& arg)
      return true;
 }
 
-Maybe<ArgMapN::const_iterator> argToValue(const ArgMapN& map, const ArgT& arg)
+Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg)
 {
      const auto leftPtr = map.find(std::get<0>(arg));
      const auto rightPtr = map.find(std::get<1>(arg));
      const auto& name = std::get<2>(arg);
      const auto end = map.end();
      if (leftPtr != end && rightPtr != end)
-          return make_bad<ArgMapN::const_iterator>("Duplicate option: " + name);
+          return make_bad<ArgMap::const_iterator>("Duplicate option: " + name);
      if (leftPtr != end)
           return leftPtr;
      if (rightPtr != end)

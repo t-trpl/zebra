@@ -23,7 +23,7 @@
 #define PARSER_HH
 
 using UtilPtr = std::unique_ptr<UtilBase>;
-using OptData = std::pair<ArgN, ArgN>;
+using OptData = std::pair<ArgList, ArgList>;
 
 class Parser {
 private:
@@ -34,23 +34,23 @@ private:
           ASM_MULTI,
      };
      std::string mode_;
-     ArgMapN argMapN_;
+     ArgMap argMap_;
      bool isUpper(const char c) const;
      bool isLower(const char c) const;
      bool isMode(const std::string& left) const;
      bool isOpt(const std::string& str) const;
      Mode toMode(const std::string& mode) const;
      template<typename T> Maybe<UtilPtr> createPtr() const;
-     ArgN mapOr(const ArgMapN map, const ArgOr& options) const;
+     ArgList mapOr(const ArgMap& map, const ArgOr& options) const;
      bool leadingHyphen(const std::string& str) const;
-     OptData nextOption(const ArgN args) const;
-     OptData nextOptionI(const ArgN args, const ArgN acc) const;
+     OptData nextOption(const ArgList args) const;
+     OptData nextOptionI(const ArgList args, const ArgList acc) const;
 public:
      Parser() { }
      ~Parser() { }
      Parser(const Parser&) = delete;
      Maybe<UtilPtr> createUtil() const;
-     Error runParse(const ArgN args);
+     Error runParse(const ArgList args);
      bool checkHelp() const;
 };
 
@@ -58,13 +58,13 @@ template<typename T>
 Maybe<UtilPtr> Parser::createPtr() const
 {
      auto ptr = std::make_unique<T>();
-     const auto unknown = ptr->checkForUnknown(argMapN_);
+     const auto unknown = ptr->checkForUnknown(argMap_);
      if (unknown)
           return make_bad<UtilPtr>(*unknown);
-     const auto argErr = ptr->setArgs(argMapN_);
+     const auto argErr = ptr->setArgs(argMap_);
      if (argErr)
           return make_bad<UtilPtr>(*argErr);
-     const auto flagErr = ptr->setFlags(argMapN_);
+     const auto flagErr = ptr->setFlags(argMap_);
      if (flagErr)
           return make_bad<UtilPtr>(*flagErr);
      return ptr;

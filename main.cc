@@ -18,7 +18,7 @@
 #include "src/utils.hh"
 #include <iostream>
 
-Error run(const ArgN args)
+Error run(const ArgList args)
 {
      Parser p;
      const auto parseError = p.runParse(args);
@@ -35,9 +35,9 @@ Error run(const ArgN args)
      return None;
 }
 
-ArgN argsToArgN(int argc, char* argv[])
+ArgList argsToList(int argc, char* argv[])
 {
-     ArgN n = nullptr;
+     ArgList n = nullptr;
      for (int i = 1; i < argc; i++)
           n = push(std::string(argv[i]), n);
      return reverseN(n);
@@ -45,7 +45,7 @@ ArgN argsToArgN(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-     const ArgN args = argsToArgN(argc, argv);
+     const ArgList args = argsToList(argc, argv);
      const auto error = run(args);
      if (error) {
           std::cout << *error << "\n";

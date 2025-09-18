@@ -14,13 +14,13 @@
  * GNU General Public License for more details.
  */
 
-#include "src/list.hh"
+#include "src/List.hh"
 #include "src/types.hh"
 
 #ifndef UTIL_ASSEMBLER_BASE_HH
 #define UTIL_ASSEMBLER_BASE_HH
 
-using FilesL = ty::list<std::string>;
+using FilesL = ty::List<std::string>;
 
 class UtilAssemblerBase {
 protected:

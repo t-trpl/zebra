@@ -45,8 +45,8 @@ public:
      ~UtilStripe() { }
      UtilStripe(const UtilStripe&) = delete;
      Error run() const override;
-     Error setArgs(const ArgMapN& map) override;
-     Error setFlags(const ArgMapN& map) override;
+     Error setArgs(const ArgMap& map) override;
+     Error setFlags(const ArgMap& map) override;
 };
 
 #endif /// UTIL_STRIPE_HH

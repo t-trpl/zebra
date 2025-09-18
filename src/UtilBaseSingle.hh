@@ -28,7 +28,7 @@ public:
      UtilBaseSingle() { } 
      virtual ~UtilBaseSingle() { }
      UtilBaseSingle(const UtilBaseSingle&) = delete;
-     virtual Error setArgs(const ArgMapN& map) override;
+     virtual Error setArgs(const ArgMap& map) override;
 };
 
 #endif /// UTIL_BASE_SINGLE_HH

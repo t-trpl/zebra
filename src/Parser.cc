@@ -21,7 +21,7 @@
 #include "src/types.hh"
 #include "src/helpers.hh"
 
-Error Parser::runParse(const ArgN args)
+Error Parser::runParse(const ArgList args)
 {
      if (!args)
           return None;
@@ -33,10 +33,10 @@ Error Parser::runParse(const ArgN args)
                mode_ = left;
      }
      else if (isOpt(left)) {
-          if (argMapN_.find(left) != argMapN_.end())
+          if (argMap_.find(left) != argMap_.end())
                return "Duplicate " + left;
           const auto [next, acc] = nextOption(args->next);
-          argMapN_[left] = acc;
+          argMap_[left] = acc;
           return runParse(next);
      }
      else if (!left.empty())
@@ -46,12 +46,12 @@ Error Parser::runParse(const ArgN args)
      return runParse(args->next);
 }
 
-OptData Parser::nextOption(const ArgN args) const
+OptData Parser::nextOption(const ArgList args) const
 {
      return nextOptionI(args, nullptr);
 }
 
-OptData Parser::nextOptionI(const ArgN args, const ArgN acc) const
+OptData Parser::nextOptionI(const ArgList args, const ArgList acc) const
 {
      if (!args || leadingHyphen(args->val))
           return {args, reverseN(acc)};
@@ -61,7 +61,7 @@ OptData Parser::nextOptionI(const ArgN args, const ArgN acc) const
 
 bool Parser::checkHelp() const
 { 
-     return containsMap(argMapN_, {"-h", "--help"});
+     return containsMap(argMap_, {"-h", "--help"});
 }
 
 bool Parser::leadingHyphen(const std::string& str) const
@@ -69,7 +69,7 @@ bool Parser::leadingHyphen(const std::string& str) const
      return str.size() > 0 && str[0] == '-';
 }
 
-ArgN Parser::mapOr(const ArgMapN map, const ArgOr& options) const
+ArgList Parser::mapOr(const ArgMap& map, const ArgOr& options) const
 {
      if (const auto ptr = map.find(options.first); ptr != map.end())
           return ptr->second;
@@ -81,7 +81,7 @@ ArgN Parser::mapOr(const ArgMapN map, const ArgOr& options) const
 Parser::Mode Parser::toMode(const std::string& mode) const
 {
      if (mode == "-A" || mode == "--Assemble") {
-          const auto& val = mapOr(argMapN_, {"--input", "-i"});
+          const auto& val = mapOr(argMap_, {"--input", "-i"});
           return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
      }
      else if (mode == "-S" || mode == "--Stripe")

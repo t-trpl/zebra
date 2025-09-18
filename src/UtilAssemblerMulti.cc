@@ -20,7 +20,7 @@
 #include <iostream>
 #include <fstream>
 
-Error UtilAssemblerMulti::setArgs(const ArgMapN& map)
+Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 {
      const auto maybeInput = argToValue(map, {"--input", "-i", "input"});
      if (!maybeInput)
@@ -60,7 +60,7 @@ Error UtilAssemblerMulti::run() const
      return err;
 }
 
-Error UtilAssemblerMulti::setFlags(const ArgMapN& map)
+Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
      const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
      if (!maybeQuiet)

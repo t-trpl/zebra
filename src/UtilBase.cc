@@ -20,7 +20,7 @@
 
 namespace fs = std::filesystem;
 
-Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
+Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
           std::string& ref, bool required)
 {
      const auto maybeOpt = argToValue(map, opt);
@@ -28,12 +28,12 @@ Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
      if (!maybeOpt)
           return maybeOpt.error();
      if (const auto ptr = *maybeOpt; ptr != map.end()) {
-          const auto argn = ptr->second;
-          switch (count(argn)) {
+          const auto args = ptr->second;
+          switch (count(args)) {
           case 0:
                return "Unmatched "+ tag;
           case 1: {
-               const auto val = argn->val;
+               const auto val = args->val;
                if (!val.empty())
                     ref = val;
                else
@@ -49,13 +49,13 @@ Error UtilBase::setMemberBase(const ArgMapN& map, const ArgT& opt,
      return None;
 }
 
-Error UtilBase::setMember(const ArgMapN& map, const ArgT& opt,
+Error UtilBase::setMember(const ArgMap& map, const ArgT& opt,
           std::string& memRef)
 {
      return setMemberBase(map, opt, memRef, false);
 }
 
-Error UtilBase::setMemberPath(const ArgMapN& map, const ArgT& opt,
+Error UtilBase::setMemberPath(const ArgMap& map, const ArgT& opt,
           std::string& memRef)
 {
      std::string interimPath;
@@ -82,7 +82,7 @@ std::string UtilBase::clean(const std::string& path) const
      return path;
 }
 
-Error UtilBase::checkForUnknown(const ArgMapN& map) const
+Error UtilBase::checkForUnknown(const ArgMap& map) const
 {
      const auto valid = validArgs();
      for (const auto& p : map)

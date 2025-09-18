@@ -16,7 +16,7 @@
 
 #include "src/UtilBase.hh"
 #include "src/UtilAssemblerBase.hh"
-#include "src/list.hh"
+#include "src/List.hh"
 #include <string>
 
 #ifndef UTIL_ASSEMBLER_MULTI_HH
@@ -33,8 +33,8 @@ public:
      ~UtilAssemblerMulti() { }
      UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
      Error run() const override;
-     Error setFlags(const ArgMapN& map) override;
-     Error setArgs(const ArgMapN& map) override;
+     Error setFlags(const ArgMap& map) override;
+     Error setArgs(const ArgMap& map) override;
 };
 
 #endif /// UTIL_ASSEMBLER_MULTI_HH

@@ -57,7 +57,7 @@ std::string UtilAssembler::stemToName(const std::string& stem) const
      return std::string(stem.begin(), ptr);
 }
 
-Error UtilAssembler::setArgs(const ArgMapN& map)
+Error UtilAssembler::setArgs(const ArgMap& map)
 {
      const auto errBase = UtilBaseSingle::setArgs(map);
      if (errBase)
@@ -93,7 +93,7 @@ Error UtilAssembler::run() const
      return err;
 }
 
-Error UtilAssembler::setFlags(const ArgMapN& map)
+Error UtilAssembler::setFlags(const ArgMap& map)
 {
      const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
      if (!maybeQuiet)

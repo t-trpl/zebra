@@ -17,7 +17,7 @@
 #include "src/UtilBaseSingle.hh"
 #include "src/UtilAssemblerBase.hh"
 #include "src/Maybe.hh"
-#include "src/list.hh"
+#include "src/List.hh"
 #include <filesystem>
 
 #ifndef UTIL_ASSEMBLER_HH
@@ -41,8 +41,8 @@ public:
      ~UtilAssembler() { }
      UtilAssembler(const UtilAssembler&) = delete;
      Error run() const override;
-     Error setArgs(const ArgMapN& map) override;
-     Error setFlags(const ArgMapN& map) override;
+     Error setArgs(const ArgMap& map) override;
+     Error setFlags(const ArgMap& map) override;
 };
 
 #endif /// UTIL_ASSEMBLER_HH

@@ -1,5 +1,5 @@
 /** 
- * File: list.hh
+ * File: List.hh
  * Simple reference counting linked list with some useful functions.
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
@@ -26,24 +26,24 @@ template <typename T>
 struct Node;
 
 template <typename T>
-using list = std::shared_ptr<Node<T>>;
+using List = std::shared_ptr<Node<T>>;
 
 template <typename T>
 struct Node {
      T val;
-     list<T> next = nullptr;
+     List<T> next = nullptr;
      Node(const T& v) : val(v) { }
-     Node(const T& v, list<T> head) : val(v), next(head) { }
+     Node(const T& v, List<T> head) : val(v), next(head) { }
 };
 
 template <typename T>
-list<T> push(const T& val, const list<T> head)
+List<T> push(const T& val, const List<T> head)
 {
      return std::make_shared<Node<T>>(val, head);
 }
 
 template <typename T>
-list<T> copy(const list<T> head)
+List<T> copy(const List<T> head)
 {
      if (!head)
           return nullptr;
@@ -51,7 +51,7 @@ list<T> copy(const list<T> head)
 }
 
 template <typename T>
-void sort(const list<T> head)
+void sort(const List<T> head)
 {
      if (!head)
           return;
@@ -70,7 +70,7 @@ void sort(const list<T> head)
 }
 
 template <typename T>
-list<T> sortN(const list<T> head)
+List<T> sortN(const List<T> head)
 {
      const auto newHead = copy(head);
      sort(newHead);
@@ -78,7 +78,7 @@ list<T> sortN(const list<T> head)
 }
 
 template <typename T>
-list<T> reverse(list<T> head)
+List<T> reverse(List<T> head)
 {
      if (!head || !head->next)
           return head;
@@ -89,14 +89,14 @@ list<T> reverse(list<T> head)
 }
 
 template <typename T>
-list<T> reverseN(const list<T> head)
+List<T> reverseN(const List<T> head)
 {
      auto c = copy(head);
      return reverse(c);
 }
 
 template <typename T>
-int count(const list<T> head)
+int count(const List<T> head)
 {
      return head ? 1 + count(head->next) : 0;
 }
