@@ -210,7 +210,7 @@ Maybe<T>::Maybe(Maybe<U>&& other)
      if (other) {
           hasValue_ = true;
           if constexpr (std::is_constructible_v<T, U&&>)
-                    value_ = T(std::forward<U>(*other));
+               value_ = T(std::forward<U>(*other));
           else 
                value_ = static_cast<T>(std::forward<U>(*other));
      }
@@ -235,7 +235,7 @@ Maybe<T>::Maybe(U&& val)
      : hasValue_(true)
 {
      if constexpr (std::is_constructible_v<T, U&&>)
-               value_ = T(std::forward<U>(val));
+          value_ = T(std::forward<U>(val));
      else 
           value_ = static_cast<T>(std::forward<U>(val));
 }
