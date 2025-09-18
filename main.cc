@@ -39,7 +39,7 @@ ArgN argsToArgN(int argc, char* argv[])
 {
      ArgN n = nullptr;
      for (int i = 1; i < argc; i++)
-          n = cons(std::string(argv[i]), n);
+          n = push(std::string(argv[i]), n);
      return reverseN(n);
 }
 

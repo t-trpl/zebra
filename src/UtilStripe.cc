@@ -55,7 +55,7 @@ Error UtilStripe::setArgs(const ArgMapN& map)
           case 0:
                return "No size";
           case 1: {
-               const auto &size = car(argn);
+               const auto &size = argn->val;
                const auto bytes = stringToBytes(size);
                if (bytes)
                     stripeSize_ = *bytes;

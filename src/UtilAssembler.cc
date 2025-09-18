@@ -30,11 +30,10 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
      for (const auto& file : fs::directory_iterator(in_)) {
           if (matchExt(file) && matchName(file)) {
                const auto path = fs::path(in_) / file.path().filename();
-               files = cons(path.string(), files);
+               files = push(path.string(), files);
           }
      }
-     sortN(files);
-     return files;
+     return sortN(files);
 }
 
 bool UtilAssembler::matchExt(const fs::directory_entry& file) const

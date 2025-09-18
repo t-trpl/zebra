@@ -1,5 +1,6 @@
 /** 
  * File: list.hh
+ * Simple reference counting linked list with some useful functions.
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -22,13 +23,13 @@
 namespace ty {
 
 template <typename T>
-struct node;
+struct Node;
 
 template <typename T>
-using list = std::shared_ptr<node<T>>;
+using list = std::shared_ptr<Node<T>>;
 
 template <typename T>
-struct node {
+struct Node {
      T val;
      list<T> next = nullptr;
      node(const T& v) : val(v) { }
@@ -36,21 +37,9 @@ struct node {
 };
 
 template <typename T>
-list<T> cons(const T& val, const list<T> head)
+list<T> push(const T& val, const list<T> head)
 {
-     return std::make_shared<node<T>>(val, head);
-}
-
-template <typename T>
-list<T> cdr(const list<T> head)
-{
-     return head ? head->next : nullptr;
-}
-
-template <typename T>
-T car(const list<T> head)
-{
-     return head->val;
+     return std::make_shared<Node<T>>(val, head);
 }
 
 template <typename T>
@@ -58,7 +47,7 @@ list<T> copy(const list<T> head)
 {
      if (!head)
           return nullptr;
-     return std::make_shared<node<T>>(head->val, copy(head->next));
+     return std::make_shared<Node<T>>(head->val, copy(head->next));
 }
 
 template <typename T>

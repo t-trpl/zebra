@@ -25,7 +25,7 @@ Error Parser::runParse(const ArgN args)
 {
      if (!args)
           return None;
-     const auto left = car(args);
+     const auto left = args->val;
      if (isMode(left)) {
           if(!mode_.empty())
                return "Two Modes";
@@ -35,7 +35,7 @@ Error Parser::runParse(const ArgN args)
      else if (isOpt(left)) {
           if (argMapN_.find(left) != argMapN_.end())
                return "Duplicate " + left;
-          const auto [next, acc] = nextOption(cdr(args));
+          const auto [next, acc] = nextOption(args->next);
           argMapN_[left] = acc;
           return runParse(next);
      }
@@ -43,7 +43,7 @@ Error Parser::runParse(const ArgN args)
           return "Bad arg " + left;
      else
           return "Empty arg";
-     return runParse(cdr(args));
+     return runParse(args->next);
 }
 
 OptData Parser::nextOption(const ArgN args) const
@@ -53,10 +53,10 @@ OptData Parser::nextOption(const ArgN args) const
 
 OptData Parser::nextOptionI(const ArgN args, const ArgN acc) const
 {
-     if (!args || leadingHyphen(car(args)))
+     if (!args || leadingHyphen(args->val))
           return {args, reverseN(acc)};
-     const auto val = car(args);
-     return nextOptionI(cdr(args), cons(val, acc));
+     const auto val = args->val;
+     return nextOptionI(args->next, push(val, acc));
 }
 
 bool Parser::checkHelp() const
