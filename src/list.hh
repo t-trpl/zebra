@@ -54,11 +54,11 @@ T car(const list<T> head)
 }
 
 template <typename T>
-list<T> duplicate(const list<T> head)
+list<T> copy(const list<T> head)
 {
      if (!head)
           return nullptr;
-     return std::make_shared<node<T>>(head->val, duplicate(head->next));
+     return std::make_shared<node<T>>(head->val, copy(head->next));
 }
 
 template <typename T>
@@ -83,30 +83,27 @@ void sort(const list<T> head)
 template <typename T>
 list<T> sortN(const list<T> head)
 {
-     const auto newHead = duplicate(head);
+     const auto newHead = copy(head);
      sort(newHead);
      return newHead;
 }
 
 template <typename T>
-void reverse(list<T>& head)
+list<T> reverse(list<T> head)
 {
-    if (!head || !head->next)
-        return;
-    auto first = head;
-    auto rest = head->next;
-    reverse(rest);
-    first->next->next = first;
-    first->next = nullptr;
-    head = rest;
+     if (!head || !head->next)
+          return head;
+     auto rh = reverse(head->next);
+     head->next->next = head;
+     head->next = nullptr;
+     return rh;
 }
 
 template <typename T>
 list<T> reverseN(const list<T> head)
 {
-     auto newHead = duplicate(head);
-     reverse(newHead);
-     return newHead;
+     auto c = copy(head);
+     return reverse(c);
 }
 
 template <typename T>
