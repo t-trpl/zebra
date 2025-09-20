@@ -1,5 +1,5 @@
 /**
- * File: UtilStripe.hh
+ * File: UtilStripeFixed.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -16,24 +16,23 @@
 
 #include "src/UtilBaseSingle.hh"
 #include "src/UtilStripeBase.hh"
-#include "src/types.hh"
-#include "src/Maybe.hh"
-#include <string>
 
-#ifndef UTIL_STRIPE_HH
-#define UTIL_STRIPE_HH
+#ifndef UTIL_STRIPE_FIXED_HH
+#define UTIL_STRIPE_FIXED_HH
 
-class UtilStripe final : public UtilStripeBase {
+class UtilStripeFixed final : public UtilStripeBase {
 private:
-     size_t stripeSize_ = 3'000'000;
-     Maybe<size_t> stringToBytes(const std::string& size) const;
      std::unordered_set<std::string> validArgs() const override;
-     size_t getStripeSize(std::ifstream&) const override;
+     int parts_ = 0;
+     size_t bufferSize(const std::streamsize& fsize) const;
+     Maybe<int> stringToParts(const std::string& parts) const;
+     size_t getStripeSize(std::ifstream& file) const override;
+
 public:
-     UtilStripe() { }
-     ~UtilStripe() { }
-     UtilStripe(const UtilStripe&) = delete;
+     UtilStripeFixed() { } 
+     virtual ~UtilStripeFixed() { }
+     UtilStripeFixed(const UtilStripeFixed&) = delete;
      Error setArgs(const ArgMap& map) override;
 };
 
-#endif /// UTIL_STRIPE_HH
+#endif /// UTIL_STRIPE_FIXED_HH

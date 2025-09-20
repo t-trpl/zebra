@@ -30,6 +30,7 @@ private:
      enum class Mode : unsigned char {
           NONE,
           STRIPE,
+          STRIPE_FIXED,
           ASM,
           ASM_MULTI,
      };

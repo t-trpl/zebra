@@ -240,7 +240,6 @@ Maybe<T>::Maybe(U&& val)
           value_ = static_cast<T>(std::forward<U>(val));
 }
 
-
 template<typename T>
 T Maybe<T>::extract()
 {

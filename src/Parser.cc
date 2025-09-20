@@ -18,6 +18,7 @@
 #include "src/UtilAssembler.hh"
 #include "src/UtilStripe.hh"
 #include "src/UtilAssemblerMulti.hh"
+#include "src/UtilStripeFixed.hh"
 #include "src/types.hh"
 #include "src/helpers.hh"
 
@@ -84,8 +85,10 @@ Parser::Mode Parser::toMode(const std::string& mode) const
           const auto& val = mapOr(argMap_, {"--input", "-i"});
           return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
      }
-     else if (mode == "-S" || mode == "--Stripe")
-          return Mode::STRIPE;
+     else if (mode == "-S" || mode == "--Stripe") {
+          const auto& p = mapOr(argMap_, {"--parts", "-p"});
+          return p ? Mode::STRIPE_FIXED : Mode::STRIPE;
+     }
      return Mode::NONE;
 }
 
@@ -139,6 +142,8 @@ Maybe<UtilPtr> Parser::createUtil() const
      switch (mode) {
      case Mode::STRIPE :
           return createPtr<UtilStripe>();
+     case Mode::STRIPE_FIXED:
+          return createPtr<UtilStripeFixed>();
      case Mode::ASM :
           return createPtr<UtilAssembler>();
      case Mode::ASM_MULTI :

@@ -19,13 +19,9 @@
 #include "src/types.hh"
 #include "src/utils.hh"
 #include "src/helpers.hh"
-#include <filesystem>
-#include <iostream>
 #include <cctype>
 #include <unordered_map>
 #include <algorithm>
-
-namespace fs = std::filesystem;
 
 std::unordered_set<std::string> UtilStripe::validArgs() const
 {
@@ -43,7 +39,7 @@ std::unordered_set<std::string> UtilStripe::validArgs() const
 
 Error UtilStripe::setArgs(const ArgMap& map)
 {
-     const auto baseError = UtilBaseSingle::setArgs(map);
+     const auto baseError = UtilStripeBase::setArgs(map);
      if (baseError)
           return *baseError;
      const auto maybeSize = argToValue(map, {"--size", "-s", "size"});
@@ -67,13 +63,6 @@ Error UtilStripe::setArgs(const ArgMap& map)
                return "Too many sizes";
           }
      }
-     const auto nameError = setMember(map, {"--name", "-n", "name"}, name_);
-     if (nameError)
-          return *nameError;
-     const auto extensionError = setMember(map,
-               {"--extension", "-e", "extension"}, ext_);
-     if (extensionError)
-          return *extensionError;
      return None;
 }
 
@@ -105,104 +94,10 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
           return make_bad<size_t>("Bad suffix: " + suffix); 
      const size_t bytes =
                static_cast<size_t>(!found ? s : (s * suffixIt->second));
-     if (bytes < 4'000) /// arbitrary, but don't want an accidental 1 byte size 
-          return make_bad<size_t>("Stripe size < 4kb");
      return bytes;
 }
 
-size_t UtilStripe::numberLength(const size_t& rem) const
+size_t UtilStripe::getStripeSize(std::ifstream&) const
 {
-     return rem > 0 ? 1 + numberLength(rem / 10) : 0;
-}
-
-size_t UtilStripe::stripeLength(const std::streamsize& size) const
-{
-     const size_t pieces = size / stripeSize_ + (size % stripeSize_ > 0); 
-     return numberLength(pieces);
-}
-
-std::streamsize UtilStripe::fileSize(std::ifstream& file) const
-{
-     file.seekg(0, std::ios::end);
-     std::streamsize size = file.tellg();
-     file.seekg(0, std::ios::beg);
-     return size; 
-}
-
-std::string UtilStripe::fileName(const int& number, 
-          const size_t& len) const
-{
-     const std::string strn = std::to_string(number);
-     const int diff = static_cast<int>(len) - static_cast<int>(strn.size());
-     const int zeros = padding_ ? std::max(0, diff) : 0; 
-     const std::string paddingZeros(zeros, '0');
-     return name_ + (!name_.empty() ? "_" : "") + paddingZeros + strn;
-}
-
-std::streamsize UtilStripe::readChunk(std::ifstream& file,
-          std::vector<char>& buffer) const
-{
-     file.read(buffer.data(), buffer.size());
-     return file.gcount();
-}
-
-Error UtilStripe::setFlags(const ArgMap& map)
-{
-     const auto maybePad = validFlag(map, {"-np", "--no-padding"});
-     if (!maybePad)
-          return maybePad.error();
-     if (*maybePad)
-          padding_ = false;
-     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-     if (!maybeQuiet)
-          return maybeQuiet.error();
-     if (*maybeQuiet)
-          silence_ = true;
-     const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
-     if (!maybeNoExt)
-          return maybeNoExt.error();
-     if (*maybeNoExt)
-          useExt_ = false;
-     return None;
-}
-
-std::string UtilStripe::stripePath(const size_t& num, const size_t& max)
-          const
-{
-     const auto name = fileName(num, max);
-     const std::string fullName = useExt_ ? (name + "." + ext_) : name;
-     const std::string path = fs::path(out_) / fullName;
-     return path;
-}
-
-Error UtilStripe::run() const
-{
-     if (!silence_)
-          std::cout << util::banner << "\nStriping\n";
-     if (fs::is_directory(in_))
-          return "Cannot run on a directory";
-     if (!fs::exists(out_) || !fs::is_directory(out_))
-          return "Bad output directory";
-     std::ifstream file(in_, std::ios::binary);
-     if (!file)
-          return "Invalid File";
-     const auto fsize = fileSize(file);
-     if (fsize == -1)
-          return "Empty file?";
-     const auto length = stripeLength(fsize);
-     std::vector<char> buffer(stripeSize_);
-     int chunkNumber = 0;
-     for (auto bytes = readChunk(file, buffer);
-          bytes;
-          bytes = readChunk(file, buffer)) {
-          const auto path = stripePath(chunkNumber++, length);
-          std::ofstream outFile(path);
-          if (!outFile)
-               return "Failed to write: " + path;
-          if (!silence_)
-               std::cout << "\033[32m->\033[0m" << path << " " << bytes <<
-                         " bytes\n";
-          outFile.write(buffer.data(), bytes);
-     }
-     return None;
+     return stripeSize_;
 }
