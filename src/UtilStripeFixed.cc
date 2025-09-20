@@ -17,7 +17,6 @@
 #include "src/UtilStripeFixed.hh"
 #include "src/helpers.hh"
 #include "src/utils.hh"
-#include <iostream>
 
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {
@@ -33,9 +32,8 @@ std::unordered_set<std::string> UtilStripeFixed::validArgs() const
      };
 }
 
-size_t UtilStripeFixed::getStripeSize(std::ifstream& file) const
+size_t UtilStripeFixed::getStripeSize(const size_t& fsize) const
 {
-     const auto fsize = fileSize(file);
      const auto bsize = fsize / parts_;
      return fsize % parts_ ? bsize + 1 : bsize;
 }
@@ -71,10 +69,4 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
           return "Too many parts";
      }
      return None;
-}
-
-size_t UtilStripeFixed::bufferSize(const std::streamsize& fsize) const
-{
-     const std::streamsize bsize = fsize / parts_;
-     return static_cast<size_t>(fsize % parts_ ? bsize + 1 : bsize);
 }

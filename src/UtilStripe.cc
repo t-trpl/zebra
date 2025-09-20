@@ -20,6 +20,7 @@
 #include "src/utils.hh"
 #include "src/helpers.hh"
 #include <cctype>
+#include <cstddef>
 #include <unordered_map>
 #include <algorithm>
 
@@ -97,7 +98,7 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
      return bytes;
 }
 
-size_t UtilStripe::getStripeSize(std::ifstream&) const
+size_t UtilStripe::getStripeSize(const size_t&) const
 {
      return stripeSize_;
 }

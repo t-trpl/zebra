@@ -28,7 +28,7 @@ private:
      size_t stripeSize_ = 3'000'000;
      Maybe<size_t> stringToBytes(const std::string& size) const;
      std::unordered_set<std::string> validArgs() const override;
-     size_t getStripeSize(std::ifstream&) const override;
+     size_t getStripeSize(const size_t&) const override;
 public:
      UtilStripe() { }
      ~UtilStripe() { }

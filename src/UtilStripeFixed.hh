@@ -24,10 +24,8 @@ class UtilStripeFixed final : public UtilStripeBase {
 private:
      std::unordered_set<std::string> validArgs() const override;
      int parts_ = 0;
-     size_t bufferSize(const std::streamsize& fsize) const;
      Maybe<int> stringToParts(const std::string& parts) const;
-     size_t getStripeSize(std::ifstream& file) const override;
-
+     size_t getStripeSize(const size_t& fsize) const override;
 public:
      UtilStripeFixed() { } 
      virtual ~UtilStripeFixed() { }

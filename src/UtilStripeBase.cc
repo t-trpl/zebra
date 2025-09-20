@@ -82,9 +82,9 @@ Error UtilStripeBase::run() const
      const auto fsize = fileSize(file);
      if (fsize == -1)
           return "Empty file?";
-     const auto stripeSize = getStripeSize(file);
+     const auto stripeSize = getStripeSize(fsize);
      if (stripeSize < 4'000)
-          return "Stripe Size too small\n";
+          return "Stripe size too small";
      const auto length = stripeLength(fsize, stripeSize);
      std::vector<char> buffer(stripeSize);
      int chunkNumber = 0;

@@ -39,7 +39,7 @@ protected:
                const;
      std::string stripePath(const size_t& num, const size_t& max,
                const std::string& out) const;
-     virtual size_t getStripeSize(std::ifstream& file) const = 0;
+     virtual size_t getStripeSize(const size_t& fsize) const = 0;
 public:
      UtilStripeBase() { }
      virtual ~UtilStripeBase() { }
