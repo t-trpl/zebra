@@ -41,13 +41,18 @@ Required :
     -i, --input <input file>
     -o, --output <ouput directory>
 Optional :
-    -s, --size  <stripe size>
-        Stripe size in bytes or number (can be floating point) followed by
-            suffix (kb, mb, gb)
-        Examples:
-            -s 100000
-            -s 30mb
-            -s 55.35mb
+   OR: 
+        -s, --size  <stripe size>
+            Stripe size in bytes or number (can be floating point) followed by
+                suffix (kb, mb, gb)
+            Examples:
+                -s 100000
+                -s 30mb
+                -s 55.35mb
+        -p, --parts <number of parts>
+            Number of parts a file is striped into
+            Example:
+                -p 10
     -n, --name <name suffix>
         Part name suffix. Parts will be named `NAME SUFFIX`_`NUMBER`.stripe
         Example:
