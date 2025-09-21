@@ -15,7 +15,6 @@
  */
 
 #include "src/List.hh"
-#include <vector>
 #include <unordered_map>
 #include <string>
 #include <optional>

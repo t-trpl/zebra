@@ -37,10 +37,10 @@ Error run(const ArgList args)
 
 ArgList argsToList(int argc, char* argv[])
 {
-     ArgList n = nullptr;
+     ArgList acc = nullptr;
      for (int i = 1; i < argc; i++)
-          n = push(std::string(argv[i]), n);
-     return reverseN(n);
+          acc = push(std::string(argv[i]), acc);
+     return reverseN(acc);
 }
 
 int main(int argc, char* argv[])

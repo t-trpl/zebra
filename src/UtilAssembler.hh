@@ -15,7 +15,7 @@
  */
 
 #include "src/UtilBaseSingle.hh"
-#include "src/UtilAssemblerBase.hh"
+#include "src/UtilAssemblerFunctions.hh"
 #include "src/Maybe.hh"
 #include "src/List.hh"
 #include <filesystem>
@@ -26,7 +26,7 @@
 namespace fs = std::filesystem;
 
 class UtilAssembler final : public UtilBaseSingle
-                          , public UtilAssemblerBase {
+                          , public UtilAssemblerFunctions {
 private:
      std::string ext_ = "stripe";
      bool useExt_ = true;

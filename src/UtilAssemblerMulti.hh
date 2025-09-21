@@ -15,7 +15,7 @@
  */
 
 #include "src/UtilBase.hh"
-#include "src/UtilAssemblerBase.hh"
+#include "src/UtilAssemblerFunctions.hh"
 #include "src/List.hh"
 #include <string>
 
@@ -23,7 +23,7 @@
 #define UTIL_ASSEMBLER_MULTI_HH
 
 class UtilAssemblerMulti final : public UtilBase
-                               , public UtilAssemblerBase {
+                               , public UtilAssemblerFunctions {
 private:
      FilesL files_;
      std::string out_;

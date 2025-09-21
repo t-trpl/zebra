@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerBase.cc
+ * File: UtilAssemblerFunctions.cc
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,10 +14,11 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilAssemblerBase.hh"
+#include "src/UtilAssemblerFunctions.hh"
 #include <fstream>
 
-Error UtilAssemblerBase::writeStripe(FilesL files, std::ofstream& out) const
+Error UtilAssemblerFunctions::writeStripe(FilesL files, std::ofstream& out)
+          const
 {
      if (!files)
           return None;

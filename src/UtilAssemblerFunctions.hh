@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerBase.hh
+ * File: UtilAssemblerFunctions.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -17,18 +17,18 @@
 #include "src/List.hh"
 #include "src/types.hh"
 
-#ifndef UTIL_ASSEMBLER_BASE_HH
-#define UTIL_ASSEMBLER_BASE_HH
+#ifndef UTIL_ASSEMBLER_FUNCTIONS_HH
+#define UTIL_ASSEMBLER_FUNCTIONS_HH
 
 using FilesL = ty::List<std::string>;
 
-class UtilAssemblerBase {
+class UtilAssemblerFunctions {
 protected:
      Error writeStripe(FilesL files, std::ofstream& out) const;
 public:
-     UtilAssemblerBase() { }
-     virtual ~UtilAssemblerBase() { }
-     UtilAssemblerBase(const UtilAssemblerBase&) = delete;
+     UtilAssemblerFunctions() { }
+     virtual ~UtilAssemblerFunctions() { }
+     UtilAssemblerFunctions(const UtilAssemblerFunctions&) = delete;
 };
 
-#endif /// UTIL_ASSEMBLER_BASE_HH
+#endif /// UTIL_ASSEMBLER_FUNCTIONS_HH
