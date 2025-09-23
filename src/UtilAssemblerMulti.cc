@@ -22,7 +22,7 @@
 
 Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 {
-     const auto maybeInput = argToValue(map, {"--input", "-i", "input"});
+     const auto maybeInput = argToIter(map, {"--input", "-i", "input"});
      if (!maybeInput)
           return maybeInput.error();
      if (const auto ptr = *maybeInput; ptr != map.end()) {

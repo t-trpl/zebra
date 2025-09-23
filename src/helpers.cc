@@ -37,7 +37,7 @@ Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
      return true;
 }
 
-Maybe<ArgMap::const_iterator> argToValue(const ArgMap& map, const ArgT& arg)
+Maybe<ArgMap::const_iterator> argToIter(const ArgMap& map, const ArgT& arg)
 {
      const auto leftPtr = map.find(std::get<0>(arg));
      const auto rightPtr = map.find(std::get<1>(arg));

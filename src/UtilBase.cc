@@ -23,7 +23,7 @@ namespace fs = std::filesystem;
 Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
           std::string& ref, bool required)
 {
-     const auto maybeOpt = argToValue(map, opt);
+     const auto maybeOpt = argToIter(map, opt);
      const auto tag = std::get<2>(opt);
      if (!maybeOpt)
           return maybeOpt.error();

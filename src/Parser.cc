@@ -98,8 +98,8 @@ bool Parser::isMode(const std::string& left) const
      if (left.size() < 2)
           return false;
      auto ptr = left.begin();
-     for (int hypthen = 0; ptr != end && *ptr == '-'; hypthen++, ptr++)
-          if (hypthen >= 2)
+     for (int hypthen = 0; ptr != end && *ptr == '-'; ptr++)
+          if (++hypthen > 2)
                return false;
      if (ptr == end || !isUpper(*ptr++))
           return false;
@@ -115,8 +115,8 @@ bool Parser::isOpt(const std::string& left) const
      if (left.size() < 2)
           return false;
      auto ptr = left.begin();
-     for (int hypthen = 0; ptr != end && *ptr == '-'; hypthen++, ptr++)
-          if (hypthen >= 2)
+     for (int hypthen = 0; ptr != end && *ptr == '-'; ptr++)
+          if (++hypthen > 2)
                return false;
      if (ptr == end)
           return false;

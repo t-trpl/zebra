@@ -51,7 +51,7 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
      const auto baseError = UtilStripeBase::setArgs(map);
      if (baseError)
           return *baseError;
-     const auto maybeParts = argToValue(map, {"--parts", "-p", "parts"});
+     const auto maybeParts = argToIter(map, {"--parts", "-p", "parts"});
      if (!maybeParts)
           return maybeParts.error();
      const auto partsPtr = (*maybeParts)->second;

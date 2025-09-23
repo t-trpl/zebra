@@ -43,7 +43,7 @@ Error UtilStripe::setArgs(const ArgMap& map)
      const auto baseError = UtilStripeBase::setArgs(map);
      if (baseError)
           return *baseError;
-     const auto maybeSize = argToValue(map, {"--size", "-s", "size"});
+     const auto maybeSize = argToIter(map, {"--size", "-s", "size"});
      if (!maybeSize)
           return maybeSize.error();
      if (const auto ptr = *maybeSize; ptr != map.end()) {
