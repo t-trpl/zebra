@@ -40,13 +40,14 @@ bool UtilAssembler::matchExt(const fs::directory_entry& file) const
 {
      const auto& ext = file.path().extension().string();
      const auto expected = "." + ext_;
-     return (!useExt_ && ext.empty()) || ext == expected;
+     return useExt_ ? ext == expected : ext.empty();
 }
 
 bool UtilAssembler::matchName(const fs::directory_entry& file) const
 {
      const auto& stem = file.path().stem().string();
-     return name_.empty() || name_ == stemToName(stem);
+     const auto n = stemToName(stem);
+     return onlyEmpty_ ? n.empty() : name_.empty() || name_ == n;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
@@ -105,6 +106,11 @@ Error UtilAssembler::setFlags(const ArgMap& map)
           return maybeNoExt.error();
      if (*maybeNoExt)
           useExt_ = false;
+     const auto maybeNoName = validFlag(map, {"-nn", "--no-name"});
+     if (!maybeNoName)
+          return maybeNoName.error();
+     if (*maybeNoName)
+          onlyEmpty_ = true;
      return None;
 }
 
@@ -117,5 +123,6 @@ std::unordered_set<std::string> UtilAssembler::validArgs() const
           "-n", "--name",
           "-q", "--quiet",
           "-ne", "--no-extension",
+          "-nn", "--no-name"
      };
 }

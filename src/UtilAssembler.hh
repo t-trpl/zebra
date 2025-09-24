@@ -30,6 +30,7 @@ class UtilAssembler final : public UtilBaseSingle
 private:
      std::string ext_ = "stripe";
      bool useExt_ = true;
+     bool onlyEmpty_ = false;
      std::string name_ = "";
      std::string stemToName(const std::string& stem) const;
      Maybe<FilesL> stripeNames() const;
