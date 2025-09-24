@@ -46,8 +46,8 @@ bool UtilAssembler::matchExt(const fs::directory_entry& file) const
 bool UtilAssembler::matchName(const fs::directory_entry& file) const
 {
      const auto& stem = file.path().stem().string();
-     const auto n = stemToName(stem);
-     return onlyEmpty_ ? n.empty() : name_.empty() || name_ == n;
+     const auto name = stemToName(stem);
+     return onlyEmpty_ ? name.empty() : name_.empty() || name_ == name;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
