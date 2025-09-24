@@ -42,7 +42,7 @@ protected:
      virtual size_t getStripeSize(const size_t& fsize) const = 0;
 
      std::streamsize chunk(std::ifstream& input, std::ofstream& output,
-               std::streamsize bytes) const;
+               std::streamsize remaining) const;
 public:
      UtilStripeBase() { }
      virtual ~UtilStripeBase() { }

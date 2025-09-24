@@ -69,20 +69,20 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
 }
 
 std::streamsize UtilStripeBase::chunk(std::ifstream& input,
-          std::ofstream& output, std::streamsize bytes) const
+          std::ofstream& output, std::streamsize remaining) const
 {
      const std::streamsize chunkSize = 1'000'000;
      std::vector<char> buffer(chunkSize, 0);
      std::streamsize acc = 0;
-     while (bytes) {
-          const auto use = std::min(chunkSize, bytes);
+     while (remaining) {
+          const auto use = std::min(chunkSize, remaining);
           input.read(buffer.data(), use);
           const auto& read = input.gcount();
           if (!read)
                break;
           acc += read;
           output.write(buffer.data(), read);
-          bytes -= use;
+          remaining -= use;
      }
      return acc;
 }
