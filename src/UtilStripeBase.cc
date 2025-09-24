@@ -98,7 +98,6 @@ Error UtilStripeBase::run() const
      if (stripeSize < 4'000)
           return "Stripe size too small";
      const auto length = stripeLength(fsize, stripeSize);
-     std::vector<char> buffer(1'000'000);
      int chunkNumber = 0;
      std::streamsize totalBytes = 0;
      while (totalBytes < fsize) {
