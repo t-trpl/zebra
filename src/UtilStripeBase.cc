@@ -68,6 +68,25 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
      return path;
 }
 
+std::streamsize UtilStripeBase::chunk(std::ifstream& input,
+          std::ofstream& output, std::streamsize bytes) const
+{
+     const std::streamsize chunkSize = 1'000'000;
+     std::vector<char> buffer(chunkSize, 0);
+     std::streamsize acc = 0;
+     while (bytes) {
+          const auto use = std::min(chunkSize, bytes);
+          input.read(buffer.data(), use);
+          const auto& read = input.gcount();
+          if (!read)
+               break;
+          acc += read;
+          output.write(buffer.data(), read);
+          bytes -= use;
+     }
+     return acc;
+}
+
 Error UtilStripeBase::run() const
 {
      if (!silence_)
@@ -86,19 +105,19 @@ Error UtilStripeBase::run() const
      if (stripeSize < 4'000)
           return "Stripe size too small";
      const auto length = stripeLength(fsize, stripeSize);
-     std::vector<char> buffer(stripeSize);
+     std::vector<char> buffer(1'000'000);
      int chunkNumber = 0;
-     for (auto bytes = readChunk(file, buffer);
-          bytes;
-          bytes = readChunk(file, buffer)) {
+     std::streamsize totalBytes = 0;
+     while (totalBytes < fsize) {
           const auto path = stripePath(chunkNumber++, length, out_);
           std::ofstream outFile(path);
           if (!outFile)
                return "Failed to write: " + path;
+          const auto bytes = chunk(file, outFile, stripeSize);
+          totalBytes += bytes;
           if (!silence_)
                std::cout << "\033[32m->\033[0m" << path << " " << bytes
                          << " bytes\n";
-          outFile.write(buffer.data(), bytes);
      }
      return None;
 }

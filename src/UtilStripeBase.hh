@@ -40,6 +40,9 @@ protected:
      std::string stripePath(const size_t& num, const size_t& max,
                const std::string& out) const;
      virtual size_t getStripeSize(const size_t& fsize) const = 0;
+
+     std::streamsize chunk(std::ifstream& input, std::ofstream& output,
+               std::streamsize bytes) const;
 public:
      UtilStripeBase() { }
      virtual ~UtilStripeBase() { }
