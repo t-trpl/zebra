@@ -35,12 +35,9 @@ protected:
                const;
      std::string fileName(const int& number, const size_t& len) const;
      size_t numberLength(const size_t& rem) const;
-     std::streamsize readChunk(std::ifstream& file, std::vector<char>& buffer)
-               const;
      std::string stripePath(const size_t& num, const size_t& max,
                const std::string& out) const;
      virtual size_t getStripeSize(const size_t& fsize) const = 0;
-
      std::streamsize chunk(std::ifstream& input, std::ofstream& output,
                std::streamsize remaining) const;
 public:

@@ -52,13 +52,6 @@ std::string UtilStripeBase::fileName(const int& number,
      return name_ + (!name_.empty() ? "_" : "") + paddingZeros + strn;
 }
 
-std::streamsize UtilStripeBase::readChunk(std::ifstream& file,
-          std::vector<char>& buffer) const
-{
-     file.read(buffer.data(), buffer.size());
-     return file.gcount();
-}
-
 std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
           const std::string& out) const
 {
