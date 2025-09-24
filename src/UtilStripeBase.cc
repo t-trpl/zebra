@@ -96,8 +96,8 @@ Error UtilStripeBase::run() const
           if (!outFile)
                return "Failed to write: " + path;
           if (!silence_)
-               std::cout << "\033[32m->\033[0m" << path << " " << bytes <<
-                         " bytes\n";
+               std::cout << "\033[32m->\033[0m" << path << " " << bytes
+                         << " bytes\n";
           outFile.write(buffer.data(), bytes);
      }
      return None;

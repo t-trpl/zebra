@@ -26,4 +26,13 @@ Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
 
 Maybe<ArgMap::const_iterator> argToIter(const ArgMap& map, const ArgT& arg);
 
+template<typename T, typename U, typename F>
+T mapv(U it1, const U& it2, F&& fun)
+{
+     T acc;
+     while (it1 != it2)
+          acc.push_back(fun(*it1++));
+     return acc;
+}
+
 #endif /// HELPERS_HH

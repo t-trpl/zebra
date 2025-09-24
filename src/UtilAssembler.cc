@@ -39,7 +39,7 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
 bool UtilAssembler::matchExt(const fs::directory_entry& file) const
 {
      const auto& ext = file.path().extension().string();
-     const auto expected = "." + in_;
+     const auto expected = "." + ext_;
      return (!useExt_ && ext.empty()) || ext == expected;
 }
 

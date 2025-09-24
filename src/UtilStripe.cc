@@ -75,9 +75,10 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
           num += *it++;
      if (num.empty())
           return make_bad<size_t>("No size...");
-     const auto decimalCount = std::count_if(num.begin(), num.end(),
-               [](const auto& c){ return c == '.'; });
-     if (it != size.end() && (!std::isalpha(*it) || decimalCount > 1))
+     const auto dec = std::count_if(num.begin(), num.end(), [](const auto c) {
+          return c == '.';
+     });
+     if (it != size.end() && (!std::isalpha(*it) || dec > 1))
           return make_bad<size_t>("Bad byte size");
      const double s = std::stod(num);
      std::unordered_map<std::string, size_t> pref = {   
@@ -86,9 +87,9 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
           {"mb", 1'000'000},
           {"gb", 1'000'000'000},
      };
-     std::string suffix;
-     std::transform(it, size.end(), std::back_inserter(suffix),
-               [](const auto& c) { return std::tolower(c); });
+     const auto suffix = mapv<std::string>(it, size.end(), [](const auto c) {
+          return std::tolower(c);
+     });
      const auto suffixIt = pref.find(suffix);
      const auto found = suffixIt != pref.end();
      if (!suffix.empty() && !found)
