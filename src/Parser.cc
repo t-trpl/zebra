@@ -47,17 +47,14 @@ Error Parser::runParse(const ArgList args)
      return runParse(args->next);
 }
 
-OptData Parser::nextOption(const ArgList args) const
+OptData Parser::nextOption(ArgList args) const
 {
-     return nextOptionI(args, nullptr);
-}
-
-OptData Parser::nextOptionI(const ArgList args, const ArgList acc) const
-{
-     if (!args || leadingHyphen(args->val))
-          return {args, reverseN(acc)};
-     const auto& val = args->val;
-     return nextOptionI(args->next, push(val, acc));
+     ArgList acc = nullptr;
+     while (args && !leadingHyphen(args->val)) {
+          acc = push(args->val, acc);
+          args = args->next;
+     }
+     return {args, reverseN(acc)};
 }
 
 bool Parser::checkHelp() const

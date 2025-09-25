@@ -44,8 +44,7 @@ private:
      template<typename T> Maybe<UtilPtr> createPtr() const;
      ArgList mapOr(const ArgMap& map, const ArgOr& options) const;
      bool leadingHyphen(const std::string& str) const;
-     OptData nextOption(const ArgList args) const;
-     OptData nextOptionI(const ArgList args, const ArgList acc) const;
+     OptData nextOption(ArgList args) const;
 public:
      Parser() { }
      ~Parser() { }
