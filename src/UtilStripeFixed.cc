@@ -21,14 +21,14 @@
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {
      return {
-          "-i", "--input",
-          "-o", "--output",
-          "-n", "--name",
-          "-e", "--extension",
+          "-i" , "--input",
+          "-o" , "--output",
+          "-n" , "--name",
+          "-e" , "--extension",
           "-np", "--no-padding",
-          "-q", "--quiet",
+          "-q" , "--quiet",
           "-ne", "--no-extension",
-          "-p", "--parts",
+          "-p" , "--parts",
      };
 }
 

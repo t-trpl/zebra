@@ -117,11 +117,11 @@ Error UtilAssembler::setFlags(const ArgMap& map)
 std::unordered_set<std::string> UtilAssembler::validArgs() const
 {
      return {
-          "-i", "--input",
-          "-o", "--output",
-          "-e", "--extension",
-          "-n", "--name",
-          "-q", "--quiet",
+          "-i" , "--input",
+          "-o" , "--output",
+          "-e" , "--extension",
+          "-n" , "--name",
+          "-q" , "--quiet",
           "-ne", "--no-extension",
           "-nn", "--no-name"
      };

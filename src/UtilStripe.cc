@@ -27,13 +27,13 @@
 std::unordered_set<std::string> UtilStripe::validArgs() const
 {
      return {
-          "-i", "--input",
-          "-o", "--output",
-          "-s", "--size",
-          "-n", "--name",
-          "-e", "--extension",
+          "-i" , "--input",
+          "-o" , "--output",
+          "-s" , "--size",
+          "-n" , "--name",
+          "-e" , "--extension",
           "-np", "--no-padding",
-          "-q", "--quiet",
+          "-q" , "--quiet",
           "-ne", "--no-extension",
      };
 }
