@@ -20,12 +20,13 @@
 Error UtilAssemblerFunctions::writeStripe(FilesL files, std::ofstream& out)
           const
 {
-     if (!files)
-          return None;
-     const std::string path = files->val;
-     std::ifstream file(path, std::ios::binary);
-     if (!file)
-          return "Failed to open: " + path + "\nDiscard output";
-     out << file.rdbuf();
-     return writeStripe(files->next, out);
+     while (files) {
+          const std::string& path = files->val;
+          std::ifstream file(path, std::ios::binary);
+          if (!file)
+               return "Failed to open: " + path + "\nDiscard output";
+          out << file.rdbuf();
+          files = files->next;
+     }
+     return None;
 }
