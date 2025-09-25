@@ -94,9 +94,8 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
      if (!suffix.empty() && !found)
           return make_bad<size_t>("Bad suffix: " + suffix); 
      const size_t units = found ? itr->second : 1;
-     const double s = std::stod(num) * units;
-     const size_t bytes = static_cast<size_t>(s);
-     return bytes;
+     const double dbytes = std::stod(num) * units;
+     return static_cast<size_t>(dbytes);
 }
 
 size_t UtilStripe::getStripeSize(const size_t&) const
