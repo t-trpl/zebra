@@ -26,7 +26,7 @@ Error Parser::runParse(const ArgList args)
 {
      if (!args)
           return None;
-     const auto left = args->val;
+     const auto& left = args->val;
      if (isMode(left)) {
           if(!mode_.empty())
                return "Two Modes";
@@ -56,7 +56,7 @@ OptData Parser::nextOptionI(const ArgList args, const ArgList acc) const
 {
      if (!args || leadingHyphen(args->val))
           return {args, reverseN(acc)};
-     const auto val = args->val;
+     const auto& val = args->val;
      return nextOptionI(args->next, push(val, acc));
 }
 

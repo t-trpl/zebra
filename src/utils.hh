@@ -66,8 +66,8 @@ Flag(s)
     -np, --no-padding <no padding>
         This will cause stripes to not have padding on their numbers.
         Example:
-            "003.stripe" will be "3.stripe"
-            "piece_003.stripe" will be "piece_3.stripe"
+            "003.stripe"       | "3.stripe"
+            "piece_003.stripe" | "piece_3.stripe"
     -q, --quiet <quiet>
         This will silence normal outputs, warnings will still print.
     -ne, --no-extension <no extension>
