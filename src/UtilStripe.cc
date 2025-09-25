@@ -69,20 +69,19 @@ Error UtilStripe::setArgs(const ArgMap& map)
 
 Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
 {
-     std::string num = "";
      auto it = size.begin();
      while (it != size.end() && (std::isdigit(*it) || *it == '.'))
-          num += *it++;
+          it++;
+     const std::string num(size.begin(), it);
      if (num.empty())
           return make_bad<size_t>("No size...");
      const auto dec = std::count_if(num.begin(), num.end(), [](const auto c) {
           return c == '.';
      });
-     if (it != size.end() && (!std::isalpha(*it) || dec > 1))
+     if (dec > 1 || (it != size.end() && !std::isalpha(*it)))
           return make_bad<size_t>("Bad byte size");
-     const double s = std::stod(num);
-     std::unordered_map<std::string, size_t> pref = {   
-          {"b", 1},
+     const std::unordered_map<std::string, size_t> map = {   
+          {"b" , 1},
           {"kb", 1'000},
           {"mb", 1'000'000},
           {"gb", 1'000'000'000},
@@ -90,12 +89,13 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
      const auto suffix = mapv<std::string>(it, size.end(), [](const auto c) {
           return std::tolower(c);
      });
-     const auto suffixIt = pref.find(suffix);
-     const auto found = suffixIt != pref.end();
+     const auto itr = map.find(suffix);
+     const auto found = itr != map.end();
      if (!suffix.empty() && !found)
           return make_bad<size_t>("Bad suffix: " + suffix); 
-     const size_t bytes =
-               static_cast<size_t>(!found ? s : (s * suffixIt->second));
+     const size_t units = found ? itr->second : 1;
+     const double s = std::stod(num) * units;
+     const size_t bytes = static_cast<size_t>(s);
      return bytes;
 }
 
