@@ -91,7 +91,7 @@ Error UtilAssembler::run() const
         const auto size = outFile.tellp();
         if (!silence_)
                 std::cout << "Wrote " << out_ << " " << size << " bytes\n";
-        return err;
+        return None;
 }
 
 Error UtilAssembler::setFlags(const ArgMap& map)
