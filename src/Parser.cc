@@ -80,7 +80,8 @@ Parser::Mode Parser::toMode(const std::string& mode) const
         if (mode == "-A" || mode == "--Assemble") {
                 const auto& val = mapOr(argMap_, {"--input", "-i"});
                 return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
-        } else if (mode == "-S" || mode == "--Stripe") {
+        }
+        if (mode == "-S" || mode == "--Stripe") {
                 const auto& p = mapOr(argMap_, {"--parts", "-p"});
                 return p ? Mode::STRIPE_FIXED : Mode::STRIPE;
         }
