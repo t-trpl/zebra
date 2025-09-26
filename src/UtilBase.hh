@@ -24,25 +24,25 @@
 
 class UtilBase {
 private:
-     Error setMemberBase(const ArgMap& map, const ArgT& opt, std::string& ref,
-               bool required);
+        Error setMemberBase(const ArgMap& map, const ArgT& opt,
+            std::string& ref, bool required);
 protected:
-     bool silence_ = false;
-     Maybe<std::string> toPath(const std::string& p) const;
-     bool isSlash(const char c) const;
-     std::string clean(const std::string& path) const;
-     Error setMemberPath(const ArgMap& map, const ArgT& opt,
-               std::string& memRef);
-     Error setMember(const ArgMap& map, const ArgT& opt, std::string& memRef);
-     virtual std::unordered_set<std::string> validArgs() const = 0;
+        bool silence_ = false;
+        Maybe<std::string> toPath(const std::string& p) const;
+        bool isSlash(const char c) const;
+        std::string clean(const std::string& path) const;
+        Error setMemberPath(const ArgMap& map, const ArgT& opt,
+            std::string& ref);
+        Error setMember(const ArgMap& map, const ArgT& opt, std::string& ref);
+        virtual std::unordered_set<std::string> validArgs() const = 0;
 public:
-     UtilBase() { } 
-     virtual ~UtilBase() { }
-     UtilBase(const UtilBase&) = delete;
-     virtual Error run() const = 0;
-     virtual Error setFlags(const ArgMap& map) = 0;
-     virtual Error setArgs(const ArgMap& map) = 0;
-     Error checkForUnknown(const ArgMap& map) const;
+        UtilBase() { } 
+        virtual ~UtilBase() { }
+        UtilBase(const UtilBase&) = delete;
+        virtual Error run() const = 0;
+        virtual Error setFlags(const ArgMap& map) = 0;
+        virtual Error setArgs(const ArgMap& map) = 0;
+        Error checkForUnknown(const ArgMap& map) const;
 };
 
 #endif /// UTIL_BASE_HH

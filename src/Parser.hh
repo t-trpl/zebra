@@ -27,47 +27,47 @@ using OptData = std::pair<ArgList, ArgList>;
 
 class Parser {
 private:
-     enum class Mode : unsigned char {
-          NONE,
-          STRIPE,
-          STRIPE_FIXED,
-          ASM,
-          ASM_MULTI,
-     };
-     std::string mode_;
-     ArgMap argMap_;
-     bool isUpper(const char c) const;
-     bool isLower(const char c) const;
-     bool isMode(const std::string& left) const;
-     bool isOpt(const std::string& str) const;
-     Mode toMode(const std::string& mode) const;
-     template<typename T> Maybe<UtilPtr> createPtr() const;
-     ArgList mapOr(const ArgMap& map, const ArgOr& options) const;
-     bool leadingHyphen(const std::string& str) const;
-     OptData nextOption(ArgList args) const;
+        enum class Mode : unsigned char {
+            NONE,
+            STRIPE,
+            STRIPE_FIXED,
+            ASM,
+            ASM_MULTI,
+        };
+        std::string mode_;
+        ArgMap argMap_;
+        bool isUpper(const char c) const;
+        bool isLower(const char c) const;
+        bool isMode(const std::string& left) const;
+        bool isOpt(const std::string& str) const;
+        Mode toMode(const std::string& mode) const;
+        template<typename T> Maybe<UtilPtr> createPtr() const;
+        ArgList mapOr(const ArgMap& map, const ArgOr& options) const;
+        bool leadingHyphen(const std::string& str) const;
+        OptData nextOption(ArgList args) const;
 public:
-     Parser() { }
-     ~Parser() { }
-     Parser(const Parser&) = delete;
-     Maybe<UtilPtr> createUtil() const;
-     Error runParse(const ArgList args);
-     bool checkHelp() const;
+        Parser() { }
+        ~Parser() { }
+        Parser(const Parser&) = delete;
+        Maybe<UtilPtr> createUtil() const;
+        Error runParse(const ArgList args);
+        bool checkHelp() const;
 };
 
 template<typename T>
 Maybe<UtilPtr> Parser::createPtr() const
 {
-     auto ptr = std::make_unique<T>();
-     const auto unknown = ptr->checkForUnknown(argMap_);
-     if (unknown)
-          return make_bad<UtilPtr>(*unknown);
-     const auto argErr = ptr->setArgs(argMap_);
-     if (argErr)
-          return make_bad<UtilPtr>(*argErr);
-     const auto flagErr = ptr->setFlags(argMap_);
-     if (flagErr)
-          return make_bad<UtilPtr>(*flagErr);
-     return ptr;
+        auto ptr = std::make_unique<T>();
+        const auto unknown = ptr->checkForUnknown(argMap_);
+        if (unknown)
+                return make_bad<UtilPtr>(*unknown);
+        const auto argErr = ptr->setArgs(argMap_);
+        if (argErr)
+                return make_bad<UtilPtr>(*argErr);
+        const auto flagErr = ptr->setFlags(argMap_);
+        if (flagErr)
+                return make_bad<UtilPtr>(*flagErr);
+        return ptr;
 }
 
 #endif /// STRIPE_PARSER_HH

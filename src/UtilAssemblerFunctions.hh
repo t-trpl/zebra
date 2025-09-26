@@ -24,11 +24,11 @@ using FilesL = ty::List<std::string>;
 
 class UtilAssemblerFunctions {
 protected:
-     Error writeStripe(FilesL files, std::ofstream& out) const;
+        Error writeStripe(FilesL files, std::ofstream& out) const;
 public:
-     UtilAssemblerFunctions() { }
-     virtual ~UtilAssemblerFunctions() { }
-     UtilAssemblerFunctions(const UtilAssemblerFunctions&) = delete;
+        UtilAssemblerFunctions() { }
+        virtual ~UtilAssemblerFunctions() { }
+        UtilAssemblerFunctions(const UtilAssemblerFunctions&) = delete;
 };
 
 #endif /// UTIL_ASSEMBLER_FUNCTIONS_HH

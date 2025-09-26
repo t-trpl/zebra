@@ -22,59 +22,59 @@
 
 Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 {
-     const auto maybeInput = argToIter(map, {"--input", "-i", "input"});
-     if (!maybeInput)
-          return maybeInput.error();
-     if (const auto ptr = *maybeInput; ptr != map.end()) {
-          FilesL acc = nullptr;
-          for (auto p = ptr->second; p; p = p->next) {
-               if (const auto part = toPath(p->val); part)
-                    acc = push(*part, acc);
-               else
-                    part.error();
-          }
-          files_ = reverseN(acc);
-     }
-     else
-          return "Missing Input";
-     const auto errOutput = setMemberPath(map, {"--output", "-o", "output"},
-               out_);
-     if (errOutput)
-          return *errOutput;
-     return None;
+        const auto maybeInput = argToIter(map, {"--input", "-i", "input"});
+        if (!maybeInput)
+                return maybeInput.error();
+        if (const auto ptr = *maybeInput; ptr != map.end()) {
+                FilesL acc = nullptr;
+                for (auto p = ptr->second; p; p = p->next) {
+                        if (const auto part = toPath(p->val); part)
+                                acc = push(*part, acc);
+                        else
+                                part.error();
+                }
+                files_ = reverseN(acc);
+        } else {
+                return "Missing Input";
+        }
+        const auto errOutput = setMemberPath(map, {"--output", "-o", "output"},
+            out_);
+        if (errOutput)
+                return *errOutput;
+        return None;
 }
 
 Error UtilAssemblerMulti::run() const
 {
-     if (!silence_)
-          std::cout << util::banner << "\nAssembling\n";
-     std::ofstream outFile(out_);
-     if (!outFile)
-          return "Failed to open: " + out_;
-     const auto err = writeStripe(files_, outFile);
-     if (err)
-          return *err;
-     const auto size = outFile.tellp();
-     if (!silence_)
-          std::cout << "Wrote " << out_ << " " << size << " bytes\n";
-     return err;
+        if (!silence_)
+                std::cout << util::banner << "\nAssembling\n";
+        std::ofstream outFile(out_);
+        if (!outFile)
+                return "Failed to open: " + out_;
+        const auto err = writeStripe(files_, outFile);
+        if (err)
+                return *err;
+        const auto size = outFile.tellp();
+        if (!silence_)
+                std::cout << "Wrote " << out_ << " " << size << " bytes\n";
+        return err;
 }
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-     if (!maybeQuiet)
-          return maybeQuiet.error();
-     if (*maybeQuiet)
-          silence_ = true;
-     return None;
+        const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
+        if (!maybeQuiet)
+                return maybeQuiet.error();
+        if (*maybeQuiet)
+                silence_ = true;
+        return None;
 }
 
 std::unordered_set<std::string> UtilAssemblerMulti::validArgs() const
 {
-     return {
-          "-i", "--input",
-          "-o", "--output",
-          "-q", "--quiet",
-     };
+        return {
+            "-i", "--input",
+            "-o", "--output",
+            "-q", "--quiet",
+        };
 }

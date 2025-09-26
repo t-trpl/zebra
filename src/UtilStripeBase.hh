@@ -26,27 +26,27 @@
 
 class UtilStripeBase : public UtilBaseSingle {
 protected:
-     std::string name_ = "";
-     std::string ext_ = "stripe";
-     bool padding_ = true;
-     bool useExt_ = true;
-     std::streamsize fileSize(std::ifstream& file) const;
-     size_t stripeLength(const std::streamsize& size, const size_t& stripeSize)
-               const;
-     std::string fileName(const int& number, const size_t& len) const;
-     size_t numberLength(const size_t& rem) const;
-     std::string stripePath(const size_t& num, const size_t& max,
-               const std::string& out) const;
-     virtual size_t getStripeSize(const size_t& fsize) const = 0;
-     std::streamsize chunk(std::ifstream& input, std::ofstream& output,
-               std::streamsize remaining) const;
+        std::string name_ = "";
+        std::string ext_ = "stripe";
+        bool padding_ = true;
+        bool useExt_ = true;
+        std::streamsize fileSize(std::ifstream& file) const;
+        size_t stripeLength(const std::streamsize& size,
+            const size_t& stripeSize) const;
+        std::string fileName(const int& number, const size_t& len) const;
+        size_t numberLength(const size_t& rem) const;
+        std::string stripePath(const size_t& num, const size_t& max,
+            const std::string& out) const;
+        virtual size_t getStripeSize(const size_t& fsize) const = 0;
+        std::streamsize chunk(std::ifstream& input, std::ofstream& output,
+            std::streamsize remaining) const;
 public:
-     UtilStripeBase() { }
-     virtual ~UtilStripeBase() { }
-     UtilStripeBase(const UtilStripeBase&) = delete;
-     Error run() const override;
-     Error setFlags(const ArgMap& map) override;
-     virtual Error setArgs(const ArgMap& map) override;
+        UtilStripeBase() { }
+        virtual ~UtilStripeBase() { }
+        UtilStripeBase(const UtilStripeBase&) = delete;
+        Error run() const override;
+        Error setFlags(const ArgMap& map) override;
+        virtual Error setArgs(const ArgMap& map) override;
 };
 
 #endif /// UTIL_STRIPE_BASE_HH

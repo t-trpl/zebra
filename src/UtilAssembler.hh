@@ -28,22 +28,22 @@ namespace fs = std::filesystem;
 class UtilAssembler final : public UtilBaseSingle
                           , public UtilAssemblerFunctions {
 private:
-     std::string ext_ = "stripe";
-     bool useExt_ = true;
-     bool onlyEmpty_ = false;
-     std::string name_ = "";
-     std::string stemToName(const std::string& stem) const;
-     Maybe<FilesL> stripeNames() const;
-     std::unordered_set<std::string> validArgs() const override;
-     bool matchExt(const fs::directory_entry& file) const;
-     bool matchName(const fs::directory_entry& file) const;
+        std::string ext_ = "stripe";
+        bool useExt_ = true;
+        bool onlyEmpty_ = false;
+        std::string name_ = "";
+        std::string stemToName(const std::string& stem) const;
+        Maybe<FilesL> stripeNames() const;
+        std::unordered_set<std::string> validArgs() const override;
+        bool matchExt(const fs::directory_entry& file) const;
+        bool matchName(const fs::directory_entry& file) const;
 public:
-     UtilAssembler() { }
-     ~UtilAssembler() { }
-     UtilAssembler(const UtilAssembler&) = delete;
-     Error run() const override;
-     Error setArgs(const ArgMap& map) override;
-     Error setFlags(const ArgMap& map) override;
+        UtilAssembler() { }
+        ~UtilAssembler() { }
+        UtilAssembler(const UtilAssembler&) = delete;
+        Error run() const override;
+        Error setArgs(const ArgMap& map) override;
+        Error setFlags(const ArgMap& map) override;
 };
 
 #endif /// UTIL_ASSEMBLER_HH

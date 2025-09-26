@@ -25,15 +25,15 @@
 
 class UtilStripe final : public UtilStripeBase {
 private:
-     size_t stripeSize_ = 3'000'000;
-     Maybe<size_t> stringToBytes(const std::string& size) const;
-     std::unordered_set<std::string> validArgs() const override;
-     size_t getStripeSize(const size_t&) const override;
+        size_t stripeSize_ = 3'000'000;
+        Maybe<size_t> stringToBytes(const std::string& size) const;
+        std::unordered_set<std::string> validArgs() const override;
+        size_t getStripeSize(const size_t&) const override;
 public:
-     UtilStripe() { }
-     ~UtilStripe() { }
-     UtilStripe(const UtilStripe&) = delete;
-     Error setArgs(const ArgMap& map) override;
+        UtilStripe() { }
+        ~UtilStripe() { }
+        UtilStripe(const UtilStripe&) = delete;
+        Error setArgs(const ArgMap& map) override;
 };
 
 #endif /// UTIL_STRIPE_HH

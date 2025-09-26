@@ -20,53 +20,53 @@
 
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {
-     return {
-          "-i" , "--input",
-          "-o" , "--output",
-          "-n" , "--name",
-          "-e" , "--extension",
-          "-np", "--no-padding",
-          "-q" , "--quiet",
-          "-ne", "--no-extension",
-          "-p" , "--parts",
-     };
+        return {
+            "-i" , "--input",
+            "-o" , "--output",
+            "-n" , "--name",
+            "-e" , "--extension",
+            "-np", "--no-padding",
+            "-q" , "--quiet",
+            "-ne", "--no-extension",
+            "-p" , "--parts",
+        };
 }
 
 size_t UtilStripeFixed::getStripeSize(const size_t& fsize) const
 {
-     const auto bsize = fsize / parts_;
-     return fsize % parts_ ? bsize + 1 : bsize;
+        const auto bsize = fsize / parts_;
+        return fsize % parts_ ? bsize + 1 : bsize;
 }
 
 Maybe<int> UtilStripeFixed::stringToParts(const std::string& parts) const
 {
-     for (const auto c : parts)
-          if (!isdigit(c))
-               return make_bad<int>("Bad Parts " + parts); 
-     return std::stoi(parts);
+        for (const auto c : parts)
+                if (!isdigit(c))
+                        return make_bad<int>("Bad Parts " + parts); 
+        return std::stoi(parts);
 }
 
 Error UtilStripeFixed::setArgs(const ArgMap& map)
 {
-     const auto baseError = UtilStripeBase::setArgs(map);
-     if (baseError)
-          return *baseError;
-     const auto maybeParts = argToIter(map, {"--parts", "-p", "parts"});
-     if (!maybeParts)
-          return maybeParts.error();
-     const auto partsPtr = (*maybeParts)->second;
-     switch (count(partsPtr)) {
-     case 0:
-          return "No parts";
-     case 1: {
-          const auto maybePartsInt = stringToParts(partsPtr->val);
-          if (!maybePartsInt)
-               return maybePartsInt.error();
-          parts_ = *maybePartsInt;
-          break;
-     }
-     default:
-          return "Too many parts";
-     }
-     return None;
+        const auto baseError = UtilStripeBase::setArgs(map);
+        if (baseError)
+                return *baseError;
+        const auto maybeParts = argToIter(map, {"--parts", "-p", "parts"});
+        if (!maybeParts)
+                return maybeParts.error();
+        const auto partsPtr = (*maybeParts)->second;
+        switch (count(partsPtr)) {
+        case 0:
+                return "No parts";
+        case 1: {
+                const auto maybePartsInt = stringToParts(partsPtr->val);
+                if (!maybePartsInt)
+                        return maybePartsInt.error();
+                parts_ = *maybePartsInt;
+                break;
+        }
+        default:
+                return "Too many parts";
+        }
+        return None;
 }

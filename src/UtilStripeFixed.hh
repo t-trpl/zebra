@@ -22,15 +22,15 @@
 
 class UtilStripeFixed final : public UtilStripeBase {
 private:
-     std::unordered_set<std::string> validArgs() const override;
-     int parts_ = 0;
-     Maybe<int> stringToParts(const std::string& parts) const;
-     size_t getStripeSize(const size_t& fsize) const override;
+        std::unordered_set<std::string> validArgs() const override;
+        int parts_ = 0;
+        Maybe<int> stringToParts(const std::string& parts) const;
+        size_t getStripeSize(const size_t& fsize) const override;
 public:
-     UtilStripeFixed() { } 
-     virtual ~UtilStripeFixed() { }
-     UtilStripeFixed(const UtilStripeFixed&) = delete;
-     Error setArgs(const ArgMap& map) override;
+        UtilStripeFixed() { } 
+        virtual ~UtilStripeFixed() { }
+        UtilStripeFixed(const UtilStripeFixed&) = delete;
+        Error setArgs(const ArgMap& map) override;
 };
 
 #endif /// UTIL_STRIPE_FIXED_HH

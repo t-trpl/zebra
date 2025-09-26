@@ -24,105 +24,105 @@
 
 Maybe<FilesL> UtilAssembler::stripeNames() const
 {
-     FilesL files;
-     if (!fs::exists(in_) || !fs::is_directory(in_))
-          return make_bad<FilesL>("Not a directory: " + in_);
-     for (const auto& file : fs::directory_iterator(in_)) {
-          if (matchExt(file) && matchName(file)) {
-               const auto path = fs::path(in_) / file.path().filename();
-               files = push(path.string(), files);
-          }
-     }
-     return sortN(files);
+        FilesL files;
+        if (!fs::exists(in_) || !fs::is_directory(in_))
+                return make_bad<FilesL>("Not a directory: " + in_);
+        for (const auto& file : fs::directory_iterator(in_)) {
+                if (matchExt(file) && matchName(file)) {
+                        const auto p = fs::path(in_) / file.path().filename();
+                        files = push(p.string(), files);
+                }
+        }
+        return sortN(files);
 }
 
 bool UtilAssembler::matchExt(const fs::directory_entry& file) const
 {
-     const auto& ext = file.path().extension().string();
-     const auto expected = "." + ext_;
-     return useExt_ ? ext == expected : ext.empty();
+        const auto& ext = file.path().extension().string();
+        const auto expected = "." + ext_;
+        return useExt_ ? ext == expected : ext.empty();
 }
 
 bool UtilAssembler::matchName(const fs::directory_entry& file) const
 {
-     const auto& stem = file.path().stem().string();
-     const auto name = stemToName(stem);
-     return onlyEmpty_ ? name.empty() : name_.empty() || name_ == name;
+        const auto& stem = file.path().stem().string();
+        const auto name = stemToName(stem);
+        return onlyEmpty_ ? name.empty() : name_.empty() || name_ == name;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
 {
-     auto ptr = stem.end() - 1;
-     while (ptr > stem.begin() && std::isdigit(*ptr))
-          ptr--;
-     return std::string(stem.begin(), ptr);
+        auto ptr = stem.end() - 1;
+        while (ptr > stem.begin() && std::isdigit(*ptr))
+                ptr--;
+        return std::string(stem.begin(), ptr);
 }
 
 Error UtilAssembler::setArgs(const ArgMap& map)
 {
-     const auto errBase = UtilBaseSingle::setArgs(map);
-     if (errBase)
-          return *errBase;
-     const auto errExtension = setMember(map,
-               {"--extension", "-e", "extension"}, ext_);
-     if (errExtension)
-          return *errExtension;
-     const auto errName = setMember(map, {"--name", "-n", "name"}, name_);
-     if (errName)
-          return *errName;
-     return None;
+        const auto errBase = UtilBaseSingle::setArgs(map);
+        if (errBase)
+                return *errBase;
+        const auto errExtension = setMember(map,
+            {"--extension", "-e", "extension"}, ext_);
+        if (errExtension)
+                return *errExtension;
+        const auto errName = setMember(map, {"--name", "-n", "name"}, name_);
+        if (errName)
+                return *errName;
+        return None;
 }
 
 Error UtilAssembler::run() const 
 {
-     if (!silence_)
-          std::cout << util::banner << "\nAssembling\n";
-     const auto maybeFiles = stripeNames();
-     if (!maybeFiles)
-          return maybeFiles.error();
-     if (!*maybeFiles)
-          return "No Pieces";
-     std::ofstream outFile(out_);
-     if (!outFile)
-          return "Failed to open: " + out_;
-     const auto err = writeStripe(*maybeFiles, outFile);
-     if (err)
-          return *err;
-     const auto size = outFile.tellp();
-     if (!silence_)
-          std::cout << "Wrote " << out_ << " " << size << " bytes\n";
-     return err;
+        if (!silence_)
+                std::cout << util::banner << "\nAssembling\n";
+        const auto maybeFiles = stripeNames();
+        if (!maybeFiles)
+                return maybeFiles.error();
+        if (!*maybeFiles)
+                return "No Pieces";
+        std::ofstream outFile(out_);
+        if (!outFile)
+                return "Failed to open: " + out_;
+        const auto err = writeStripe(*maybeFiles, outFile);
+        if (err)
+                return *err;
+        const auto size = outFile.tellp();
+        if (!silence_)
+                std::cout << "Wrote " << out_ << " " << size << " bytes\n";
+        return err;
 }
 
 Error UtilAssembler::setFlags(const ArgMap& map)
 {
-     const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-     if (!maybeQuiet)
-          return maybeQuiet.error();
-     if (*maybeQuiet)
-          silence_ = true;
-     const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
-     if (!maybeNoExt)
-          return maybeNoExt.error();
-     if (*maybeNoExt)
-          useExt_ = false;
-     const auto maybeNoName = validFlag(map, {"-nn", "--no-name"});
-     if (!maybeNoName)
-          return maybeNoName.error();
-     if (*maybeNoName)
-          onlyEmpty_ = true;
-     return None;
+        const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
+        if (!maybeQuiet)
+                return maybeQuiet.error();
+        if (*maybeQuiet)
+                silence_ = true;
+        const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
+        if (!maybeNoExt)
+                return maybeNoExt.error();
+        if (*maybeNoExt)
+                useExt_ = false;
+        const auto maybeNoName = validFlag(map, {"-nn", "--no-name"});
+        if (!maybeNoName)
+                return maybeNoName.error();
+        if (*maybeNoName)
+                onlyEmpty_ = true;
+        return None;
 }
 
 std::unordered_set<std::string> UtilAssembler::validArgs() const
 {
-     return {
-          "-i" , "--input",
-          "-o" , "--output",
-          "-e" , "--extension",
-          "-n" , "--name",
-          "-q" , "--quiet",
-          "-ne", "--no-extension",
-          "-nn", "--no-name"
-     };
+        return {
+            "-i" , "--input",
+            "-o" , "--output",
+            "-e" , "--extension",
+            "-n" , "--name",
+            "-q" , "--quiet",
+            "-ne", "--no-extension",
+            "-nn", "--no-name"
+        };
 }
