@@ -75,10 +75,10 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
         const std::string num(size.begin(), it);
         if (num.empty())
                 return make_bad<size_t>("No size...");
-        const auto dec = std::count_if(num.begin(), num.end(), [](const auto c) {
-                return c == '.';
+        const auto d = std::count_if(num.begin(), num.end(), [](const auto c) {
+                    return c == '.';
         });
-        if (dec > 1 || (it != size.end() && !std::isalpha(*it)))
+        if (d > 1 || (it != size.end() && !std::isalpha(*it)))
                 return make_bad<size_t>("Bad byte size");
         const std::unordered_map<std::string, size_t> map = {   
             {"b" , 1},
