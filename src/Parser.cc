@@ -138,7 +138,7 @@ Maybe<UtilPtr> Parser::createUtil() const
         switch (mode) {
         case Mode::STRIPE :
                 return createPtr<UtilStripe>();
-        case Mode::STRIPE_FIXED:
+        case Mode::STRIPE_FIXED :
                 return createPtr<UtilStripeFixed>();
         case Mode::ASM :
                 return createPtr<UtilAssembler>();
