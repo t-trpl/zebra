@@ -76,7 +76,7 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
         if (num.empty())
                 return make_bad<size_t>("No size...");
         const auto d = std::count_if(num.begin(), num.end(), [](const auto c) {
-                    return c == '.';
+                return c == '.';
         });
         if (d > 1 || (it != size.end() && !std::isalpha(*it)))
                 return make_bad<size_t>("Bad byte size");
