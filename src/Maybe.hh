@@ -24,11 +24,12 @@ template<typename T>
 class Maybe {
 private:
         struct Dummy { }; /// needed std::variant collision
-        using err = std::conditional_t<
-                std::is_same_v<T, std::string>,
-                Dummy,
-                std::string
-                >;
+        using err =
+            std::conditional_t<
+                    std::is_same_v<T, std::string>,
+                    Dummy,
+                    std::string
+                    >;
         bool hasValue_ = false;
         std::variant<T, err> value_;
         Maybe(const std::string& msg, bool);
@@ -71,8 +72,8 @@ Maybe<T> make_bad(std::string&& err)
 
 template<typename T>
 Maybe<T>::Maybe(const T& val)
-        : hasValue_(true)
-        , value_(val)
+    : hasValue_(true)
+    , value_(val)
 {
 
 }
@@ -85,32 +86,32 @@ Maybe<T>::~Maybe()
 
 template<typename T>
 Maybe<T>::Maybe(const std::string& msg, bool) 
-        : hasValue_(false)
-        , value_(msg)
+    : hasValue_(false)
+    , value_(msg)
 {
 
 }
 
 template<typename T>
 Maybe<T>::Maybe(std::string&& msg, bool) 
-        : hasValue_(false)
-        , value_(std::forward<std::string>(msg))
+    : hasValue_(false)
+    , value_(std::forward<std::string>(msg))
 {
 
 }
 
 template<typename T>
 Maybe<T>::Maybe(T&& val) noexcept 
-        : hasValue_(true)
-        , value_(std::move(val))
+    : hasValue_(true)
+    , value_(std::move(val))
 {
 
 }
 
 template<typename T>
 Maybe<T>::Maybe(const Maybe<T>& other) 
-        : hasValue_(other.hasValue_)
-        , value_(other.value_)
+    : hasValue_(other.hasValue_)
+    , value_(other.value_)
 {
 
 }
@@ -196,8 +197,8 @@ Maybe<T>::Maybe(const Maybe<U>& other)
 template<typename T>
 template<typename U>
 Maybe<T>::Maybe(const U& val)
-        : hasValue_(true)
-        , value_(static_cast<T>(val))
+    : hasValue_(true)
+    , value_(static_cast<T>(val))
 {
 
 }
@@ -221,8 +222,8 @@ Maybe<T>::Maybe(Maybe<U>&& other)
 template<typename T>
 template<typename U>
 Maybe<T>::Maybe(std::initializer_list<U> il)
-        : hasValue_(true)
-        , value_(il)
+    : hasValue_(true)
+    , value_(il)
 {
 
 }
@@ -230,7 +231,7 @@ Maybe<T>::Maybe(std::initializer_list<U> il)
 template<typename T>
 template<typename U>
 Maybe<T>::Maybe(U&& val)
-        : hasValue_(true)
+    : hasValue_(true)
 {
         if constexpr (std::is_constructible_v<T, U&&>)
                 value_ = T(std::forward<U>(val));
