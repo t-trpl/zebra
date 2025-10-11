@@ -24,12 +24,11 @@ template<typename T>
 class Maybe {
 private:
         struct Dummy { }; /// needed std::variant collision
-        using err =
-            std::conditional_t<
-                    std::is_same_v<T, std::string>,
-                    Dummy,
-                    std::string
-                    >;
+        using err = std::conditional_t<
+                std::is_same_v<T, std::string>,
+                Dummy,
+                std::string
+                >;
         bool hasValue_ = false;
         std::variant<T, err> value_;
         Maybe(const std::string& msg, bool);
@@ -51,7 +50,8 @@ public:
         const T& operator*() const;
         static Maybe<T> bad(const std::string& err);
         static Maybe<T> bad(std::string&& err);
-        std::string error() const;
+        std::string& error();
+        const std::string& error() const;
         template<typename U> T valueOr(const U& fallback) const;
         T extract();
         T* operator->();
@@ -167,7 +167,13 @@ Maybe<T> Maybe<T>::bad(std::string&& err)
 }
 
 template<typename T>
-std::string Maybe<T>::error() const
+std::string& Maybe<T>::error()
+{
+        return std::get<std::string>(value_);
+}
+
+template<typename T>
+const std::string& Maybe<T>::error() const
 {
         return std::get<std::string>(value_);
 }
