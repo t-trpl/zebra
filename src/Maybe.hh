@@ -53,7 +53,7 @@ public:
         std::string& error();
         const std::string& error() const;
         template<typename U> T valueOr(const U& fallback) const;
-        T extract();
+        T&& extract();
         T* operator->();
         const T* operator->() const;
 };
@@ -246,7 +246,7 @@ Maybe<T>::Maybe(U&& val)
 }
 
 template<typename T>
-T Maybe<T>::extract()
+T&& Maybe<T>::extract()
 {
         return std::move(**this);
 }
