@@ -27,7 +27,7 @@ private:
         Maybe<int> stringToParts(const std::string& parts) const;
         size_t getStripeSize(const size_t& fsize) const override;
 public:
-        UtilStripeFixed() = default; 
+        UtilStripeFixed() = default;
         virtual ~UtilStripeFixed() = default;
         UtilStripeFixed(const UtilStripeFixed&) = delete;
         Error setArgs(const ArgMap& map) override;

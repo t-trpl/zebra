@@ -22,16 +22,16 @@
 namespace util {
 
 inline const std::string banner =
-R"( _______| |__  _ __ __ _ 
+R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |
  / /  __/ |_) | | | (_| |
 /___\___|_.__/|_|  \__,_|)";
 
 inline const std::string help =
-R"(Usage: zebra [mode option] [required option] [required option] 
+R"(Usage: zebra [mode option] [required option] [required option]
 [optional option] ... [optional flags] ...
 
-Options or flags may be provided in any order. All i/o options may be relative or 
+Options or flags may be provided in any order. All i/o options may be relative or
 absolute paths. Duplicate options will result in an error, flags will not.
 
 Modes:
@@ -41,7 +41,7 @@ Required :
     -i, --input <input file>
     -o, --output <ouput directory>
 Optional :
-   OR: 
+   OR:
         -s, --size  <stripe size>
             Stripe size in bytes or number (can be floating point) followed by
                 suffix (kb, mb, gb)
@@ -75,7 +75,7 @@ Flag(s)
 
 -A, --Assemble <Assemble>
     Assemble, assembles pieces back to a single file
-Required (1) : 
+Required (1) :
 Note: Assembles all ".stripe" files in directory in lexicographical order:
     -i, --intput  <input directory>
     -o, --output  <output file>
@@ -95,7 +95,7 @@ Flag(s) :
     -ne, --no-extension <no extension>
         This will exclusively use files without an extension
     -nn, --no-name <no name>
-        This will exclusively use files without a prefix 
+        This will exclusively use files without a prefix
 Required (2) :
 Note: Assembles all files in the order they provided:
     -i, --input <input files>

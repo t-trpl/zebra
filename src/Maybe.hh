@@ -79,7 +79,7 @@ Maybe<T>::Maybe(const T& val)
 }
 
 template<typename T>
-Maybe<T>::Maybe(const std::string& msg, bool) 
+Maybe<T>::Maybe(const std::string& msg, bool)
     : hasValue_(false)
     , value_(msg)
 {
@@ -87,7 +87,7 @@ Maybe<T>::Maybe(const std::string& msg, bool)
 }
 
 template<typename T>
-Maybe<T>::Maybe(std::string&& msg, bool) 
+Maybe<T>::Maybe(std::string&& msg, bool)
     : hasValue_(false)
     , value_(std::forward<std::string>(msg))
 {
@@ -95,7 +95,7 @@ Maybe<T>::Maybe(std::string&& msg, bool)
 }
 
 template<typename T>
-Maybe<T>::Maybe(T&& val) noexcept 
+Maybe<T>::Maybe(T&& val) noexcept
     : hasValue_(true)
     , value_(std::move(val))
 {
@@ -103,7 +103,7 @@ Maybe<T>::Maybe(T&& val) noexcept
 }
 
 template<typename T>
-Maybe<T>::Maybe(const Maybe<T>& other) 
+Maybe<T>::Maybe(const Maybe<T>& other)
     : hasValue_(other.hasValue_)
     , value_(other.value_)
 {
@@ -211,7 +211,7 @@ Maybe<T>::Maybe(Maybe<U>&& other)
                 hasValue_ = true;
                 if constexpr (std::is_constructible_v<T, U&&>)
                         value_ = T(std::forward<U>(*other));
-                else 
+                else
                         value_ = static_cast<T>(std::forward<U>(*other));
         } else {
                 hasValue_ = false;
@@ -235,7 +235,7 @@ Maybe<T>::Maybe(U&& val)
 {
         if constexpr (std::is_constructible_v<T, U&&>)
                 value_ = T(std::forward<U>(val));
-        else 
+        else
                 value_ = static_cast<T>(std::forward<U>(val));
 }
 

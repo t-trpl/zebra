@@ -36,7 +36,7 @@ protected:
         Error setMember(const ArgMap& map, const ArgT& opt, std::string& ref);
         virtual std::unordered_set<std::string> validArgs() const = 0;
 public:
-        UtilBase() = default; 
+        UtilBase() = default;
         virtual ~UtilBase() = default;
         UtilBase(const UtilBase&) = delete;
         virtual Error run() const = 0;

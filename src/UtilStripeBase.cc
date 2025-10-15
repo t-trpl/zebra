@@ -39,15 +39,15 @@ std::streamsize UtilStripeBase::fileSize(std::ifstream& file) const
         file.seekg(0, std::ios::end);
         std::streamsize size = file.tellg();
         file.seekg(0, std::ios::beg);
-        return size; 
+        return size;
 }
 
-std::string UtilStripeBase::fileName(const int& number, 
+std::string UtilStripeBase::fileName(const int& number,
     const size_t& len) const
 {
         const std::string strn = std::to_string(number);
         const int diff = static_cast<int>(len) - static_cast<int>(strn.size());
-        const int zeros = padding_ ? std::max(0, diff) : 0; 
+        const int zeros = padding_ ? std::max(0, diff) : 0;
         const std::string paddingZeros(zeros, '0');
         return name_ + (!name_.empty() ? "_" : "") + paddingZeros + strn;
 }

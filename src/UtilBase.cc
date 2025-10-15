@@ -59,7 +59,7 @@ Error UtilBase::setMemberPath(const ArgMap& map, const ArgT& opt,
     std::string& ref)
 {
         std::string interimPath;
-        const auto err = setMemberBase(map, opt, interimPath, true); 
+        const auto err = setMemberBase(map, opt, interimPath, true);
         if (err)
                 return err;
         const auto path = toPath(interimPath);
@@ -74,7 +74,7 @@ bool UtilBase::isSlash(const char c) const
         return c == '/' || c == '\\';
 }
 
-std::string UtilBase::clean(const std::string& path) const 
+std::string UtilBase::clean(const std::string& path) const
 {
         const int last = path.size() - 1;
         if (last > 0 && isSlash(path[last]))
