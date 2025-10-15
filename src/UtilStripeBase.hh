@@ -41,8 +41,8 @@ protected:
         std::streamsize chunk(std::ifstream& input, std::ofstream& output,
             std::streamsize remaining) const;
 public:
-        UtilStripeBase() { }
-        virtual ~UtilStripeBase() { }
+        UtilStripeBase() = default;
+        virtual ~UtilStripeBase() = default;
         UtilStripeBase(const UtilStripeBase&) = delete;
         Error run() const override;
         Error setFlags(const ArgMap& map) override;

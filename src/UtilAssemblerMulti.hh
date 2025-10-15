@@ -29,8 +29,8 @@ private:
         std::string out_;
         std::unordered_set<std::string> validArgs() const override;
 public:
-        UtilAssemblerMulti() { }
-        ~UtilAssemblerMulti() { }
+        UtilAssemblerMulti() = default;
+        ~UtilAssemblerMulti() = default;
         UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
         Error run() const override;
         Error setFlags(const ArgMap& map) override;

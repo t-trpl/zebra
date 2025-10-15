@@ -46,8 +46,8 @@ private:
         bool leadingHyphen(const std::string& str) const;
         OptData nextOption(ArgList args) const;
 public:
-        Parser() { }
-        ~Parser() { }
+        Parser() = default;
+        ~Parser() = default;
         Parser(const Parser&) = delete;
         Maybe<UtilPtr> createUtil() const;
         Error runParse(const ArgList args);

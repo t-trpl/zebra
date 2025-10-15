@@ -35,7 +35,7 @@ private:
         Maybe(std::string&& msg, bool);
 public:
         Maybe(const T& val);
-        ~Maybe();
+        ~Maybe() = default;
         Maybe(T&& val) noexcept;
         Maybe(const Maybe<T>& other);
         template<typename U> Maybe(std::initializer_list<U> il);
@@ -74,12 +74,6 @@ template<typename T>
 Maybe<T>::Maybe(const T& val)
     : hasValue_(true)
     , value_(val)
-{
-
-}
-
-template<typename T>
-Maybe<T>::~Maybe() 
 {
 
 }

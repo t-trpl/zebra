@@ -30,8 +30,8 @@ private:
         std::unordered_set<std::string> validArgs() const override;
         size_t getStripeSize(const size_t&) const override;
 public:
-        UtilStripe() { }
-        ~UtilStripe() { }
+        UtilStripe() = default;
+        ~UtilStripe() = default;
         UtilStripe(const UtilStripe&) = delete;
         Error setArgs(const ArgMap& map) override;
 };

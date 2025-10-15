@@ -38,8 +38,8 @@ private:
         bool matchExt(const fs::directory_entry& file) const;
         bool matchName(const fs::directory_entry& file) const;
 public:
-        UtilAssembler() { }
-        ~UtilAssembler() { }
+        UtilAssembler() = default;
+        ~UtilAssembler() = default;
         UtilAssembler(const UtilAssembler&) = delete;
         Error run() const override;
         Error setArgs(const ArgMap& map) override;

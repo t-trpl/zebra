@@ -25,8 +25,8 @@ protected:
         std::string in_;
         std::string out_;
 public:
-        UtilBaseSingle() { } 
-        virtual ~UtilBaseSingle() { }
+        UtilBaseSingle() = default;
+        virtual ~UtilBaseSingle() = default;
         UtilBaseSingle(const UtilBaseSingle&) = delete;
         virtual Error setArgs(const ArgMap& map) override;
 };

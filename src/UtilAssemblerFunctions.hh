@@ -26,8 +26,8 @@ class UtilAssemblerFunctions {
 protected:
         Error writeStripe(FilesL files, std::ofstream& out) const;
 public:
-        UtilAssemblerFunctions() { }
-        virtual ~UtilAssemblerFunctions() { }
+        UtilAssemblerFunctions() = default;
+        virtual ~UtilAssemblerFunctions() = default;
         UtilAssemblerFunctions(const UtilAssemblerFunctions&) = delete;
 };
 
