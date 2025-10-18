@@ -57,7 +57,7 @@ OptData Parser::nextOption(ArgList args) const
 }
 
 bool Parser::checkHelp() const
-{ 
+{
         return containsMap(argMap_, {"-h", "--help"});
 }
 

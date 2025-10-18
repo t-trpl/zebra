@@ -27,12 +27,11 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
                 return maybeInput.error();
         if (const auto ptr = *maybeInput; ptr != map.end()) {
                 FilesL acc = nullptr;
-                for (auto p = ptr->second; p; p = p->next) {
+                for (auto p = ptr->second; p; p = p->next)
                         if (const auto part = toPath(p->val); part)
                                 acc = push(*part, acc);
                         else
                                 part.error();
-                }
                 files_ = reverseN(acc);
         } else {
                 return "Missing Input";
