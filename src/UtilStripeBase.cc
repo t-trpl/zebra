@@ -30,8 +30,8 @@ size_t UtilStripeBase::numberLength(const size_t& rem) const
 size_t UtilStripeBase::stripeLength(const std::streamsize& size,
     const size_t& stripeSize) const
 {
-        const size_t pieces = size / stripeSize + (size % stripeSize > 0); 
-        return numberLength(pieces);
+        const size_t pieces = size / stripeSize + (size % stripeSize > 0);
+        return numberLength(pieces - 1);
 }
 
 std::streamsize UtilStripeBase::fileSize(std::ifstream& file) const
@@ -42,8 +42,7 @@ std::streamsize UtilStripeBase::fileSize(std::ifstream& file) const
         return size;
 }
 
-std::string UtilStripeBase::fileName(const int& number,
-    const size_t& len) const
+std::string UtilStripeBase::fileName(const int& number, const size_t& len) const
 {
         const std::string strn = std::to_string(number);
         const int diff = static_cast<int>(len) - static_cast<int>(strn.size());
