@@ -19,8 +19,6 @@
 #include "src/UtilBaseSingle.hh"
 #include "src/ChunkFunctions.hh"
 #include <string>
-#include <fstream>
-#include <vector>
 
 #ifndef UTIL_STRIPE_BASE_HH
 #define UTIL_STRIPE_BASE_HH

@@ -19,6 +19,7 @@
 #include "src/helpers.hh"
 #include <iostream>
 #include <filesystem>
+#include <fstream>
 
 namespace fs = std::filesystem;
 

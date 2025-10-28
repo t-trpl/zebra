@@ -16,7 +16,6 @@
 
 #include "src/UtilAssemblerFunctions.hh"
 #include <fstream>
-#include <vector>
 
 Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
     std::ofstream& out) const

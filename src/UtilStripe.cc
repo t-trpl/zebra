@@ -1,4 +1,4 @@
-/** 
+/**
  * File: UtilStripe.cc
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
