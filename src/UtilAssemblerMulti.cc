@@ -50,13 +50,13 @@ Error UtilAssemblerMulti::run() const
         std::ofstream outFile(out_);
         if (!outFile)
                 return "Failed to open: " + out_;
-        const auto err = writeStripe(files_, outFile);
-        if (err)
-                return *err;
-        const auto size = outFile.tellp();
+        const auto maybeSize = writeStripe(files_, outFile);
+        if (!maybeSize)
+                return maybeSize.error();
+        const auto size = *maybeSize;
         if (!silence_)
                 std::cout << "Wrote " << out_ << " " << size << " bytes\n";
-        return err;
+        return None;
 }
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)

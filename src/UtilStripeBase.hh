@@ -17,6 +17,7 @@
 #include "src/types.hh"
 #include "src/Maybe.hh"
 #include "src/UtilBaseSingle.hh"
+#include "src/ChunkFunctions.hh"
 #include <string>
 #include <fstream>
 #include <vector>
@@ -24,13 +25,13 @@
 #ifndef UTIL_STRIPE_BASE_HH
 #define UTIL_STRIPE_BASE_HH
 
-class UtilStripeBase : public UtilBaseSingle {
+class UtilStripeBase : public UtilBaseSingle
+                     , public ChunkFunctions {
 protected:
         std::string name_ = "";
         std::string ext_ = "stripe";
         bool padding_ = true;
         bool useExt_ = true;
-        std::streamsize fileSize(std::ifstream& file) const;
         size_t stripeLength(const std::streamsize& size,
             const size_t& stripeSize) const;
         std::string fileName(const int& number, const size_t& len) const;
@@ -38,8 +39,6 @@ protected:
         std::string stripePath(const size_t& num, const size_t& max,
             const std::string& out) const;
         virtual size_t getStripeSize(const size_t& fsize) const = 0;
-        std::streamsize chunk(std::ifstream& input, std::ofstream& output,
-            std::streamsize remaining) const;
 public:
         UtilStripeBase() = default;
         virtual ~UtilStripeBase() = default;

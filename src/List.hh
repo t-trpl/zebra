@@ -1,4 +1,4 @@
-/** 
+/**
  * File: List.hh
  * Simple reference counting linked list with some useful functions.
  * Copyright (C) 2025 Tyler Triplett

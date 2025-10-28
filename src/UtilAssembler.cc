@@ -85,10 +85,10 @@ Error UtilAssembler::run() const
         std::ofstream outFile(out_);
         if (!outFile)
                 return "Failed to open: " + out_;
-        const auto err = writeStripe(*maybeFiles, outFile);
-        if (err)
-                return *err;
-        const auto size = outFile.tellp();
+        const auto maybeSize = writeStripe(*maybeFiles, outFile);
+        if (!maybeSize)
+                return maybeSize.error();
+        const auto size = *maybeSize;
         if (!silence_)
                 std::cout << "Wrote " << out_ << " " << size << " bytes\n";
         return None;

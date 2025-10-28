@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerFunctions.hh
+ * File: ChunkFunctions.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,24 +14,20 @@
  * GNU General Public License for more details.
  */
 
-#include "src/List.hh"
 #include "src/types.hh"
-#include "src/Maybe.hh"
-#include "src/ChunkFunctions.hh"
 
-#ifndef UTIL_ASSEMBLER_FUNCTIONS_HH
-#define UTIL_ASSEMBLER_FUNCTIONS_HH
+#ifndef CHUNK_FUNCTIONS_HH
+#define CHUNK_FUNCTIONS_HH
 
-using FilesL = ty::List<std::string>;
-
-class UtilAssemblerFunctions : public ChunkFunctions {
+class ChunkFunctions {
 protected:
-        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out)
-            const;
+        std::streamsize fileSize(std::ifstream& file) const;
+        std::streamsize chunk(std::ifstream& input, std::ofstream& output,
+            std::streamsize remaining) const;
 public:
-        UtilAssemblerFunctions() = default;
-        virtual ~UtilAssemblerFunctions() = default;
-        UtilAssemblerFunctions(const UtilAssemblerFunctions&) = delete;
+        ChunkFunctions() = default;
+        virtual ~ChunkFunctions() = default;
+        ChunkFunctions(const ChunkFunctions&) = delete;
 };
 
-#endif /// UTIL_ASSEMBLER_FUNCTIONS_HH
+#endif /// CHUNK_FUNCTIONS_HH

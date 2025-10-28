@@ -34,14 +34,6 @@ size_t UtilStripeBase::stripeLength(const std::streamsize& size,
         return numberLength(pieces - 1);
 }
 
-std::streamsize UtilStripeBase::fileSize(std::ifstream& file) const
-{
-        file.seekg(0, std::ios::end);
-        std::streamsize size = file.tellg();
-        file.seekg(0, std::ios::beg);
-        return size;
-}
-
 std::string UtilStripeBase::fileName(const int& number, const size_t& len) const
 {
         const std::string strn = std::to_string(number);
@@ -58,25 +50,6 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
         const std::string fullName = useExt_ ? (name + "." + ext_) : name;
         const std::string path = fs::path(out) / fullName;
         return path;
-}
-
-std::streamsize UtilStripeBase::chunk(std::ifstream& input,
-    std::ofstream& output, std::streamsize remaining) const
-{
-        const std::streamsize chunkSize = 1'000'000;
-        std::vector<char> buffer(chunkSize, 0);
-        std::streamsize acc = 0;
-        while (remaining) {
-                const auto use = std::min(chunkSize, remaining);
-                input.read(buffer.data(), use);
-                const auto& read = input.gcount();
-                if (!read)
-                        break;
-                acc += read;
-                output.write(buffer.data(), read);
-                remaining -= use;
-        }
-        return acc;
 }
 
 Error UtilStripeBase::run() const

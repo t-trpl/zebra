@@ -16,17 +16,21 @@
 
 #include "src/UtilAssemblerFunctions.hh"
 #include <fstream>
+#include <vector>
 
-Error UtilAssemblerFunctions::writeStripe(FilesL files, std::ofstream& out)
-    const
+Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
+    std::ofstream& out) const
 {
+        std::streamsize acc = 0;
         while (files) {
                 const std::string& path = files->val;
                 std::ifstream file(path, std::ios::binary);
                 if (!file)
-                        return "Failed to open: " + path + "\nDiscard output";
-                out << file.rdbuf();
+                        return make_bad<std::streamsize>(
+                            "Failed to open: " + path + "\nDiscard output");
+                const auto remaining = fileSize(file);
+                acc += chunk(file, out, remaining);
                 files = files->next;
         }
-        return None;
+        return acc;
 }
