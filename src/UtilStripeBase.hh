@@ -24,7 +24,7 @@
 #define UTIL_STRIPE_BASE_HH
 
 class UtilStripeBase : public UtilBaseSingle
-                     , public ChunkFunctions {
+                     , protected ChunkFunctions {
 protected:
         std::string name_ = "";
         std::string ext_ = "stripe";

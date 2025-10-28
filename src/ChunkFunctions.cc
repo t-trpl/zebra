@@ -29,7 +29,7 @@ std::streamsize ChunkFunctions::fileSize(std::ifstream& file) const
 std::streamsize ChunkFunctions::chunk(std::ifstream& input,
     std::ofstream& output, std::streamsize remaining) const
 {
-        const std::streamsize chunkSize = 16'384;
+        const std::streamsize chunkSize = 1'024 * 64;
         std::vector<char> buffer(chunkSize, 0);
         std::streamsize acc = 0;
         while (remaining) {

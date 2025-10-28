@@ -24,7 +24,7 @@
 
 using FilesL = ty::List<std::string>;
 
-class UtilAssemblerFunctions : public ChunkFunctions {
+class UtilAssemblerFunctions : protected ChunkFunctions {
 protected:
         Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out)
             const;
