@@ -20,16 +20,16 @@
 Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
     std::ofstream& out) const
 {
-        std::streamsize acc = 0;
+        std::streamsize bytes = 0;
         while (files) {
                 const std::string& path = files->val;
                 std::ifstream file(path, std::ios::binary);
                 if (!file)
                         return make_bad<std::streamsize>(
                             "Failed to open: " + path + "\nDiscard output");
-                const auto remaining = fileSize(file);
-                acc += chunk(file, out, remaining);
+                const auto size = fileSize(file);
+                bytes += chunk(file, out, size);
                 files = files->next;
         }
-        return acc;
+        return bytes;
 }
