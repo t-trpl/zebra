@@ -53,6 +53,8 @@ public:
         T&& extract();
         T* operator->();
         const T* operator->() const;
+        Maybe<T>& fail(const std::string& err);
+        Maybe<T>& fail(std::string&& err);
 };
 
 template<typename T>
@@ -76,18 +78,18 @@ Maybe<T>::Maybe(const std::string& msg, bool)
 }
 
 template<typename T>
-template<typename U>
-Maybe<T>::Maybe(std::initializer_list<U> il)
-    : hasValue_(true)
-    , value_(T(il))
+Maybe<T>::Maybe(std::string&& msg, bool)
+    : hasValue_(false)
+    , value_(std::forward<std::string>(msg))
 {
 
 }
 
 template<typename T>
-Maybe<T>::Maybe(std::string&& msg, bool)
-    : hasValue_(false)
-    , value_(std::forward<std::string>(msg))
+template<typename U>
+Maybe<T>::Maybe(std::initializer_list<U> il)
+    : hasValue_(true)
+    , value_(T(il))
 {
 
 }
@@ -218,6 +220,23 @@ template<typename T>
 const T* Maybe<T>::operator->() const
 {
         return &**this;
+}
+
+
+template<typename T>
+Maybe<T>& Maybe<T>::fail(const std::string& err)
+{
+        hasValue_ = false;
+        value_ = err;
+        return *this;
+}
+
+template<typename T>
+Maybe<T>& Maybe<T>::fail(std::string&& err)
+{
+        hasValue_ = false;
+        value_ = std::forward<std::string>(err);
+        return *this;
 }
 
 #endif /// MAYBE_HH
