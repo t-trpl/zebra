@@ -34,17 +34,15 @@ private:
         Maybe(const std::string& msg, bool);
         Maybe(std::string&& msg, bool);
 public:
-        Maybe(const T& val);
         ~Maybe() = default;
+        Maybe(const T& val);
         Maybe(T&& val) noexcept;
-        Maybe(const Maybe<T>& other);
-        template<typename U> Maybe(std::initializer_list<U> il);
-        template<typename U> Maybe(const Maybe<U>& other);
-        template<typename U> Maybe(Maybe<U>&& other);
         template<typename U> Maybe(const U& val);
-        template<typename U> Maybe(U&& val);
-        Maybe<T>& operator=(Maybe<T>&& other) noexcept;
-        Maybe<T>& operator=(const Maybe<T>& other);
+        template<typename U> Maybe(U&& val) noexcept;
+        Maybe<T>& operator=(const T& val);
+        Maybe<T>& operator=(T&& val) noexcept;
+        template<typename U> Maybe<T>& operator=(U&& val) noexcept;
+        template<typename U> Maybe<T>& operator=(const U& val);
         explicit operator bool() const;
         T& operator*();
         const T& operator*() const;
@@ -103,30 +101,39 @@ Maybe<T>::Maybe(T&& val) noexcept
 }
 
 template<typename T>
-Maybe<T>::Maybe(const Maybe<T>& other)
-    : hasValue_(other.hasValue_)
-    , value_(other.value_)
+Maybe<T>& Maybe<T>::operator=(const T& val)
 {
-
-}
-
-template<typename T>
-Maybe<T>& Maybe<T>::operator=(Maybe<T>&& other) noexcept
-{
-        if (this != &other) {
-                hasValue_ = other.hasValue_;
-                value_ = std::move(other.value_);
-        }
+        hasValue_ = true;
+        value_ = val;
         return *this;
 }
 
 template<typename T>
-Maybe<T>& Maybe<T>::operator=(const Maybe<T>& other)
+Maybe<T>& Maybe<T>::operator=(T&& val) noexcept
 {
-        if (this != &other) {
-                hasValue_ = other.hasValue_;
-                value_ = other.value_;
-        }
+        hasValue_ = true;
+        value_ = std::forward<T>(val);
+        return *this;
+}
+
+template<typename T>
+template<typename U>
+Maybe<T>& Maybe<T>::operator=(U&& val) noexcept
+{
+        hasValue_ = true;
+        if constexpr (std::is_constructible_v<T, U&&>)
+                value_ = T(std::forward<U>(val));
+        else
+                value_ = static_cast<T>(std::forward<U>(val));
+        return *this;
+}
+
+template<typename T>
+template<typename U>
+Maybe<T>& Maybe<T>::operator=(const U& val)
+{
+        hasValue_ = true;
+        value_ = static_cast<T>(val);
         return *this;
 }
 
@@ -181,18 +188,6 @@ T Maybe<T>::valueOr(const U& fallback) const
         return static_cast<T>(fallback);
 }
 
-template<typename T>
-template<typename U>
-Maybe<T>::Maybe(const Maybe<U>& other)
-{
-        if (other) {
-                hasValue_ = true;
-                value_ = static_cast<T>(*other);
-        } else {
-                hasValue_ = false;
-                value_ = other.error();
-        }
-}
 
 template<typename T>
 template<typename U>
@@ -205,32 +200,7 @@ Maybe<T>::Maybe(const U& val)
 
 template<typename T>
 template<typename U>
-Maybe<T>::Maybe(Maybe<U>&& other)
-{
-        if (other) {
-                hasValue_ = true;
-                if constexpr (std::is_constructible_v<T, U&&>)
-                        value_ = T(std::forward<U>(*other));
-                else
-                        value_ = static_cast<T>(std::forward<U>(*other));
-        } else {
-                hasValue_ = false;
-                value_ = std::forward<std::string>(other.error());
-        }
-}
-
-template<typename T>
-template<typename U>
-Maybe<T>::Maybe(std::initializer_list<U> il)
-    : hasValue_(true)
-    , value_(il)
-{
-
-}
-
-template<typename T>
-template<typename U>
-Maybe<T>::Maybe(U&& val)
+Maybe<T>::Maybe(U&& val) noexcept
     : hasValue_(true)
 {
         if constexpr (std::is_constructible_v<T, U&&>)

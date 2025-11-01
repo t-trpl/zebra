@@ -45,7 +45,7 @@ ArgList argsToList(int argc, char* argv[])
 
 int main(int argc, char* argv[])
 {
-        const ArgList args = argsToList(argc, argv);
+        const auto args = argsToList(argc, argv);
         const auto error = run(args);
         if (error) {
                 std::cout << *error << "\n";
