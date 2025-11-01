@@ -109,7 +109,7 @@ template<typename T>
 template<typename U>
 Maybe<T>::Maybe(std::initializer_list<U> il)
     : hasValue_(true)
-    , value_(T(il))
+    , value_(T(il.begin(), il.end()))
 {
 
 }
@@ -140,7 +140,7 @@ template<typename U>
 Maybe<T>& Maybe<T>::operator=(std::initializer_list<U> il)
 {
         hasValue_ = true;
-        value_ = T(il);
+        value_ = T(il.begin(), il.end());
         return *this;
 }
 
