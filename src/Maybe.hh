@@ -188,7 +188,6 @@ T Maybe<T>::valueOr(const U& fallback) const
         return static_cast<T>(fallback);
 }
 
-
 template<typename T>
 template<typename U>
 Maybe<T>::Maybe(const U& val)
