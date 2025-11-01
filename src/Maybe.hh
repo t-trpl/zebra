@@ -35,14 +35,12 @@ private:
         Maybe(std::string&& msg, bool);
 public:
         ~Maybe() = default;
-        Maybe(const T& val);
-        Maybe(T&& val) noexcept;
         template<typename U> Maybe(const U& val);
         template<typename U> Maybe(U&& val) noexcept;
-        Maybe<T>& operator=(const T& val);
-        Maybe<T>& operator=(T&& val) noexcept;
+        template<typename U> Maybe(std::initializer_list<U> il);
         template<typename U> Maybe<T>& operator=(U&& val) noexcept;
         template<typename U> Maybe<T>& operator=(const U& val);
+        template<typename U> Maybe<T>& operator=(std::initializer_list<U> il);
         explicit operator bool() const;
         T& operator*();
         const T& operator*() const;
@@ -69,17 +67,18 @@ Maybe<T> make_bad(std::string&& err)
 }
 
 template<typename T>
-Maybe<T>::Maybe(const T& val)
-    : hasValue_(true)
-    , value_(val)
+Maybe<T>::Maybe(const std::string& msg, bool)
+    : hasValue_(false)
+    , value_(msg)
 {
 
 }
 
 template<typename T>
-Maybe<T>::Maybe(const std::string& msg, bool)
-    : hasValue_(false)
-    , value_(msg)
+template<typename U>
+Maybe<T>::Maybe(std::initializer_list<U> il)
+    : hasValue_(true)
+    , value_(T(il))
 {
 
 }
@@ -90,30 +89,6 @@ Maybe<T>::Maybe(std::string&& msg, bool)
     , value_(std::forward<std::string>(msg))
 {
 
-}
-
-template<typename T>
-Maybe<T>::Maybe(T&& val) noexcept
-    : hasValue_(true)
-    , value_(std::move(val))
-{
-
-}
-
-template<typename T>
-Maybe<T>& Maybe<T>::operator=(const T& val)
-{
-        hasValue_ = true;
-        value_ = val;
-        return *this;
-}
-
-template<typename T>
-Maybe<T>& Maybe<T>::operator=(T&& val) noexcept
-{
-        hasValue_ = true;
-        value_ = std::forward<T>(val);
-        return *this;
 }
 
 template<typename T>
@@ -134,6 +109,15 @@ Maybe<T>& Maybe<T>::operator=(const U& val)
 {
         hasValue_ = true;
         value_ = static_cast<T>(val);
+        return *this;
+}
+
+template<typename T>
+template<typename U>
+Maybe<T>& Maybe<T>::operator=(std::initializer_list<U> il)
+{
+        hasValue_ = true;
+        value_ = T(il);
         return *this;
 }
 
