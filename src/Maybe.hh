@@ -58,6 +58,26 @@ public:
 };
 
 template<typename T>
+template<typename U>
+Maybe<T>::Maybe(const U& val)
+    : hasValue_(true)
+    , value_(static_cast<T>(val))
+{
+
+}
+
+template<typename T>
+template<typename U>
+Maybe<T>::Maybe(U&& val) noexcept
+    : hasValue_(true)
+{
+        if constexpr (std::is_constructible_v<T, U&&>)
+                value_ = T(std::forward<U>(val));
+        else
+                value_ = static_cast<T>(std::forward<U>(val));
+}
+
+template<typename T>
 Maybe<T> make_bad(const std::string& err)
 {
         return Maybe<T>::bad(err);
@@ -185,26 +205,6 @@ T Maybe<T>::valueOr(U&& fallback) const
 }
 
 template<typename T>
-template<typename U>
-Maybe<T>::Maybe(const U& val)
-    : hasValue_(true)
-    , value_(static_cast<T>(val))
-{
-
-}
-
-template<typename T>
-template<typename U>
-Maybe<T>::Maybe(U&& val) noexcept
-    : hasValue_(true)
-{
-        if constexpr (std::is_constructible_v<T, U&&>)
-                value_ = T(std::forward<U>(val));
-        else
-                value_ = static_cast<T>(std::forward<U>(val));
-}
-
-template<typename T>
 T&& Maybe<T>::extract()
 {
         return std::move(**this);
@@ -221,7 +221,6 @@ const T* Maybe<T>::operator->() const
 {
         return &**this;
 }
-
 
 template<typename T>
 Maybe<T>& Maybe<T>::fail(const std::string& err)
