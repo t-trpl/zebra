@@ -49,6 +49,7 @@ public:
         std::string& error();
         const std::string& error() const;
         template<typename U> T valueOr(const U& fallback) const;
+        template<typename U> T valueOr(U&& fallback) const;
         T&& extract();
         T* operator->();
         const T* operator->() const;
@@ -170,6 +171,15 @@ T Maybe<T>::valueOr(const U& fallback) const
         if (*this)
                 return **this;
         return static_cast<T>(fallback);
+}
+
+template<typename T>
+template<typename U>
+T Maybe<T>::valueOr(U&& fallback) const
+{
+        if (*this)
+                return **this;
+        return std::forward<T>(fallback);
 }
 
 template<typename T>
