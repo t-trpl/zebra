@@ -24,11 +24,9 @@ template<typename T>
 class Maybe {
 private:
         struct Dummy { }; /// needed std::variant collision
-        using err = std::conditional_t<
-                std::is_same_v<T, std::string>,
-                Dummy,
-                std::string
-                >;
+        using err = std::conditional_t<std::is_same_v<T, std::string>,
+                                       Dummy,
+                                       std::string>;
         bool hasValue_ = false;
         std::variant<T, err> value_;
         Maybe(const std::string& msg, bool);

@@ -27,13 +27,7 @@ using OptData = std::pair<ArgList, ArgList>;
 
 class Parser {
 private:
-        enum class Mode : unsigned char {
-            NONE,
-            STRIPE,
-            STRIPE_FIXED,
-            ASM,
-            ASM_MULTI,
-        };
+        enum class Mode { NONE, STRIPE, STRIPE_FIXED, ASM, ASM_MULTI, };
         std::string mode_;
         ArgMap argMap_;
         bool isUpper(const char c) const;
