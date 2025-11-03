@@ -14,14 +14,13 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBaseSingle.hh"
+#ifndef UTIL_STRIPE_HH
+#define UTIL_STRIPE_HH
+
 #include "src/UtilStripeBase.hh"
 #include "src/types.hh"
 #include "src/Maybe.hh"
 #include <string>
-
-#ifndef UTIL_STRIPE_HH
-#define UTIL_STRIPE_HH
 
 class UtilStripe final : public UtilStripeBase {
 private:

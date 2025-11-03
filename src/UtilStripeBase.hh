@@ -14,14 +14,13 @@
  * GNU General Public License for more details.
  */
 
+#ifndef UTIL_STRIPE_BASE_HH
+#define UTIL_STRIPE_BASE_HH
+
 #include "src/types.hh"
-#include "src/Maybe.hh"
 #include "src/UtilBaseSingle.hh"
 #include "src/ChunkFunctions.hh"
 #include <string>
-
-#ifndef UTIL_STRIPE_BASE_HH
-#define UTIL_STRIPE_BASE_HH
 
 class UtilStripeBase : public UtilBaseSingle
                      , protected ChunkFunctions {

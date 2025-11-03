@@ -15,10 +15,10 @@
  * GNU General Public License for more details.
  */
 
-#include <memory>
-
 #ifndef LIST_HH
 #define LIST_HH
+
+#include <memory>
 
 namespace ty {
 
@@ -103,4 +103,4 @@ int count(const List<T> head)
 
 } /// ty
 
-#endif // LIST_HH
+#endif /// LIST_HH

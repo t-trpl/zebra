@@ -14,13 +14,13 @@
  * GNU General Public License for more details.
  */
 
+#ifndef PARSER_HH
+#define PARSER_HH
+
 #include "src/UtilBase.hh"
 #include "src/types.hh"
 #include <string>
 #include <memory>
-
-#ifndef PARSER_HH
-#define PARSER_HH
 
 using UtilPtr = std::unique_ptr<UtilBase>;
 using OptData = std::pair<ArgList, ArgList>;

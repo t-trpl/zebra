@@ -14,13 +14,13 @@
  * GNU General Public License for more details.
  */
 
+#ifndef TYPES_HH
+#define TYPES_HH
+
 #include "src/List.hh"
 #include <unordered_map>
 #include <string>
 #include <optional>
-
-#ifndef TYPES_HH
-#define TYPES_HH
 
 using ArgList = ty::List<std::string>;
 

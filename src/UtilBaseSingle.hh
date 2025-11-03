@@ -14,11 +14,11 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBase.hh"
-#include <string>
-
 #ifndef UTIL_BASE_SINGLE_HH
 #define UTIL_BASE_SINGLE_HH
+
+#include "src/UtilBase.hh"
+#include <string>
 
 class UtilBaseSingle : public UtilBase {
 protected:

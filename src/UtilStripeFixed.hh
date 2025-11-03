@@ -14,11 +14,10 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBaseSingle.hh"
-#include "src/UtilStripeBase.hh"
-
 #ifndef UTIL_STRIPE_FIXED_HH
 #define UTIL_STRIPE_FIXED_HH
+
+#include "src/UtilStripeBase.hh"
 
 class UtilStripeFixed final : public UtilStripeBase {
 private:

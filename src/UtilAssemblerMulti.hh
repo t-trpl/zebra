@@ -14,13 +14,12 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBase.hh"
-#include "src/UtilAssemblerFunctions.hh"
-#include "src/List.hh"
-#include <string>
-
 #ifndef UTIL_ASSEMBLER_MULTI_HH
 #define UTIL_ASSEMBLER_MULTI_HH
+
+#include "src/UtilBase.hh"
+#include "src/UtilAssemblerFunctions.hh"
+#include <string>
 
 class UtilAssemblerMulti final : public UtilBase
                                , public UtilAssemblerFunctions {

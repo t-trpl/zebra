@@ -14,14 +14,13 @@
  * GNU General Public License for more details.
  */
 
+#ifndef UTIL_ASSEMBLER_HH
+#define UTIL_ASSEMBLER_HH
+
 #include "src/UtilBaseSingle.hh"
 #include "src/UtilAssemblerFunctions.hh"
 #include "src/Maybe.hh"
-#include "src/List.hh"
 #include <filesystem>
-
-#ifndef UTIL_ASSEMBLER_HH
-#define UTIL_ASSEMBLER_HH
 
 namespace fs = std::filesystem;
 

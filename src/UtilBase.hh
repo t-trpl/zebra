@@ -14,13 +14,13 @@
  * GNU General Public License for more details.
  */
 
+#ifndef UTIL_BASE_HH
+#define UTIL_BASE_HH
+
 #include "src/Maybe.hh"
 #include "src/types.hh"
 #include <string>
 #include <unordered_set>
-
-#ifndef UTIL_BASE_HH
-#define UTIL_BASE_HH
 
 class UtilBase {
 private:

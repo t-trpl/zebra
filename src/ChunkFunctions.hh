@@ -14,10 +14,10 @@
  * GNU General Public License for more details.
  */
 
-#include "src/types.hh"
-
 #ifndef CHUNK_FUNCTIONS_HH
 #define CHUNK_FUNCTIONS_HH
+
+#include <fstream>
 
 class ChunkFunctions {
 protected:

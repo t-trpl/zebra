@@ -14,13 +14,12 @@
  * GNU General Public License for more details.
  */
 
-#include "src/List.hh"
-#include "src/types.hh"
-#include "src/Maybe.hh"
-#include "src/ChunkFunctions.hh"
-
 #ifndef UTIL_ASSEMBLER_FUNCTIONS_HH
 #define UTIL_ASSEMBLER_FUNCTIONS_HH
+
+#include "src/List.hh"
+#include "src/Maybe.hh"
+#include "src/ChunkFunctions.hh"
 
 using FilesL = ty::List<std::string>;
 
