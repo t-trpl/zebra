@@ -47,7 +47,7 @@ bool UtilAssembler::matchName(const fs::directory_entry& file) const
 {
         const auto& stem = file.path().stem().string();
         const auto name = stemToName(stem);
-        return onlyEmpty_ ? name.empty() : name_.empty() || name_ == name;
+        return empty_ ? name.empty() : name_.empty() || name_ == name;
 }
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
@@ -60,16 +60,16 @@ std::string UtilAssembler::stemToName(const std::string& stem) const
 
 Error UtilAssembler::setArgs(const ArgMap& map)
 {
-        const auto errBase = UtilBaseSingle::setArgs(map);
-        if (errBase)
-                return *errBase;
-        const auto errExtension = setMember(map,
-            {"--extension", "-e", "extension"}, ext_);
-        if (errExtension)
-                return *errExtension;
-        const auto errName = setMember(map, {"--name", "-n", "name"}, name_);
-        if (errName)
-                return *errName;
+        const auto base = UtilBaseSingle::setArgs(map);
+        if (base)
+                return *base;
+        const auto ext = setMember(map, {"--extension", "-e", "extension"},
+            ext_);
+        if (ext)
+                return *ext;
+        const auto name = setMember(map, {"--name", "-n", "name"}, name_);
+        if (name)
+                return *name;
         return None;
 }
 
@@ -77,40 +77,39 @@ Error UtilAssembler::run() const
 {
         if (!silence_)
                 std::cout << util::banner << "\nAssembling\n";
-        const auto maybeFiles = stripeNames();
-        if (!maybeFiles)
-                return maybeFiles.error();
-        if (!*maybeFiles)
+        const auto stripes = stripeNames();
+        if (!stripes)
+                return stripes.error();
+        if (!*stripes)
                 return "No Pieces";
         std::ofstream outFile(out_);
         if (!outFile)
                 return "Failed to open: " + out_;
-        const auto maybeSize = writeStripe(*maybeFiles, outFile);
-        if (!maybeSize)
-                return maybeSize.error();
-        const auto size = *maybeSize;
+        const auto bytes = writeStripe(*stripes, outFile);
+        if (!bytes)
+                return bytes.error();
         if (!silence_)
-                std::cout << "Wrote " << out_ << " " << size << " bytes\n";
+                std::cout << "Wrote " << out_ << " " << *bytes << " bytes\n";
         return None;
 }
 
 Error UtilAssembler::setFlags(const ArgMap& map)
 {
-        const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-        if (!maybeQuiet)
-                return maybeQuiet.error();
-        if (*maybeQuiet)
+        const auto quiet = validFlag(map, {"-q", "--quiet"});
+        if (!quiet)
+                return quiet.error();
+        if (*quiet)
                 silence_ = true;
-        const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
-        if (!maybeNoExt)
-                return maybeNoExt.error();
-        if (*maybeNoExt)
+        const auto noExt = validFlag(map, {"-ne", "--no-extension"});
+        if (!noExt)
+                return noExt.error();
+        if (*noExt)
                 useExt_ = false;
-        const auto maybeNoName = validFlag(map, {"-nn", "--no-name"});
-        if (!maybeNoName)
-                return maybeNoName.error();
-        if (*maybeNoName)
-                onlyEmpty_ = true;
+        const auto noName = validFlag(map, {"-nn", "--no-name"});
+        if (!noName)
+                return noName.error();
+        if (*noName)
+                empty_ = true;
         return None;
 }
 

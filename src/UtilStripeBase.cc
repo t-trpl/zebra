@@ -87,35 +87,35 @@ Error UtilStripeBase::run() const
 
 Error UtilStripeBase::setFlags(const ArgMap& map)
 {
-        const auto maybePad = validFlag(map, {"-np", "--no-padding"});
-        if (!maybePad)
-                return maybePad.error();
-        if (*maybePad)
+        const auto noPadding = validFlag(map, {"-np", "--no-padding"});
+        if (!noPadding)
+                return noPadding.error();
+        if (*noPadding)
                 padding_ = false;
-        const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-        if (!maybeQuiet)
-                return maybeQuiet.error();
-        if (*maybeQuiet)
+        const auto quiet = validFlag(map, {"-q", "--quiet"});
+        if (!quiet)
+                return quiet.error();
+        if (*quiet)
                 silence_ = true;
-        const auto maybeNoExt = validFlag(map, {"-ne", "--no-extension"});
-        if (!maybeNoExt)
-                return maybeNoExt.error();
-        if (*maybeNoExt)
+        const auto noExt = validFlag(map, {"-ne", "--no-extension"});
+        if (!noExt)
+                return noExt.error();
+        if (*noExt)
                 useExt_ = false;
         return None;
 }
 
 Error UtilStripeBase::setArgs(const ArgMap& map)
 {
-        const auto baseError = UtilBaseSingle::setArgs(map);
-        if (baseError)
-                return *baseError;
-        const auto nameError = setMember(map, {"--name", "-n", "name"}, name_);
-        if (nameError)
-                return *nameError;
-        const auto extensionError = setMember(map,
-            {"--extension", "-e", "extension"}, ext_);
-        if (extensionError)
-                return *extensionError;
+        const auto base = UtilBaseSingle::setArgs(map);
+        if (base)
+                return *base;
+        const auto name = setMember(map, {"--name", "-n", "name"}, name_);
+        if (name)
+                return *name;
+        const auto ext = setMember(map, {"--extension", "-e", "extension"},
+            ext_);
+        if (ext)
+                return *ext;
         return None;
 }

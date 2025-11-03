@@ -23,28 +23,28 @@ namespace fs = std::filesystem;
 Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
     std::string& ref, bool required)
 {
-        const auto maybeOpt = argToIter(map, opt);
-        const auto tag = std::get<2>(opt);
-        if (!maybeOpt)
-                return maybeOpt.error();
-        if (const auto ptr = *maybeOpt; ptr != map.end()) {
+        const auto itr = argToIter(map, opt);
+        const auto name = std::get<2>(opt);
+        if (!itr)
+                return itr.error();
+        if (const auto ptr = *itr; ptr != map.end()) {
                 const auto args = ptr->second;
                 switch (count(args)) {
                 case 0:
-                        return "Unmatched "+ tag;
+                        return "Unmatched "+ name;
                 case 1: {
                         const auto val = args->val;
                         if (!val.empty())
                                 ref = val;
                         else
-                                return "No " + tag;
+                                return "No " + name;
                         break;
                 }
                 default:
-                        return "Too many "+ tag + "s";
+                        return "Too many "+ name + "s";
                 };
         } else if (required) {
-                return "Missing " + tag;
+                return "Missing " + name;
         }
         return None;
 }
@@ -55,14 +55,13 @@ Error UtilBase::setMember(const ArgMap& map, const ArgT& opt,
         return setMemberBase(map, opt, ref, false);
 }
 
-Error UtilBase::setMemberPath(const ArgMap& map, const ArgT& opt,
-    std::string& ref)
+Error UtilBase::setPath(const ArgMap& map, const ArgT& opt, std::string& ref)
 {
-        std::string interimPath;
-        const auto err = setMemberBase(map, opt, interimPath, true);
+        std::string interim;
+        const auto err = setMemberBase(map, opt, interim, true);
         if (err)
                 return err;
-        const auto path = toPath(interimPath);
+        const auto path = toPath(interim);
         if (!path)
                 return path.error();
         ref = *path;
@@ -77,9 +76,7 @@ bool UtilBase::isSlash(const char c) const
 std::string UtilBase::clean(const std::string& path) const
 {
         const int last = path.size() - 1;
-        if (last > 0 && isSlash(path[last]))
-                return path.substr(0, last);
-        return path;
+        return last > 0 && isSlash(path[last]) ? path.substr(0, last) : path;
 }
 
 Error UtilBase::checkForUnknown(const ArgMap& map) const
@@ -96,8 +93,6 @@ Maybe<std::string> UtilBase::toPath(const std::string& p) const
         if (p.empty())
                 return make_bad<std::string>("No path provided");
         const std::string cwd = fs::current_path().string();
-        const std::string path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p)
-                                                : p;
-        const auto cleaned = clean(path);
-        return cleaned;
+        const auto path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p) : p;
+        return clean(path);
 }

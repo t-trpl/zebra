@@ -26,20 +26,20 @@ Error Parser::runParse(const ArgList args)
 {
         if (!args)
                 return None;
-        const auto& left = args->val;
-        if (isMode(left)) {
+        const auto& arg = args->val;
+        if (isMode(arg)) {
                 if(!mode_.empty())
                         return "Two Modes";
                 else
-                        mode_ = left;
-        } else if (isOpt(left)) {
-                if (argMap_.find(left) != argMap_.end())
-                        return "Duplicate " + left;
+                        mode_ = arg;
+        } else if (isOpt(arg)) {
+                if (argMap_.find(arg) != argMap_.end())
+                        return "Duplicate " + arg;
                 const auto [next, acc] = nextOption(args->next);
-                argMap_[left] = acc;
+                argMap_[arg] = acc;
                 return runParse(next);
-        } else if (!left.empty()) {
-                return "Bad arg " + left;
+        } else if (!arg.empty()) {
+                return "Bad arg " + arg;
         } else {
                 return "Empty arg";
         }

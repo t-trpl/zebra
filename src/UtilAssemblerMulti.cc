@@ -22,10 +22,10 @@
 
 Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 {
-        const auto maybeInput = argToIter(map, {"--input", "-i", "input"});
-        if (!maybeInput)
-                return maybeInput.error();
-        if (const auto ptr = *maybeInput; ptr != map.end()) {
+        const auto input = argToIter(map, {"--input", "-i", "input"});
+        if (!input)
+                return input.error();
+        if (const auto ptr = *input; ptr != map.end()) {
                 FilesL acc = nullptr;
                 for (auto p = ptr->second; p; p = p->next)
                         if (const auto part = toPath(p->val); part)
@@ -36,10 +36,9 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
         } else {
                 return "Missing Input";
         }
-        const auto errOutput = setMemberPath(map, {"--output", "-o", "output"},
-            out_);
-        if (errOutput)
-                return *errOutput;
+        const auto output = setPath(map, {"--output", "-o", "output"}, out_);
+        if (output)
+                return *output;
         return None;
 }
 
@@ -47,24 +46,23 @@ Error UtilAssemblerMulti::run() const
 {
         if (!silence_)
                 std::cout << util::banner << "\nAssembling\n";
-        std::ofstream outFile(out_);
-        if (!outFile)
+        std::ofstream output(out_);
+        if (!output)
                 return "Failed to open: " + out_;
-        const auto maybeSize = writeStripe(files_, outFile);
-        if (!maybeSize)
-                return maybeSize.error();
-        const auto size = *maybeSize;
+        const auto bytes = writeStripe(files_, output);
+        if (!bytes)
+                return bytes.error();
         if (!silence_)
-                std::cout << "Wrote " << out_ << " " << size << " bytes\n";
+                std::cout << "Wrote " << out_ << " " << *bytes << " bytes\n";
         return None;
 }
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-        const auto maybeQuiet = validFlag(map, {"-q", "--quiet"});
-        if (!maybeQuiet)
-                return maybeQuiet.error();
-        if (*maybeQuiet)
+        const auto quiet = validFlag(map, {"-q", "--quiet"});
+        if (!quiet)
+                return quiet.error();
+        if (*quiet)
                 silence_ = true;
         return None;
 }

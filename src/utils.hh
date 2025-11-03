@@ -14,20 +14,18 @@
  * GNU General Public License for more details.
  */
 
-#include <string>
-
 #ifndef UTILS_HH
 #define UTILS_HH
 
 namespace util {
 
-inline const std::string banner =
+constexpr auto banner =
 R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |
  / /  __/ |_) | | | (_| |
 /___\___|_.__/|_|  \__,_|)";
 
-inline const std::string help =
+constexpr auto help =
 R"(Usage: zebra [mode option] [required option] [required option]
 [optional option] ... [optional flags] ...
 
@@ -56,7 +54,7 @@ Optional :
     -n, --name <name suffix>
         Part name suffix. Parts will be named `NAME SUFFIX`_`NUMBER`.stripe
         Example:
-            -n large_file  | large_file_`number`.stripe 
+            -n large_file  | large_file_`number`.stripe
     -e, --extension <ext>
         The extension name, default "stripe" `NUMBER`.`EXT`
         Example:

@@ -16,7 +16,6 @@
 
 #include "src/UtilStripeFixed.hh"
 #include "src/helpers.hh"
-#include "src/utils.hh"
 
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {
@@ -48,21 +47,23 @@ Maybe<int> UtilStripeFixed::stringToParts(const std::string& parts) const
 
 Error UtilStripeFixed::setArgs(const ArgMap& map)
 {
-        const auto baseError = UtilStripeBase::setArgs(map);
-        if (baseError)
-                return *baseError;
-        const auto maybeParts = argToIter(map, {"--parts", "-p", "parts"});
-        if (!maybeParts)
-                return maybeParts.error();
-        const auto partsPtr = (*maybeParts)->second;
-        switch (count(partsPtr)) {
+        const auto base = UtilStripeBase::setArgs(map);
+        if (base)
+                return *base;
+        const auto parts = argToIter(map, {"--parts", "-p", "parts"});
+        if (!parts)
+                return parts.error();
+        const auto ptr = (*parts)->second;
+        switch (count(ptr)) {
         case 0:
                 return "No parts";
         case 1: {
-                const auto maybePartsInt = stringToParts(partsPtr->val);
-                if (!maybePartsInt)
-                        return maybePartsInt.error();
-                parts_ = *maybePartsInt;
+                const auto parts = stringToParts(ptr->val);
+                if (!parts)
+                        return parts.error();
+                if (*parts == 0)
+                        return "Can't have zero parts";
+                parts_ = *parts;
                 break;
         }
         default:

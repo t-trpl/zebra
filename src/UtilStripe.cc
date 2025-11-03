@@ -17,7 +17,6 @@
 #include "src/UtilStripe.hh"
 #include "src/Maybe.hh"
 #include "src/types.hh"
-#include "src/utils.hh"
 #include "src/helpers.hh"
 #include <cctype>
 #include <cstddef>
@@ -40,13 +39,13 @@ std::unordered_set<std::string> UtilStripe::validArgs() const
 
 Error UtilStripe::setArgs(const ArgMap& map)
 {
-        const auto baseError = UtilStripeBase::setArgs(map);
-        if (baseError)
-                return *baseError;
-        const auto maybeSize = argToIter(map, {"--size", "-s", "size"});
-        if (!maybeSize)
-                return maybeSize.error();
-        if (const auto ptr = *maybeSize; ptr != map.end()) {
+        const auto base = UtilStripeBase::setArgs(map);
+        if (base)
+                return *base;
+        const auto size = argToIter(map, {"--size", "-s", "size"});
+        if (!size)
+                return size.error();
+        if (const auto ptr = *size; ptr != map.end()) {
                 const auto args = ptr->second;
                 switch (count(args)) {
                 case 0:
