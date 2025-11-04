@@ -73,12 +73,12 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
                 it++;
         const std::string num(size.begin(), it);
         if (num.empty())
-                return make_bad<size_t>("No size...");
+                return makeBad<size_t>("No size...");
         const auto d = std::count_if(num.begin(), num.end(), [](const auto c) {
                 return c == '.';
         });
         if (d > 1 || (it != size.end() && !std::isalpha(*it)))
-                return make_bad<size_t>("Bad byte size");
+                return makeBad<size_t>("Bad byte size");
         const std::unordered_map<std::string, size_t> map = {
             {"b" , 1},
             {"kb", 1'000},
@@ -91,7 +91,7 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
         const auto itr = map.find(suffix);
         const auto found = itr != map.end();
         if (!suffix.empty() && !found)
-                return make_bad<size_t>("Bad suffix: " + suffix);
+                return makeBad<size_t>("Bad suffix: " + suffix);
         const size_t units = found ? itr->second : 1;
         const double dbytes = std::stod(num) * units;
         return static_cast<size_t>(dbytes);

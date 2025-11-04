@@ -91,7 +91,7 @@ Error UtilBase::checkForUnknown(const ArgMap& map) const
 Maybe<std::string> UtilBase::toPath(const std::string& p) const
 {
         if (p.empty())
-                return make_bad<std::string>("No path provided");
+                return makeBad<std::string>("No path provided");
         const std::string cwd = fs::current_path().string();
         const auto path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p) : p;
         return clean(path);

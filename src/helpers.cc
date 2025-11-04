@@ -28,12 +28,12 @@ Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
         const auto s = map.find(arg.second);
         const auto end = map.end();
         if (f != end && s != end)
-                return make_bad<bool>("Duplicate flags");
+                return makeBad<bool>("Duplicate flags");
         if (f == end && s == end)
                 return false;
         const auto c = f != end ? f : s;
         if (c->second)
-                return make_bad<bool>("Flag with args " + c->first);
+                return makeBad<bool>("Flag with args " + c->first);
         return true;
 }
 
@@ -44,7 +44,7 @@ Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg)
         const auto& name = std::get<2>(arg);
         const auto end = map.end();
         if (leftPtr != end && rightPtr != end)
-                return make_bad<MapIt>("Duplicate option: " + name);
+                return makeBad<MapIt>("Duplicate option: " + name);
         if (leftPtr != end)
                 return leftPtr;
         if (rightPtr != end)

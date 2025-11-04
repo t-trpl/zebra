@@ -25,7 +25,7 @@ Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
                 const std::string& path = files->val;
                 std::ifstream file(path, std::ios::binary);
                 if (!file)
-                        return make_bad<std::streamsize>(
+                        return makeBad<std::streamsize>(
                             "Failed to open: " + path + "\nDiscard output");
                 const auto size = fileSize(file);
                 bytes += chunk(file, out, size);

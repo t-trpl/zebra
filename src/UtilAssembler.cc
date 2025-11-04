@@ -26,7 +26,7 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
 {
         FilesL files;
         if (!fs::exists(in_) || !fs::is_directory(in_))
-                return make_bad<FilesL>("Not a directory: " + in_);
+                return makeBad<FilesL>("Not a directory: " + in_);
         for (const auto& file : fs::directory_iterator(in_)) {
                 if (matchExt(file) && matchName(file)) {
                         const auto p = fs::path(in_) / file.path().filename();

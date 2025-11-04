@@ -1,5 +1,8 @@
 /**
  * File: Maybe.hh
+ *
+ * Contains either a value or an error message.
+ *
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -76,13 +79,13 @@ Maybe<T>::Maybe(U&& val) noexcept
 }
 
 template<typename T>
-Maybe<T> make_bad(const std::string& err)
+Maybe<T> makeBad(const std::string& err)
 {
         return Maybe<T>::bad(err);
 }
 
 template<typename T>
-Maybe<T> make_bad(std::string&& err)
+Maybe<T> makeBad(std::string&& err)
 {
         return Maybe<T>::bad(std::forward<std::string>(err));
 }

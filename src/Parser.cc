@@ -146,5 +146,5 @@ Maybe<UtilPtr> Parser::createUtil() const
                 return createPtr<UtilAssemblerMulti>();
         case Mode::NONE : { }
         }
-        return make_bad<UtilPtr>("No mode");
+        return makeBad<UtilPtr>("No mode");
 }

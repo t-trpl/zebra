@@ -1,6 +1,8 @@
 /**
  * File: List.hh
+ *
  * Simple reference counting linked list with some useful functions.
+ *
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *

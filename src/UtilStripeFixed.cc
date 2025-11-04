@@ -41,7 +41,7 @@ Maybe<int> UtilStripeFixed::stringToParts(const std::string& parts) const
 {
         for (const auto c : parts)
                 if (!isdigit(c))
-                        return make_bad<int>("Bad Parts " + parts);
+                        return makeBad<int>("Bad Parts " + parts);
         return std::stoi(parts);
 }
 
