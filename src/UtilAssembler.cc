@@ -63,11 +63,11 @@ Error UtilAssembler::setArgs(const ArgMap& map)
         const auto base = UtilBaseSingle::setArgs(map);
         if (base)
                 return *base;
-        const auto ext = setMember(map, {"--extension", "-e", "extension"},
+        const auto ext = setMember(map, { "--extension", "-e", "extension" },
             ext_);
         if (ext)
                 return *ext;
-        const auto name = setMember(map, {"--name", "-n", "name"}, name_);
+        const auto name = setMember(map, { "--name", "-n", "name" }, name_);
         if (name)
                 return *name;
         return None;
@@ -95,17 +95,17 @@ Error UtilAssembler::run() const
 
 Error UtilAssembler::setFlags(const ArgMap& map)
 {
-        const auto quiet = validFlag(map, {"-q", "--quiet"});
+        const auto quiet = validFlag(map, { "--quiet", "-q"});
         if (!quiet)
                 return quiet.error();
         if (*quiet)
                 silence_ = true;
-        const auto noExt = validFlag(map, {"-ne", "--no-extension"});
+        const auto noExt = validFlag(map, { "--no-extension", "-ne" });
         if (!noExt)
                 return noExt.error();
         if (*noExt)
                 useExt_ = false;
-        const auto noName = validFlag(map, {"-nn", "--no-name"});
+        const auto noName = validFlag(map, { "--no-name", "-nn" });
         if (!noName)
                 return noName.error();
         if (*noName)
@@ -116,12 +116,12 @@ Error UtilAssembler::setFlags(const ArgMap& map)
 std::unordered_set<std::string> UtilAssembler::validArgs() const
 {
         return {
-            "-i" , "--input",
-            "-o" , "--output",
-            "-e" , "--extension",
-            "-n" , "--name",
-            "-q" , "--quiet",
-            "-ne", "--no-extension",
-            "-nn", "--no-name"
+            "--input"       , "-i" ,
+            "--output"      , "-o" ,
+            "--extension"   , "-e" ,
+            "--name"        , "-n" ,
+            "--quiet"       , "-q" ,
+            "--no-extension", "-ne",
+            "--no-name"     , "-nn",
         };
 }

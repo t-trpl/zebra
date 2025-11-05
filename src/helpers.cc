@@ -24,14 +24,15 @@ bool containsMap(const ArgMap& map, const ArgOr& arg)
 
 Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
 {
-        const auto f = map.find(arg.first);
-        const auto s = map.find(arg.second);
+        const auto& [full, abrv] = arg;
+        const auto it1 = map.find(full);
+        const auto it2 = map.find(abrv);
         const auto end = map.end();
-        if (f != end && s != end)
+        if (it1 != end && it2 != end)
                 return makeBad<bool>("Duplicate flags");
-        if (f == end && s == end)
+        if (it1 == end && it2 == end)
                 return false;
-        const auto c = f != end ? f : s;
+        const auto c = it1 != end ? it1 : it2;
         if (c->second)
                 return makeBad<bool>("Flag with args " + c->first);
         return true;
@@ -39,15 +40,15 @@ Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
 
 Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg)
 {
-        const auto leftPtr = map.find(std::get<0>(arg));
-        const auto rightPtr = map.find(std::get<1>(arg));
-        const auto& name = std::get<2>(arg);
+        const auto& [full, abrv, name] = arg;
+        const auto it1 = map.find(full);
+        const auto it2 = map.find(std::get<1>(arg));
         const auto end = map.end();
-        if (leftPtr != end && rightPtr != end)
+        if (it1 != end && it2 != end)
                 return makeBad<MapIt>("Duplicate option: " + name);
-        if (leftPtr != end)
-                return leftPtr;
-        if (rightPtr != end)
-                return rightPtr;
+        if (it1 != end)
+                return it1;
+        if (it2 != end)
+                return it2;
         return end;
 }

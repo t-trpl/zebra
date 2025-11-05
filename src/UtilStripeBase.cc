@@ -87,17 +87,17 @@ Error UtilStripeBase::run() const
 
 Error UtilStripeBase::setFlags(const ArgMap& map)
 {
-        const auto noPadding = validFlag(map, {"-np", "--no-padding"});
+        const auto noPadding = validFlag(map, { "--no-padding", "-np" });
         if (!noPadding)
                 return noPadding.error();
         if (*noPadding)
                 padding_ = false;
-        const auto quiet = validFlag(map, {"-q", "--quiet"});
+        const auto quiet = validFlag(map, { "--quiet", "-q" });
         if (!quiet)
                 return quiet.error();
         if (*quiet)
                 silence_ = true;
-        const auto noExt = validFlag(map, {"-ne", "--no-extension"});
+        const auto noExt = validFlag(map, { "--no-extension", "-ne" });
         if (!noExt)
                 return noExt.error();
         if (*noExt)
@@ -110,10 +110,10 @@ Error UtilStripeBase::setArgs(const ArgMap& map)
         const auto base = UtilBaseSingle::setArgs(map);
         if (base)
                 return *base;
-        const auto name = setMember(map, {"--name", "-n", "name"}, name_);
+        const auto name = setMember(map, { "--name", "-n", "name" }, name_);
         if (name)
                 return *name;
-        const auto ext = setMember(map, {"--extension", "-e", "extension"},
+        const auto ext = setMember(map, { "--extension", "-e", "extension" },
             ext_);
         if (ext)
                 return *ext;

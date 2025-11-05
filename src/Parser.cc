@@ -53,12 +53,12 @@ OptData Parser::nextOption(ArgList args) const
                 acc = push(args->val, acc);
                 args = args->next;
         }
-        return {args, reverseN(acc)};
+        return { args, reverseN(acc) };
 }
 
 bool Parser::checkHelp() const
 {
-        return containsMap(argMap_, {"-h", "--help"});
+        return containsMap(argMap_, { "-h", "--help" });
 }
 
 bool Parser::leadingHyphen(const std::string& str) const
@@ -78,11 +78,11 @@ ArgList Parser::mapOr(const ArgMap& map, const ArgOr& options) const
 Parser::Mode Parser::toMode(const std::string& mode) const
 {
         if (mode == "-A" || mode == "--Assemble") {
-                const auto& val = mapOr(argMap_, {"--input", "-i"});
+                const auto& val = mapOr(argMap_, { "--input", "-i" });
                 return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
         }
         if (mode == "-S" || mode == "--Stripe") {
-                const auto& p = mapOr(argMap_, {"--parts", "-p"});
+                const auto& p = mapOr(argMap_, { "--parts", "-p" });
                 return p ? Mode::STRIPE_FIXED : Mode::STRIPE;
         }
         return Mode::NONE;

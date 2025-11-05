@@ -22,7 +22,7 @@
 
 Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 {
-        const auto input = argToIter(map, {"--input", "-i", "input"});
+        const auto input = argToIter(map, { "--input", "-i", "input" });
         if (!input)
                 return input.error();
         if (const auto ptr = *input; ptr != map.end()) {
@@ -36,7 +36,7 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
         } else {
                 return "Missing Input";
         }
-        const auto output = setPath(map, {"--output", "-o", "output"}, out_);
+        const auto output = setPath(map, { "--output", "-o", "output" }, out_);
         if (output)
                 return *output;
         return None;
@@ -59,7 +59,7 @@ Error UtilAssemblerMulti::run() const
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-        const auto quiet = validFlag(map, {"-q", "--quiet"});
+        const auto quiet = validFlag(map, { "--quiet", "-q" });
         if (!quiet)
                 return quiet.error();
         if (*quiet)
@@ -70,8 +70,8 @@ Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 std::unordered_set<std::string> UtilAssemblerMulti::validArgs() const
 {
         return {
-            "-i", "--input",
-            "-o", "--output",
-            "-q", "--quiet",
+            "--input" , "-i",
+            "--output", "-o",
+            "--quiet" , "-q",
         };
 }

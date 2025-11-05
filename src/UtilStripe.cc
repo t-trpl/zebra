@@ -26,14 +26,14 @@
 std::unordered_set<std::string> UtilStripe::validArgs() const
 {
         return {
-            "-i" , "--input",
-            "-o" , "--output",
-            "-s" , "--size",
-            "-n" , "--name",
-            "-e" , "--extension",
-            "-np", "--no-padding",
-            "-q" , "--quiet",
-            "-ne", "--no-extension",
+            "--input"       , "-i" ,
+            "--output"      , "-o" ,
+            "--size"        , "-s" ,
+            "--name"        , "-n" ,
+            "--extension"   , "-e" ,
+            "--no-padding"  , "-np",
+            "--quiet"       , "-q" ,
+            "--no-extension", "-ne",
         };
 }
 
@@ -42,7 +42,7 @@ Error UtilStripe::setArgs(const ArgMap& map)
         const auto base = UtilStripeBase::setArgs(map);
         if (base)
                 return *base;
-        const auto size = argToIter(map, {"--size", "-s", "size"});
+        const auto size = argToIter(map, { "--size", "-s", "size" });
         if (!size)
                 return size.error();
         if (const auto ptr = *size; ptr != map.end()) {
@@ -80,10 +80,10 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
         if (d > 1 || (it != size.end() && !std::isalpha(*it)))
                 return makeBad<size_t>("Bad byte size");
         const std::unordered_map<std::string, size_t> map = {
-            {"b" , 1},
-            {"kb", 1'000},
-            {"mb", 1'000'000},
-            {"gb", 1'000'000'000},
+            { "b" , 1 },
+            { "kb", 1'000 },
+            { "mb", 1'000'000 },
+            { "gb", 1'000'000'000 },
         };
         const auto suffix = mapv<std::string>(it, size.end(), [](const auto c) {
                 return std::tolower(c);

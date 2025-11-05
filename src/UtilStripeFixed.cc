@@ -20,14 +20,14 @@
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {
         return {
-            "-i" , "--input",
-            "-o" , "--output",
-            "-n" , "--name",
-            "-e" , "--extension",
-            "-np", "--no-padding",
-            "-q" , "--quiet",
-            "-ne", "--no-extension",
-            "-p" , "--parts",
+            "--input"       , "-i" ,
+            "--output"      , "-o" ,
+            "--name"        , "-n" ,
+            "--extension"   , "-e" ,
+            "--no-padding"  , "-np",
+            "--quiet"       , "-q" ,
+            "--no-extension", "-ne",
+            "--parts"       , "-p" ,
         };
 }
 
@@ -50,7 +50,7 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
         const auto base = UtilStripeBase::setArgs(map);
         if (base)
                 return *base;
-        const auto parts = argToIter(map, {"--parts", "-p", "parts"});
+        const auto parts = argToIter(map, { "--parts", "-p", "parts" });
         if (!parts)
                 return parts.error();
         const auto ptr = (*parts)->second;

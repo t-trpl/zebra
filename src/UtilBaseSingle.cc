@@ -18,10 +18,10 @@
 
 Error UtilBaseSingle::setArgs(const ArgMap& map)
 {
-        const auto input = setPath(map, {"--input", "-i", "input"}, in_);
+        const auto input = setPath(map, { "--input", "-i", "input" }, in_);
         if (input)
                 return *input;
-        const auto output = setPath(map, {"--output", "-o", "output"}, out_);
+        const auto output = setPath(map, { "--output", "-o", "output" }, out_);
         if (output)
                 return *output;
         return None;
