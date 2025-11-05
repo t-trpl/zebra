@@ -95,7 +95,7 @@ Error UtilAssembler::run() const
 
 Error UtilAssembler::setFlags(const ArgMap& map)
 {
-        const auto quiet = validFlag(map, { "--quiet", "-q"});
+        const auto quiet = validFlag(map, { "--quiet", "-q" });
         if (!quiet)
                 return quiet.error();
         if (*quiet)
