@@ -32,6 +32,12 @@ using ArgT = std::tuple<std::string, std::string, std::string>;
 
 using ArgOr = std::pair<std::string, std::string>;
 
-constexpr auto None = std::nullopt;
+using MapIt = ArgMap::const_iterator;
+
+using FilesL = ty::List<std::string>;
+
+using OptData = std::pair<ArgList, ArgList>;
+
+constexpr auto NONE = std::nullopt;
 
 #endif /// TYPES_HH

@@ -56,7 +56,7 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
 Error UtilStripeBase::run() const
 {
         if (!silence_)
-                std::cout << util::banner << "\nStriping\n";
+                std::cout << util::BANNER << "\nStriping\n";
         if (fs::is_directory(in_))
                 return "Cannot run on a directory";
         if (!fs::exists(out_) || !fs::is_directory(out_))
@@ -82,7 +82,7 @@ Error UtilStripeBase::run() const
                         std::cout << "\033[32m->\033[0m" << path << " " << bytes
                                   << " bytes\n";
         }
-        return None;
+        return NONE;
 }
 
 Error UtilStripeBase::setFlags(const ArgMap& map)
@@ -99,7 +99,7 @@ Error UtilStripeBase::setFlags(const ArgMap& map)
                 useExt_ = false;
         else if (!m)
                 return m.error();
-        return None;
+        return NONE;
 }
 
 Error UtilStripeBase::setArgs(const ArgMap& map)
@@ -111,5 +111,5 @@ Error UtilStripeBase::setArgs(const ArgMap& map)
         if (const auto e =
             setMember(map, { "--extension", "-e", "extension" }, ext_))
                 return *e;
-        return None;
+        return NONE;
 }

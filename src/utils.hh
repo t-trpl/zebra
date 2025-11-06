@@ -19,13 +19,13 @@
 
 namespace util {
 
-constexpr auto banner =
+constexpr auto BANNER =
 R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |
  / /  __/ |_) | | | (_| |
 /___\___|_.__/|_|  \__,_|)";
 
-constexpr auto help =
+constexpr auto HELP =
 R"(Usage: zebra [mode option] [required option] [required option]
 [optional option] ... [optional flags] ...
 

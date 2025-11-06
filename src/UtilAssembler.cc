@@ -1,4 +1,4 @@
-/** 
+/**
  * File: UtilAssembler.cc
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
@@ -67,13 +67,13 @@ Error UtilAssembler::setArgs(const ArgMap& map)
                 return *e;
         if (const auto e = setMember(map, { "--name", "-n", "name" }, name_))
                 return *e;
-        return None;
+        return NONE;
 }
 
 Error UtilAssembler::run() const
 {
         if (!silence_)
-                std::cout << util::banner << "\nAssembling\n";
+                std::cout << util::BANNER << "\nAssembling\n";
         const auto stripes = stripeNames();
         if (!stripes)
                 return stripes.error();
@@ -87,7 +87,7 @@ Error UtilAssembler::run() const
                 return bytes.error();
         if (!silence_)
                 std::cout << "Wrote " << out_ << " " << *bytes << " bytes\n";
-        return None;
+        return NONE;
 }
 
 Error UtilAssembler::setFlags(const ArgMap& map)
@@ -104,7 +104,7 @@ Error UtilAssembler::setFlags(const ArgMap& map)
                 empty_ = true;
         else if (!m)
                 return m.error();
-        return None;
+        return NONE;
 }
 
 std::unordered_set<std::string> UtilAssembler::validArgs() const

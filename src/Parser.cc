@@ -19,13 +19,12 @@
 #include "src/UtilStripe.hh"
 #include "src/UtilAssemblerMulti.hh"
 #include "src/UtilStripeFixed.hh"
-#include "src/types.hh"
 #include "src/helpers.hh"
 
 Error Parser::runParse(const ArgList args)
 {
         if (!args)
-                return None;
+                return NONE;
         const auto& arg = args->val;
         if (isMode(arg)) {
                 if(!mode_.empty())

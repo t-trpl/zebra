@@ -62,7 +62,7 @@ Error UtilStripe::setArgs(const ArgMap& map)
                         return "Too many sizes";
                 }
         }
-        return None;
+        return NONE;
 }
 
 Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const

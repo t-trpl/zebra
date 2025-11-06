@@ -25,14 +25,14 @@ Error run(const ArgList args)
         if (parseError)
                 return *parseError;
         if (p.checkHelp())
-                return util::help;
+                return util::HELP;
         const auto util = p.createUtil();
         if (!util)
                 return util.error();
         const auto error = (*util)->run();
         if (error)
                 return *error;
-        return None;
+        return NONE;
 }
 
 ArgList argsToList(int argc, char* argv[])

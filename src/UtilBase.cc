@@ -46,7 +46,7 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
         } else if (required) {
                 return "Missing " + name;
         }
-        return None;
+        return NONE;
 }
 
 Error UtilBase::setMember(const ArgMap& map, const ArgT& opt,
@@ -64,7 +64,7 @@ Error UtilBase::setPath(const ArgMap& map, const ArgT& opt, std::string& ref)
                 return m.error();
         else
                 ref = *m;
-        return None;
+        return NONE;
 }
 
 bool UtilBase::isSlash(const char c) const
@@ -84,7 +84,7 @@ Error UtilBase::checkForUnknown(const ArgMap& map) const
         for (const auto& p : map)
                 if (valid.find(p.first) == valid.end())
                         return "Unrecognized " + p.first;
-        return None;
+        return NONE;
 }
 
 Maybe<std::string> UtilBase::toPath(const std::string& p) const

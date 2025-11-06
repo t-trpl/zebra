@@ -17,11 +17,9 @@
 #ifndef UTIL_ASSEMBLER_FUNCTIONS_HH
 #define UTIL_ASSEMBLER_FUNCTIONS_HH
 
-#include "src/List.hh"
 #include "src/Maybe.hh"
 #include "src/ChunkFunctions.hh"
-
-using FilesL = ty::List<std::string>;
+#include "src/types.hh"
 
 class UtilAssemblerFunctions : protected ChunkFunctions {
 protected:

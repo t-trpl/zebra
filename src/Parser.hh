@@ -23,7 +23,6 @@
 #include <memory>
 
 using UtilPtr = std::unique_ptr<UtilBase>;
-using OptData = std::pair<ArgList, ArgList>;
 
 class Parser {
 private:

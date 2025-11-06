@@ -68,5 +68,5 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
         default:
                 return "Too many parts";
         }
-        return None;
+        return NONE;
 }

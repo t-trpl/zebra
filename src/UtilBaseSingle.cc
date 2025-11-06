@@ -22,5 +22,5 @@ Error UtilBaseSingle::setArgs(const ArgMap& map)
                 return *e;
         if (const auto e = setPath(map, { "--output", "-o", "output" }, out_))
                 return *e;
-        return None;
+        return NONE;
 }

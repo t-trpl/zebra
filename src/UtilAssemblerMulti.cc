@@ -38,13 +38,13 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
         }
         if (const auto e = setPath(map, { "--output", "-o", "output" }, out_))
                 return *e;
-        return None;
+        return NONE;
 }
 
 Error UtilAssemblerMulti::run() const
 {
         if (!silence_)
-                std::cout << util::banner << "\nAssembling\n";
+                std::cout << util::BANNER << "\nAssembling\n";
         std::ofstream output(out_);
         if (!output)
                 return "Failed to open: " + out_;
@@ -53,7 +53,7 @@ Error UtilAssemblerMulti::run() const
                 return bytes.error();
         if (!silence_)
                 std::cout << "Wrote " << out_ << " " << *bytes << " bytes\n";
-        return None;
+        return NONE;
 }
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)
@@ -62,7 +62,7 @@ Error UtilAssemblerMulti::setFlags(const ArgMap& map)
                 silence_ = true;
         else if (!m)
                 return m.error();
-        return None;
+        return NONE;
 }
 
 std::unordered_set<std::string> UtilAssemblerMulti::validArgs() const

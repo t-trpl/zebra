@@ -24,8 +24,6 @@ bool containsMap(const ArgMap& map, const ArgOr& flag);
 
 Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
 
-using MapIt = ArgMap::const_iterator;
-
 Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg);
 
 template<typename T, typename U, typename F>
