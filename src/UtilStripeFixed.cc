@@ -47,9 +47,8 @@ Maybe<int> UtilStripeFixed::stringToParts(const std::string& parts) const
 
 Error UtilStripeFixed::setArgs(const ArgMap& map)
 {
-        const auto base = UtilStripeBase::setArgs(map);
-        if (base)
-                return *base;
+        if (const auto e = UtilStripeBase::setArgs(map))
+                return *e;
         const auto parts = argToIter(map, { "--parts", "-p", "parts" });
         if (!parts)
                 return parts.error();

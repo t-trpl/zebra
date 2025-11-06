@@ -39,9 +39,8 @@ std::unordered_set<std::string> UtilStripe::validArgs() const
 
 Error UtilStripe::setArgs(const ArgMap& map)
 {
-        const auto base = UtilStripeBase::setArgs(map);
-        if (base)
-                return *base;
+        if (const auto e = UtilStripeBase::setArgs(map))
+                return *e;
         const auto size = argToIter(map, { "--size", "-s", "size" });
         if (!size)
                 return size.error();

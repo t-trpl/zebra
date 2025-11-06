@@ -58,13 +58,12 @@ Error UtilBase::setMember(const ArgMap& map, const ArgT& opt,
 Error UtilBase::setPath(const ArgMap& map, const ArgT& opt, std::string& ref)
 {
         std::string interim;
-        const auto err = setMemberBase(map, opt, interim, true);
-        if (err)
-                return err;
-        const auto path = toPath(interim);
-        if (!path)
-                return path.error();
-        ref = *path;
+        if (const auto e = setMemberBase(map, opt, interim, true))
+                return e;
+        if (const auto m = toPath(interim); !m)
+                return m.error();
+        else
+                ref = *m;
         return None;
 }
 

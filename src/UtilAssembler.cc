@@ -60,16 +60,13 @@ std::string UtilAssembler::stemToName(const std::string& stem) const
 
 Error UtilAssembler::setArgs(const ArgMap& map)
 {
-        const auto base = UtilBaseSingle::setArgs(map);
-        if (base)
-                return *base;
-        const auto ext = setMember(map, { "--extension", "-e", "extension" },
-            ext_);
-        if (ext)
-                return *ext;
-        const auto name = setMember(map, { "--name", "-n", "name" }, name_);
-        if (name)
-                return *name;
+        if (const auto e = UtilBaseSingle::setArgs(map))
+                return *e;
+        if (const auto e = setMember(map, { "--extension", "-e", "extension" },
+                ext_))
+                return *e;
+        if (const auto e = setMember(map, { "--name", "-n", "name" }, name_))
+                return *e;
         return None;
 }
 
@@ -95,21 +92,18 @@ Error UtilAssembler::run() const
 
 Error UtilAssembler::setFlags(const ArgMap& map)
 {
-        const auto quiet = validFlag(map, { "--quiet", "-q" });
-        if (!quiet)
-                return quiet.error();
-        if (*quiet)
+        if (const auto m = validFlag(map, { "--quiet", "-q" }); m && *m)
                 silence_ = true;
-        const auto noExt = validFlag(map, { "--no-extension", "-ne" });
-        if (!noExt)
-                return noExt.error();
-        if (*noExt)
+        else if (!m)
+                return m.error();
+        if (const auto m = validFlag(map, { "--no-extension", "-ne" }); m && *m)
                 useExt_ = false;
-        const auto noName = validFlag(map, { "--no-name", "-nn" });
-        if (!noName)
-                return noName.error();
-        if (*noName)
+        else if (!m)
+                return m.error();
+        if (const auto m = validFlag(map, { "--no-name", "-nn" }); m && *m)
                 empty_ = true;
+        else if (!m)
+                return m.error();
         return None;
 }
 

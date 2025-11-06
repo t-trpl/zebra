@@ -36,9 +36,8 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
         } else {
                 return "Missing Input";
         }
-        const auto output = setPath(map, { "--output", "-o", "output" }, out_);
-        if (output)
-                return *output;
+        if (const auto e = setPath(map, { "--output", "-o", "output" }, out_))
+                return *e;
         return None;
 }
 
@@ -59,11 +58,10 @@ Error UtilAssemblerMulti::run() const
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-        const auto quiet = validFlag(map, { "--quiet", "-q" });
-        if (!quiet)
-                return quiet.error();
-        if (*quiet)
+        if (const auto m = validFlag(map, { "--quiet", "-q" }); m && *m)
                 silence_ = true;
+        else if (!m)
+                return m.error();
         return None;
 }
 

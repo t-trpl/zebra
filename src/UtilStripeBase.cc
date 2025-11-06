@@ -87,35 +87,29 @@ Error UtilStripeBase::run() const
 
 Error UtilStripeBase::setFlags(const ArgMap& map)
 {
-        const auto noPadding = validFlag(map, { "--no-padding", "-np" });
-        if (!noPadding)
-                return noPadding.error();
-        if (*noPadding)
+        if (const auto m = validFlag(map, { "--no-padding", "-np" }); m && *m)
                 padding_ = false;
-        const auto quiet = validFlag(map, { "--quiet", "-q" });
-        if (!quiet)
-                return quiet.error();
-        if (*quiet)
+        else if (!m)
+                return m.error();
+        if (const auto m = validFlag(map, { "--quiet", "-q" }); m && *m)
                 silence_ = true;
-        const auto noExt = validFlag(map, { "--no-extension", "-ne" });
-        if (!noExt)
-                return noExt.error();
-        if (*noExt)
+        else if (!m)
+                return m.error();
+        if (const auto m = validFlag(map, { "--no-extension", "-ne" }); m && *m)
                 useExt_ = false;
+        else if (!m)
+                return m.error();
         return None;
 }
 
 Error UtilStripeBase::setArgs(const ArgMap& map)
 {
-        const auto base = UtilBaseSingle::setArgs(map);
-        if (base)
-                return *base;
-        const auto name = setMember(map, { "--name", "-n", "name" }, name_);
-        if (name)
-                return *name;
-        const auto ext = setMember(map, { "--extension", "-e", "extension" },
-            ext_);
-        if (ext)
-                return *ext;
+        if (const auto e = UtilBaseSingle::setArgs(map))
+                return *e;
+        if (const auto e = setMember(map, { "--name", "-n", "name" }, name_))
+                return *e;
+        if (const auto e =
+            setMember(map, { "--extension", "-e", "extension" }, ext_))
+                return *e;
         return None;
 }
