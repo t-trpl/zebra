@@ -21,17 +21,15 @@
 Error run(const ArgList args)
 {
         Parser p;
-        const auto parseError = p.runParse(args);
-        if (parseError)
-                return *parseError;
+        if (const auto e = p.runParse(args))
+                return *e;
         if (p.checkHelp())
                 return util::HELP;
         const auto util = p.createUtil();
         if (!util)
                 return util.error();
-        const auto error = (*util)->run();
-        if (error)
-                return *error;
+        if (const auto e = (*util)->run())
+                return *e;
         return NONE;
 }
 
@@ -46,9 +44,8 @@ ArgList argsToList(int argc, char* argv[])
 int main(int argc, char* argv[])
 {
         const auto args = argsToList(argc, argv);
-        const auto error = run(args);
-        if (error) {
-                std::cout << *error << "\n";
+        if (const auto e = run(args)) {
+                std::cout << *e << "\n";
                 return 1;
         }
         return 0;
