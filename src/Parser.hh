@@ -34,7 +34,7 @@ private:
         bool isMode(const std::string& left) const;
         bool isOpt(const std::string& str) const;
         Mode toMode(const std::string& mode) const;
-        template<typename T> Maybe<UtilPtr> createPtr() const;
+        template <typename T> Maybe<UtilPtr> createPtr() const;
         ArgList mapOr(const ArgMap& map, const ArgOr& options) const;
         bool leadingHyphen(const std::string& str) const;
         OptData nextOption(ArgList args) const;
@@ -47,7 +47,7 @@ public:
         bool checkHelp() const;
 };
 
-template<typename T>
+template <typename T>
 Maybe<UtilPtr> Parser::createPtr() const
 {
         auto ptr = std::make_unique<T>();

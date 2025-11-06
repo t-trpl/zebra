@@ -23,7 +23,7 @@
 #include <string>
 #include <variant>
 
-template<typename T>
+template <typename T>
 class Maybe {
 private:
         struct Dummy { }; /// needed std::variant collision
@@ -36,12 +36,12 @@ private:
         Maybe(std::string&& msg, bool);
 public:
         ~Maybe() = default;
-        template<typename U> Maybe(const U& val);
-        template<typename U> Maybe(U&& val) noexcept;
-        template<typename U> Maybe(std::initializer_list<U> il);
-        template<typename U> Maybe<T>& operator=(U&& val) noexcept;
-        template<typename U> Maybe<T>& operator=(const U& val);
-        template<typename U> Maybe<T>& operator=(std::initializer_list<U> il);
+        template <typename U> Maybe(const U& val);
+        template <typename U> Maybe(U&& val) noexcept;
+        template <typename U> Maybe(std::initializer_list<U> il);
+        template <typename U> Maybe<T>& operator=(U&& val) noexcept;
+        template <typename U> Maybe<T>& operator=(const U& val);
+        template <typename U> Maybe<T>& operator=(std::initializer_list<U> il);
         explicit operator bool() const;
         T& operator*();
         const T& operator*() const;
@@ -49,8 +49,8 @@ public:
         static Maybe<T> bad(std::string&& err);
         std::string& error();
         const std::string& error() const;
-        template<typename U> T valueOr(const U& fallback) const;
-        template<typename U> T valueOr(U&& fallback) const;
+        template <typename U> T valueOr(const U& fallback) const;
+        template <typename U> T valueOr(U&& fallback) const;
         T&& extract();
         T* operator->();
         const T* operator->() const;
@@ -58,8 +58,8 @@ public:
         Maybe<T>& fail(std::string&& err);
 };
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 Maybe<T>::Maybe(const U& val)
     : hasValue_(true)
     , value_(static_cast<T>(val))
@@ -67,8 +67,8 @@ Maybe<T>::Maybe(const U& val)
 
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 Maybe<T>::Maybe(U&& val) noexcept
     : hasValue_(true)
 {
@@ -78,19 +78,19 @@ Maybe<T>::Maybe(U&& val) noexcept
                 value_ = static_cast<T>(std::forward<U>(val));
 }
 
-template<typename T>
+template <typename T>
 Maybe<T> makeBad(const std::string& err)
 {
         return Maybe<T>::bad(err);
 }
 
-template<typename T>
+template <typename T>
 Maybe<T> makeBad(std::string&& err)
 {
         return Maybe<T>::bad(std::forward<std::string>(err));
 }
 
-template<typename T>
+template <typename T>
 Maybe<T>::Maybe(const std::string& msg, bool)
     : hasValue_(false)
     , value_(msg)
@@ -98,7 +98,7 @@ Maybe<T>::Maybe(const std::string& msg, bool)
 
 }
 
-template<typename T>
+template <typename T>
 Maybe<T>::Maybe(std::string&& msg, bool)
     : hasValue_(false)
     , value_(std::forward<std::string>(msg))
@@ -106,8 +106,8 @@ Maybe<T>::Maybe(std::string&& msg, bool)
 
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 Maybe<T>::Maybe(std::initializer_list<U> il)
     : hasValue_(true)
     , value_(T(il.begin(), il.end()))
@@ -115,8 +115,8 @@ Maybe<T>::Maybe(std::initializer_list<U> il)
 
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 Maybe<T>& Maybe<T>::operator=(U&& val) noexcept
 {
         hasValue_ = true;
@@ -127,8 +127,8 @@ Maybe<T>& Maybe<T>::operator=(U&& val) noexcept
         return *this;
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 Maybe<T>& Maybe<T>::operator=(const U& val)
 {
         hasValue_ = true;
@@ -136,8 +136,8 @@ Maybe<T>& Maybe<T>::operator=(const U& val)
         return *this;
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 Maybe<T>& Maybe<T>::operator=(std::initializer_list<U> il)
 {
         hasValue_ = true;
@@ -145,50 +145,50 @@ Maybe<T>& Maybe<T>::operator=(std::initializer_list<U> il)
         return *this;
 }
 
-template<typename T>
+template <typename T>
 Maybe<T>::operator bool() const
 {
         return hasValue_;
 }
 
-template<typename T>
+template <typename T>
 T& Maybe<T>::operator*()
 {
         return std::get<T>(value_);
 }
 
-template<typename T>
+template <typename T>
 const T& Maybe<T>::operator*() const
 {
         return std::get<T>(value_);
 }
 
-template<typename T>
+template <typename T>
 Maybe<T> Maybe<T>::bad(const std::string& err)
 {
         return Maybe<T>(err, 0);
 }
 
-template<typename T>
+template <typename T>
 Maybe<T> Maybe<T>::bad(std::string&& err)
 {
         return Maybe<T>(std::forward<std::string>(err), 0);
 }
 
-template<typename T>
+template <typename T>
 std::string& Maybe<T>::error()
 {
         return std::get<std::string>(value_);
 }
 
-template<typename T>
+template <typename T>
 const std::string& Maybe<T>::error() const
 {
         return std::get<std::string>(value_);
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 T Maybe<T>::valueOr(const U& fallback) const
 {
         if (*this)
@@ -196,8 +196,8 @@ T Maybe<T>::valueOr(const U& fallback) const
         return static_cast<T>(fallback);
 }
 
-template<typename T>
-template<typename U>
+template <typename T>
+template <typename U>
 T Maybe<T>::valueOr(U&& fallback) const
 {
         if (*this)
@@ -205,25 +205,25 @@ T Maybe<T>::valueOr(U&& fallback) const
         return std::forward<T>(fallback);
 }
 
-template<typename T>
+template <typename T>
 T&& Maybe<T>::extract()
 {
         return std::move(**this);
 }
 
-template<typename T>
+template <typename T>
 T* Maybe<T>::operator->()
 {
         return &**this;
 }
 
-template<typename T>
+template <typename T>
 const T* Maybe<T>::operator->() const
 {
         return &**this;
 }
 
-template<typename T>
+template <typename T>
 Maybe<T>& Maybe<T>::fail(const std::string& err)
 {
         hasValue_ = false;
@@ -231,7 +231,7 @@ Maybe<T>& Maybe<T>::fail(const std::string& err)
         return *this;
 }
 
-template<typename T>
+template <typename T>
 Maybe<T>& Maybe<T>::fail(std::string&& err)
 {
         hasValue_ = false;

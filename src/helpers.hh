@@ -26,7 +26,7 @@ Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
 
 Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg);
 
-template<typename T, typename U, typename F>
+template <typename T, typename U, typename F>
 T mapv(U it1, const U& it2, F&& fun)
 {
         T acc;
