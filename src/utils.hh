@@ -69,7 +69,7 @@ Flag(s)
     -q, --quiet <quiet>
         This will silence normal outputs, warnings will still print.
     -ne, --no-extension <no extension>
-        No extension will be added. This will override <ext>
+        No extension will be added.
 
 -A, --Assemble <Assemble>
     Assemble, assembles pieces back to a single file

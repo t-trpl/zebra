@@ -25,8 +25,8 @@ Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
                 const std::string& path = files->val;
                 std::ifstream file(path, std::ios::binary);
                 if (!file) {
-                        const auto msg = "Failed to open: " + path +
-                            "\nDiscard output";
+                        const auto msg
+                            = "Failed to open: " + path + "\nDiscard output";
                         return makeBad<std::streamsize>(msg);
                 }
                 const auto size = fileSize(file);
