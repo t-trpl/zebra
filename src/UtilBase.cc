@@ -15,7 +15,6 @@
  */
 
 #include "src/UtilBase.hh"
-#include "src/helpers.hh"
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -94,4 +93,35 @@ Maybe<std::string> UtilBase::toPath(const std::string& p) const
         const std::string cwd = fs::current_path().string();
         const auto path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p) : p;
         return clean(path);
+}
+
+Maybe<bool> UtilBase::validFlag(const ArgMap& map, const ArgOr& arg)
+{
+        const auto& [full, abrv] = arg;
+        const auto it1 = map.find(full);
+        const auto it2 = map.find(abrv);
+        const auto end = map.end();
+        if (it1 != end && it2 != end)
+                return makeBad<bool>("Duplicate flags");
+        if (it1 == end && it2 == end)
+                return false;
+        const auto c = it1 != end ? it1 : it2;
+        if (c->second)
+                return makeBad<bool>("Flag with args " + c->first);
+        return true;
+}
+
+Maybe<MapIt> UtilBase::argToIter(const ArgMap& map, const ArgT& arg)
+{
+        const auto& [full, abrv, name] = arg;
+        const auto it1 = map.find(full);
+        const auto it2 = map.find(std::get<1>(arg));
+        const auto end = map.end();
+        if (it1 != end && it2 != end)
+                return makeBad<MapIt>("Duplicate option: " + name);
+        if (it1 != end)
+                return it1;
+        if (it2 != end)
+                return it2;
+        return end;
 }

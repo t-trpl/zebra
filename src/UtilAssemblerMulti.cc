@@ -16,7 +16,6 @@
 
 #include "src/UtilAssemblerMulti.hh"
 #include "src/utils.hh"
-#include "src/helpers.hh"
 #include <iostream>
 #include <fstream>
 

@@ -19,6 +19,15 @@
 
 namespace util {
 
+template <typename T, typename U, typename F>
+T mapv(U it1, const U& it2, F&& fun)
+{
+        T acc;
+        while (it1 != it2)
+                acc.push_back(fun(*it1++));
+        return acc;
+}
+
 constexpr auto BANNER =
 R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |

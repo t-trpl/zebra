@@ -19,7 +19,6 @@
 #include "src/UtilStripe.hh"
 #include "src/UtilAssemblerMulti.hh"
 #include "src/UtilStripeFixed.hh"
-#include "src/helpers.hh"
 #include "types.hh"
 
 Error Parser::runParse(const ArgList args)

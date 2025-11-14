@@ -17,7 +17,7 @@
 #include "src/UtilStripe.hh"
 #include "src/Maybe.hh"
 #include "src/types.hh"
-#include "src/helpers.hh"
+#include "src/utils.hh"
 #include <cctype>
 #include <cstddef>
 #include <unordered_map>
@@ -84,6 +84,7 @@ Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
             { "mb", 1'000'000 },
             { "gb", 1'000'000'000 },
         };
+        using util::mapv;
         const auto suffix = mapv<std::string>(it, size.end(), [](const auto c) {
                 return std::tolower(c);
         });

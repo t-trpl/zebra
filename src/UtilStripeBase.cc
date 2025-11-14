@@ -16,7 +16,6 @@
 
 #include "src/UtilStripeBase.hh"
 #include "src/utils.hh"
-#include "src/helpers.hh"
 #include <iostream>
 #include <filesystem>
 #include <fstream>
