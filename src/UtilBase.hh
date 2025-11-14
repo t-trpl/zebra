@@ -34,8 +34,8 @@ protected:
         Error setPath(const ArgMap& map, const ArgT& opt, std::string& ref);
         Error setMember(const ArgMap& map, const ArgT& opt, std::string& ref);
         virtual std::unordered_set<std::string> validArgs() const = 0;
-        Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
-        Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg);
+        Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg) const;
+        Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg) const;
 public:
         UtilBase() = default;
         virtual ~UtilBase() = default;

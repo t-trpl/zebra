@@ -95,7 +95,7 @@ Maybe<std::string> UtilBase::toPath(const std::string& p) const
         return clean(path);
 }
 
-Maybe<bool> UtilBase::validFlag(const ArgMap& map, const ArgOr& arg)
+Maybe<bool> UtilBase::validFlag(const ArgMap& map, const ArgOr& arg) const
 {
         const auto& [full, abrv] = arg;
         const auto it1 = map.find(full);
@@ -111,7 +111,7 @@ Maybe<bool> UtilBase::validFlag(const ArgMap& map, const ArgOr& arg)
         return true;
 }
 
-Maybe<MapIt> UtilBase::argToIter(const ArgMap& map, const ArgT& arg)
+Maybe<MapIt> UtilBase::argToIter(const ArgMap& map, const ArgT& arg) const
 {
         const auto& [full, abrv, name] = arg;
         const auto it1 = map.find(full);
