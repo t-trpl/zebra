@@ -41,7 +41,7 @@ Error UtilStripe::setArgs(const ArgMap& map)
 {
         if (const auto e = UtilStripeBase::setArgs(map))
                 return *e;
-        const auto size = argToIter(map, { "--size", "-s", "size" });
+        const auto size = argToIter(map, SIZE_A);
         if (!size)
                 return size.error();
         if (const auto ptr = *size; ptr != map.end()) {

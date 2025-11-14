@@ -20,6 +20,7 @@
 #include "src/UtilAssemblerMulti.hh"
 #include "src/UtilStripeFixed.hh"
 #include "src/helpers.hh"
+#include "types.hh"
 
 Error Parser::runParse(const ArgList args)
 {
@@ -65,23 +66,52 @@ bool Parser::leadingHyphen(const std::string& str) const
         return str.size() > 0 && str[0] == '-';
 }
 
-ArgList Parser::mapOr(const ArgMap& map, const ArgOr& options) const
+ArgList Parser::mapOr(const ArgOr& options) const
 {
-        if (const auto ptr = map.find(options.first); ptr != map.end())
+        if (const auto ptr = argMap_.find(options.first); ptr != argMap_.end())
                 return ptr->second;
-        if (const auto ptr = map.find(options.second); ptr != map.end())
+        if (const auto ptr = argMap_.find(options.second); ptr != argMap_.end())
                 return ptr->second;
         return nullptr;
+}
+
+bool Parser::contains(const ArgOr& options) const
+{
+        if (argMap_.find(options.first) != argMap_.end())
+                return true;
+        if (argMap_.find(options.second) != argMap_.end())
+                return true;
+        return false;
+}
+
+Error Parser::conflict() const
+{
+        const Conflict conflicting = {
+            {
+                { "--no-extension", "-ne" },
+                { "--extension", "-e" },
+                "No-extension and Extension not possible"
+            },
+            {
+                { "--parts", "-p" },
+                { "--size", "-s" },
+                "Parts and size flag not possible"
+            },
+        };
+        for (const auto& [opt1, opt2, err] : conflicting)
+                if (contains(opt1) && contains(opt2))
+                        return err;
+        return NONE;
 }
 
 Parser::Mode Parser::toMode(const std::string& mode) const
 {
         if (mode == "-A" || mode == "--Assemble") {
-                const auto& val = mapOr(argMap_, { "--input", "-i" });
+                const auto& val = mapOr({ "--input", "-i" });
                 return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
         }
         if (mode == "-S" || mode == "--Stripe") {
-                const auto& p = mapOr(argMap_, { "--parts", "-p" });
+                const auto& p = contains({ "--parts", "-p" });
                 return p ? Mode::STRIPE_FIXED : Mode::STRIPE;
         }
         return Mode::NONE;
@@ -131,19 +161,35 @@ bool Parser::isLower(const char c) const
         return c >= 'a' && c <= 'z';
 }
 
+UtilPtr Parser::createPtr(const Mode m) const
+{
+        switch (m) {
+        case Mode::STRIPE :
+                return std::make_unique<UtilStripe>();
+        case Mode::STRIPE_FIXED :
+                return std::make_unique<UtilStripeFixed>();
+        case Mode::ASM :
+                return std::make_unique<UtilAssembler>();
+        case Mode::ASM_MULTI :
+                return std::make_unique<UtilAssemblerMulti>();
+        default :
+                return nullptr;
+        }
+}
+
 Maybe<UtilPtr> Parser::createUtil() const
 {
+        if (const auto e = conflict())
+                return makeBad<UtilPtr>(*e);
         const auto mode = toMode(mode_);
-        switch (mode) {
-        case Mode::STRIPE :
-                return createPtr<UtilStripe>();
-        case Mode::STRIPE_FIXED :
-                return createPtr<UtilStripeFixed>();
-        case Mode::ASM :
-                return createPtr<UtilAssembler>();
-        case Mode::ASM_MULTI :
-                return createPtr<UtilAssemblerMulti>();
-        case Mode::NONE : { }
-        }
-        return makeBad<UtilPtr>("No mode");
+        auto ptr = createPtr(mode);
+        if (!ptr)
+                return makeBad<UtilPtr>("No mode");
+        if (const auto e = ptr->checkForUnknown(argMap_))
+                return makeBad<UtilPtr>(*e);
+        if (const auto e = ptr->setArgs(argMap_))
+                return makeBad<UtilPtr>(*e);
+        if (const auto e = ptr->setFlags(argMap_))
+                return makeBad<UtilPtr>(*e);
+        return ptr;
 }

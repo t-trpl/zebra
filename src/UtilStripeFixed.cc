@@ -49,7 +49,7 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
 {
         if (const auto e = UtilStripeBase::setArgs(map))
                 return *e;
-        const auto parts = argToIter(map, { "--parts", "-p", "parts" });
+        const auto parts = argToIter(map, PARTS_A);
         if (!parts)
                 return parts.error();
         const auto ptr = (*parts)->second;

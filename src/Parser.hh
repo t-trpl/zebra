@@ -34,10 +34,12 @@ private:
         bool isMode(const std::string& left) const;
         bool isOpt(const std::string& str) const;
         Mode toMode(const std::string& mode) const;
-        template <typename T> Maybe<UtilPtr> createPtr() const;
-        ArgList mapOr(const ArgMap& map, const ArgOr& options) const;
+        ArgList mapOr(const ArgOr& options) const;
         bool leadingHyphen(const std::string& str) const;
         OptData nextOption(ArgList args) const;
+        Error conflict() const;
+        UtilPtr createPtr(const Mode m) const;
+        bool contains(const ArgOr& options) const;
 public:
         Parser() = default;
         ~Parser() = default;
@@ -46,21 +48,5 @@ public:
         Error runParse(const ArgList args);
         bool checkHelp() const;
 };
-
-template <typename T>
-Maybe<UtilPtr> Parser::createPtr() const
-{
-        auto ptr = std::make_unique<T>();
-        const auto unknown = ptr->checkForUnknown(argMap_);
-        if (unknown)
-                return makeBad<UtilPtr>(*unknown);
-        const auto argErr = ptr->setArgs(argMap_);
-        if (argErr)
-                return makeBad<UtilPtr>(*argErr);
-        const auto flagErr = ptr->setFlags(argMap_);
-        if (flagErr)
-                return makeBad<UtilPtr>(*flagErr);
-        return ptr;
-}
 
 #endif /// STRIPE_PARSER_HH

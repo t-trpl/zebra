@@ -18,9 +18,9 @@
 
 Error UtilBaseSingle::setArgs(const ArgMap& map)
 {
-        if (const auto e = setPath(map, { "--input", "-i", "input" }, in_))
+        if (const auto e = setPath(map, IN_A, in_))
                 return *e;
-        if (const auto e = setPath(map, { "--output", "-o", "output" }, out_))
+        if (const auto e = setPath(map, OUT_A, out_))
                 return *e;
         return NONE;
 }

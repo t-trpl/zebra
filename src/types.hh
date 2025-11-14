@@ -21,6 +21,7 @@
 #include <unordered_map>
 #include <string>
 #include <optional>
+#include <vector>
 
 using ArgList = ty::List<std::string>;
 
@@ -38,6 +39,28 @@ using FilesL = ty::List<std::string>;
 
 using OptData = std::pair<ArgList, ArgList>;
 
+using Conflict = std::vector<std::tuple<ArgOr, ArgOr, std::string>>;
+
 constexpr auto NONE = std::nullopt;
+
+#define EXT_A { "--extension", "-e", "extension" }
+
+#define NAME_A { "--name", "-n", "name" }
+
+#define OUT_A { "--output", "-o", "output" }
+
+#define IN_A { "--input", "-i", "input" }
+
+#define SIZE_A { "--size", "-s", "size" }
+
+#define PARTS_A { "--parts", "-p", "parts" }
+
+#define QUIET_F { "--quiet", "-q" }
+
+#define NO_EXT_F { "--no-extension", "-ne" }
+
+#define NO_NAME_F { "--no-name", "-nn" }
+
+#define NO_PAD_F { "--no-padding", "-np" }
 
 #endif /// TYPES_HH

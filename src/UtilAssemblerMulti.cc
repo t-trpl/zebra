@@ -22,21 +22,22 @@
 
 Error UtilAssemblerMulti::setArgs(const ArgMap& map)
 {
-        const auto input = argToIter(map, { "--input", "-i", "input" });
+        const auto input = argToIter(map, IN_A);
         if (!input)
                 return input.error();
         if (const auto ptr = *input; ptr != map.end()) {
                 FilesL acc = nullptr;
-                for (auto p = ptr->second; p; p = p->next)
+                for (auto p = ptr->second; p; p = p->next) {
                         if (const auto part = toPath(p->val); part)
                                 acc = push(*part, acc);
                         else
                                 part.error();
+                }
                 files_ = reverseN(acc);
         } else {
                 return "Missing Input";
         }
-        if (const auto e = setPath(map, { "--output", "-o", "output" }, out_))
+        if (const auto e = setPath(map, OUT_A, out_))
                 return *e;
         return NONE;
 }
@@ -58,7 +59,7 @@ Error UtilAssemblerMulti::run() const
 
 Error UtilAssemblerMulti::setFlags(const ArgMap& map)
 {
-        if (const auto m = validFlag(map, { "--quiet", "-q" }); m && *m)
+        if (const auto m = validFlag(map, QUIET_F); m && *m)
                 silence_ = true;
         else if (!m)
                 return m.error();

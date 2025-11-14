@@ -62,10 +62,9 @@ Error UtilAssembler::setArgs(const ArgMap& map)
 {
         if (const auto e = UtilBaseSingle::setArgs(map))
                 return *e;
-        if (const auto e = setMember(map, { "--extension", "-e", "extension" },
-                ext_))
+        if (const auto e = setMember(map, EXT_A, ext_))
                 return *e;
-        if (const auto e = setMember(map, { "--name", "-n", "name" }, name_))
+        if (const auto e = setMember(map, NAME_A, name_))
                 return *e;
         return NONE;
 }
@@ -92,15 +91,15 @@ Error UtilAssembler::run() const
 
 Error UtilAssembler::setFlags(const ArgMap& map)
 {
-        if (const auto m = validFlag(map, { "--quiet", "-q" }); m && *m)
+        if (const auto m = validFlag(map, QUIET_F); m && *m)
                 silence_ = true;
         else if (!m)
                 return m.error();
-        if (const auto m = validFlag(map, { "--no-extension", "-ne" }); m && *m)
+        if (const auto m = validFlag(map, NO_EXT_F); m && *m)
                 useExt_ = false;
         else if (!m)
                 return m.error();
-        if (const auto m = validFlag(map, { "--no-name", "-nn" }); m && *m)
+        if (const auto m = validFlag(map, NO_NAME_F); m && *m)
                 empty_ = true;
         else if (!m)
                 return m.error();
