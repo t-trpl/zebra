@@ -58,7 +58,7 @@ OptData Parser::nextOption(ArgList args) const
 
 bool Parser::checkHelp() const
 {
-        return containsMap(argMap_, { "-h", "--help" });
+        return contains({ "-h", "--help" });
 }
 
 bool Parser::leadingHyphen(const std::string& str) const

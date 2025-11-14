@@ -16,12 +16,6 @@
 
 #include "src/helpers.hh"
 
-bool containsMap(const ArgMap& map, const ArgOr& arg)
-{
-        return map.find(arg.first) != map.end() ||
-            map.find(arg.second) != map.end();
-}
-
 Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg)
 {
         const auto& [full, abrv] = arg;

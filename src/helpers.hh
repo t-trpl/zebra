@@ -20,8 +20,6 @@
 #include "src/types.hh"
 #include "src/Maybe.hh"
 
-bool containsMap(const ArgMap& map, const ArgOr& flag);
-
 Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg);
 
 Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg);
