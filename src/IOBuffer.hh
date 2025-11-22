@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerFunctions.hh
+ * File: IOBuffer.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,20 +14,24 @@
  * GNU General Public License for more details.
  */
 
-#ifndef UTIL_ASSEMBLER_FUNCTIONS_HH
-#define UTIL_ASSEMBLER_FUNCTIONS_HH
+#ifndef IO_BUFFER_HH
+#define IO_BUFFER_HH
 
-#include "src/Maybe.hh"
-#include "src/ChunkFunctions.hh"
-#include "src/types.hh"
+#include <fstream>
+#include <vector>
 
-class UtilAssemblerFunctions : protected ChunkFunctions {
+class IOBuffer {
+private:
+        const std::streamsize size_ = 1'024 * 64;
+        std::vector<char> buffer_;
 protected:
-        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out);
+        std::streamsize fileSize(std::ifstream& file) const;
+        std::streamsize chunk(std::ifstream& input, std::ofstream& output,
+            std::streamsize remaining);
 public:
-        UtilAssemblerFunctions() = default;
-        virtual ~UtilAssemblerFunctions() = default;
-        UtilAssemblerFunctions(const UtilAssemblerFunctions&) = delete;
+        IOBuffer();
+        virtual ~IOBuffer() = default;
+        IOBuffer(const IOBuffer&) = delete;
 };
 
-#endif /// UTIL_ASSEMBLER_FUNCTIONS_HH
+#endif /// IO_BUFFER_HH

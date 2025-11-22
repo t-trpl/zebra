@@ -1,5 +1,5 @@
 /**
- * File: ChunkFunctions.hh
+ * File: IOBuffer.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,12 +14,12 @@
  * GNU General Public License for more details.
  */
 
-#include "src/ChunkFunctions.hh"
+#include "src/IOBuffer.hh"
 
-ChunkFunctions::ChunkFunctions() : buffer_(size_, 0)
+IOBuffer::IOBuffer() : buffer_(size_, 0)
 { }
 
-std::streamsize ChunkFunctions::fileSize(std::ifstream& file) const
+std::streamsize IOBuffer::fileSize(std::ifstream& file) const
 {
         file.seekg(0, std::ios::end);
         std::streamsize size = file.tellg();
@@ -27,8 +27,8 @@ std::streamsize ChunkFunctions::fileSize(std::ifstream& file) const
         return size;
 }
 
-std::streamsize ChunkFunctions::chunk(std::ifstream& input,
-    std::ofstream& output, std::streamsize remaining)
+std::streamsize IOBuffer::chunk(std::ifstream& input, std::ofstream& output,
+    std::streamsize remaining)
 {
         std::streamsize acc = 0;
         while (remaining) {

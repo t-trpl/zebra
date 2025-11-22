@@ -18,11 +18,11 @@
 #define UTIL_ASSEMBLER_MULTI_HH
 
 #include "src/UtilBase.hh"
-#include "src/UtilAssemblerFunctions.hh"
+#include "src/AssemblerIO.hh"
 #include <string>
 
 class UtilAssemblerMulti final : public UtilBase
-                               , public UtilAssemblerFunctions {
+                               , public AssemblerIO {
 private:
         FilesL files_;
         std::string out_;

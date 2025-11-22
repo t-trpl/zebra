@@ -1,5 +1,5 @@
 /**
- * File: UtilAssemblerFunctions.cc
+ * File: AssemblerIO.cc
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,10 +14,10 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilAssemblerFunctions.hh"
+#include "src/AssemblerIO.hh"
 #include <fstream>
 
-Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
+Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
     std::ofstream& out)
 {
         std::streamsize bytes = 0;

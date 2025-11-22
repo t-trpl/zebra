@@ -80,8 +80,14 @@ Error UtilBase::checkForUnknown(const ArgMap& map) const
 std::string UtilBase::toPath(const std::string& p) const
 {
         const std::string cwd = fs::current_path().string();
-        const auto path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p) : p;
-        return path;
+        if (isSlash(p[0]))
+                return p;
+        if (p.size() == 1 && p[0] == '.')
+                return fs::path(cwd);
+        auto it = p.begin();
+        while (it + 1 < p.end() && (*it == '.' && isSlash(*(it + 1))))
+                it += 2;
+        return std::string(fs::path(cwd) / std::string(it, p.end()));
 }
 
 Maybe<bool> UtilBase::validFlag(const ArgMap& map, const ArgOr& arg) const

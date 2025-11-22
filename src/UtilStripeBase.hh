@@ -19,11 +19,11 @@
 
 #include "src/types.hh"
 #include "src/UtilBaseSingle.hh"
-#include "src/ChunkFunctions.hh"
+#include "src/IOBuffer.hh"
 #include <string>
 
 class UtilStripeBase : public UtilBaseSingle
-                     , protected ChunkFunctions {
+                     , protected IOBuffer {
 protected:
         std::string name_ = "";
         std::string ext_ = "stripe";

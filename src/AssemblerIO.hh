@@ -1,5 +1,5 @@
 /**
- * File: ChunkFunctions.hh
+ * File: AssemblerIO.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,24 +14,20 @@
  * GNU General Public License for more details.
  */
 
-#ifndef CHUNK_FUNCTIONS_HH
-#define CHUNK_FUNCTIONS_HH
+#ifndef ASSEMBLER_IO_HH
+#define ASSEMBLER_IO_HH
 
-#include <fstream>
-#include <vector>
+#include "src/Maybe.hh"
+#include "src/IOBuffer.hh"
+#include "src/types.hh"
 
-class ChunkFunctions {
-private:
-        const std::streamsize size_ = 1'024 * 64;
-        std::vector<char> buffer_;
+class AssemblerIO : protected IOBuffer {
 protected:
-        std::streamsize fileSize(std::ifstream& file) const;
-        std::streamsize chunk(std::ifstream& input, std::ofstream& output,
-            std::streamsize remaining);
+        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out);
 public:
-        ChunkFunctions();
-        virtual ~ChunkFunctions() = default;
-        ChunkFunctions(const ChunkFunctions&) = delete;
+        AssemblerIO() = default;
+        virtual ~AssemblerIO() = default;
+        AssemblerIO(const AssemblerIO&) = delete;
 };
 
-#endif /// CHUNK_FUNCTIONS_HH
+#endif /// ASSEMBLER_IO_HH

@@ -18,14 +18,14 @@
 #define UTIL_ASSEMBLER_HH
 
 #include "src/UtilBaseSingle.hh"
-#include "src/UtilAssemblerFunctions.hh"
+#include "src/AssemblerIO.hh"
 #include "src/Maybe.hh"
 #include <filesystem>
 
 namespace fs = std::filesystem;
 
 class UtilAssembler final : public UtilBaseSingle
-                          , public UtilAssemblerFunctions {
+                          , public AssemblerIO {
 private:
         std::string ext_ = "stripe";
         bool useExt_ = true;
