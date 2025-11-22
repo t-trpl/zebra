@@ -47,7 +47,6 @@ Error Parser::runParse(const ArgList args)
         return runParse(args->next);
 }
 
-
 bool Parser::emptyArg(ArgList args) const
 {
         if (!args)
