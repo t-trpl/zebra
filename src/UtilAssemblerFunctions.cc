@@ -18,7 +18,7 @@
 #include <fstream>
 
 Maybe<std::streamsize> UtilAssemblerFunctions::writeStripe(FilesL files,
-    std::ofstream& out) const
+    std::ofstream& out)
 {
         std::streamsize bytes = 0;
         while (files) {

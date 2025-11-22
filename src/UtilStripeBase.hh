@@ -40,7 +40,7 @@ public:
         UtilStripeBase() = default;
         virtual ~UtilStripeBase() = default;
         UtilStripeBase(const UtilStripeBase&) = delete;
-        Error run() const override;
+        Error run() override;
         Error setFlags(const ArgMap& map) override;
         virtual Error setArgs(const ArgMap& map) override;
 };

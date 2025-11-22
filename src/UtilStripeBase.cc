@@ -52,7 +52,7 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
         return path;
 }
 
-Error UtilStripeBase::run() const
+Error UtilStripeBase::run()
 {
         if (!silence_)
                 std::cout << util::BANNER << "\nStriping\n";

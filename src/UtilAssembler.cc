@@ -67,7 +67,7 @@ Error UtilAssembler::setArgs(const ArgMap& map)
         return NONE;
 }
 
-Error UtilAssembler::run() const
+Error UtilAssembler::run()
 {
         if (!silence_)
                 std::cout << util::BANNER << "\nAssembling\n";

@@ -40,7 +40,7 @@ public:
         UtilAssembler() = default;
         ~UtilAssembler() = default;
         UtilAssembler(const UtilAssembler&) = delete;
-        Error run() const override;
+        Error run() override;
         Error setArgs(const ArgMap& map) override;
         Error setFlags(const ArgMap& map) override;
 };

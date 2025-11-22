@@ -39,7 +39,7 @@ public:
         UtilBase() = default;
         virtual ~UtilBase() = default;
         UtilBase(const UtilBase&) = delete;
-        virtual Error run() const = 0;
+        virtual Error run() = 0;
         virtual Error setFlags(const ArgMap& map) = 0;
         virtual Error setArgs(const ArgMap& map) = 0;
         Error checkForUnknown(const ArgMap& map) const;

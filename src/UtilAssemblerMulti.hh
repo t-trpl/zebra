@@ -31,7 +31,7 @@ public:
         UtilAssemblerMulti() = default;
         ~UtilAssemblerMulti() = default;
         UtilAssemblerMulti(const UtilAssemblerMulti&) = delete;
-        Error run() const override;
+        Error run() override;
         Error setFlags(const ArgMap& map) override;
         Error setArgs(const ArgMap& map) override;
 };

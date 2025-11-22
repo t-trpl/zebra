@@ -18,14 +18,18 @@
 #define CHUNK_FUNCTIONS_HH
 
 #include <fstream>
+#include <vector>
 
 class ChunkFunctions {
+private:
+        const std::streamsize size_ = 1'024 * 64;
+        std::vector<char> buffer_;
 protected:
         std::streamsize fileSize(std::ifstream& file) const;
         std::streamsize chunk(std::ifstream& input, std::ofstream& output,
-            std::streamsize remaining) const;
+            std::streamsize remaining);
 public:
-        ChunkFunctions() = default;
+        ChunkFunctions();
         virtual ~ChunkFunctions() = default;
         ChunkFunctions(const ChunkFunctions&) = delete;
 };

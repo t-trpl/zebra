@@ -23,8 +23,7 @@
 
 class UtilAssemblerFunctions : protected ChunkFunctions {
 protected:
-        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out)
-            const;
+        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out);
 public:
         UtilAssemblerFunctions() = default;
         virtual ~UtilAssemblerFunctions() = default;

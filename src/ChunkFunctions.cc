@@ -15,8 +15,9 @@
  */
 
 #include "src/ChunkFunctions.hh"
-#include <fstream>
-#include <vector>
+
+ChunkFunctions::ChunkFunctions() : buffer_(size_, 0)
+{ }
 
 std::streamsize ChunkFunctions::fileSize(std::ifstream& file) const
 {
@@ -27,19 +28,17 @@ std::streamsize ChunkFunctions::fileSize(std::ifstream& file) const
 }
 
 std::streamsize ChunkFunctions::chunk(std::ifstream& input,
-    std::ofstream& output, std::streamsize remaining) const
+    std::ofstream& output, std::streamsize remaining)
 {
-        const std::streamsize chunkSize = 1'024 * 64;
-        std::vector<char> buffer(chunkSize, 0);
         std::streamsize acc = 0;
         while (remaining) {
-                const auto use = std::min(chunkSize, remaining);
-                input.read(buffer.data(), use);
+                const auto use = std::min(size_, remaining);
+                input.read(buffer_.data(), use);
                 const auto& read = input.gcount();
                 if (!read)
                         break;
                 acc += read;
-                output.write(buffer.data(), read);
+                output.write(buffer_.data(), read);
                 remaining -= use;
         }
         return acc;
