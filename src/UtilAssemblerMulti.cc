@@ -24,9 +24,9 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
         const auto input = argToIter(map, IN_A);
         if (!input)
                 return input.error();
-        if (const auto ptr = *input; ptr != map.end()) {
+        if (const auto it = *input; it != map.end()) {
                 FilesL acc = nullptr;
-                for (auto p = ptr->second; p; p = p->next)
+                for (auto p = it->second; p; p = p->next)
                         acc = push(toPath(p->val), acc);
                 files_ = reverseN(acc);
         } else {

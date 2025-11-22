@@ -22,12 +22,12 @@ namespace fs = std::filesystem;
 Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
     std::string& ref, bool required)
 {
-        const auto itr = argToIter(map, opt);
+        const auto mIt = argToIter(map, opt);
         const auto name = std::get<2>(opt);
-        if (!itr)
-                return itr.error();
-        if (const auto ptr = *itr; ptr != map.end()) {
-                const auto args = ptr->second;
+        if (!mIt)
+                return mIt.error();
+        if (const auto it = *mIt; it != map.end()) {
+                const auto args = it->second;
                 switch (count(args)) {
                 case 0:
                         return "Unmatched "+ name;

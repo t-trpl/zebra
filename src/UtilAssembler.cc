@@ -50,10 +50,10 @@ bool UtilAssembler::matchName(const fs::directory_entry& file) const
 
 std::string UtilAssembler::stemToName(const std::string& stem) const
 {
-        auto ptr = stem.end() - 1;
-        while (ptr > stem.begin() && std::isdigit(*ptr))
-                ptr--;
-        return std::string(stem.begin(), ptr);
+        auto it = stem.end() - 1;
+        while (it > stem.begin() && std::isdigit(*it))
+                it--;
+        return std::string(stem.begin(), it);
 }
 
 Error UtilAssembler::setArgs(const ArgMap& map)

@@ -67,10 +67,10 @@ bool Parser::leadingHyphen(const std::string& str) const
 
 ArgList Parser::mapOr(const ArgOr& options) const
 {
-        if (const auto ptr = argMap_.find(options.first); ptr != argMap_.end())
-                return ptr->second;
-        if (const auto ptr = argMap_.find(options.second); ptr != argMap_.end())
-                return ptr->second;
+        if (const auto it = argMap_.find(options.first); it != argMap_.end())
+                return it->second;
+        if (const auto it = argMap_.find(options.second); it != argMap_.end())
+                return it->second;
         return nullptr;
 }
 
@@ -121,14 +121,14 @@ bool Parser::isMode(const std::string& left) const
         const auto end = left.end();
         if (left.size() < 2)
                 return false;
-        auto ptr = left.begin();
-        for (int hypthen = 0; ptr != end && *ptr == '-'; ptr++)
+        auto it = left.begin();
+        for (int hypthen = 0; it != end && *it == '-'; it++)
                 if (++hypthen > 2)
                         return false;
-        if (ptr == end || !isUpper(*ptr++))
+        if (it == end || !isUpper(*it++))
                 return false;
-        for (; ptr != end; ptr++)
-                if (!isLower(*ptr) && *ptr != '-')
+        for (; it != end; it++)
+                if (!isLower(*it) && *it != '-')
                         return false;
         return true;
 }
@@ -138,14 +138,14 @@ bool Parser::isOpt(const std::string& left) const
         const auto end = left.end();
         if (left.size() < 2)
                 return false;
-        auto ptr = left.begin();
-        for (int hypthen = 0; ptr != end && *ptr == '-'; ptr++)
+        auto it = left.begin();
+        for (int hypthen = 0; it != end && *it == '-'; it++)
                 if (++hypthen > 2)
                         return false;
-        if (ptr == end)
+        if (it == end)
                 return false;
-        for (; ptr != end; ptr++)
-                if (!isLower(*ptr) && *ptr != '-')
+        for (; it != end; it++)
+                if (!isLower(*it) && *it != '-')
                         return false;
         return true;
 }
