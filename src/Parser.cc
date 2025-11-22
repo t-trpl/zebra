@@ -35,6 +35,8 @@ Error Parser::runParse(const ArgList args)
                 if (argMap_.find(arg) != argMap_.end())
                         return "Duplicate " + arg;
                 const auto [next, acc] = nextOption(args->next);
+                if (emptyArg(acc))
+                        return arg + " empty option";
                 argMap_[arg] = acc;
                 return runParse(next);
         } else if (!arg.empty()) {
@@ -43,6 +45,16 @@ Error Parser::runParse(const ArgList args)
                 return "Empty arg";
         }
         return runParse(args->next);
+}
+
+
+bool Parser::emptyArg(ArgList args) const
+{
+        if (!args)
+                return false;
+        if (args->val.empty())
+                return true;
+        return emptyArg(args->next);
 }
 
 OptData Parser::nextOption(ArgList args) const

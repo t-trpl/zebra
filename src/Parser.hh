@@ -40,6 +40,7 @@ private:
         Error conflict() const;
         UtilPtr createPtr(const Mode m) const;
         bool contains(const ArgOr& options) const;
+        bool emptyArg(ArgList args) const;
 public:
         Parser() = default;
         ~Parser() = default;

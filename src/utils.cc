@@ -22,7 +22,7 @@ std::string sanitize(const std::string& str)
 {
         auto bIt = str.begin();
         auto eIt = str.end() - 1;
-        while (*bIt == ' ')
+        while (*bIt == ' ' && bIt < str.end())
                 bIt++;
         while (eIt > bIt && *eIt == ' ')
                 eIt--;
