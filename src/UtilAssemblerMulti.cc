@@ -26,12 +26,8 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
                 return input.error();
         if (const auto ptr = *input; ptr != map.end()) {
                 FilesL acc = nullptr;
-                for (auto p = ptr->second; p; p = p->next) {
-                        if (const auto part = toPath(p->val); part)
-                                acc = push(*part, acc);
-                        else
-                                part.error();
-                }
+                for (auto p = ptr->second; p; p = p->next)
+                        acc = push(toPath(p->val), acc);
                 files_ = reverseN(acc);
         } else {
                 return "Missing Input";

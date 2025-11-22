@@ -33,17 +33,9 @@ Error run(const ArgList args)
         return NONE;
 }
 
-ArgList argsToList(int argc, char* argv[])
-{
-        ArgList acc = nullptr;
-        for (int i = 1; i < argc; i++)
-                acc = push(std::string(argv[i]), acc);
-        return reverseN(acc);
-}
-
 int main(int argc, char* argv[])
 {
-        const auto args = argsToList(argc, argv);
+        const auto args = util::argsToList(argc, argv);
         if (const auto e = run(args)) {
                 std::cout << *e << "\n";
                 return 1;

@@ -103,6 +103,14 @@ int count(const List<T> head)
         return head ? 1 + count(head->next) : 0;
 }
 
+template <typename T, typename F>
+List<T> apply(const List<T> head, F&& f)
+{
+        if (!head)
+                return nullptr;
+        return push(f(head->val), apply(head->next, std::forward<F>(f)));
+}
+
 } /// ty
 
 #endif /// LIST_HH

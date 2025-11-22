@@ -28,9 +28,8 @@ private:
             std::string& ref, bool required);
 protected:
         bool silence_ = false;
-        Maybe<std::string> toPath(const std::string& p) const;
+        std::string toPath(const std::string& p) const;
         bool isSlash(const char c) const;
-        std::string clean(const std::string& path) const;
         Error setPath(const ArgMap& map, const ArgT& opt, std::string& ref);
         Error setMember(const ArgMap& map, const ArgT& opt, std::string& ref);
         virtual std::unordered_set<std::string> validArgs() const = 0;

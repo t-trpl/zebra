@@ -59,22 +59,13 @@ Error UtilBase::setPath(const ArgMap& map, const ArgT& opt, std::string& ref)
         std::string interim;
         if (const auto e = setMemberBase(map, opt, interim, true))
                 return e;
-        if (const auto m = toPath(interim); !m)
-                return m.error();
-        else
-                ref = *m;
+        ref = toPath(interim);
         return NONE;
 }
 
 bool UtilBase::isSlash(const char c) const
 {
         return c == '/' || c == '\\';
-}
-
-std::string UtilBase::clean(const std::string& path) const
-{
-        const int last = path.size() - 1;
-        return last > 0 && isSlash(path[last]) ? path.substr(0, last) : path;
 }
 
 Error UtilBase::checkForUnknown(const ArgMap& map) const
@@ -86,13 +77,11 @@ Error UtilBase::checkForUnknown(const ArgMap& map) const
         return NONE;
 }
 
-Maybe<std::string> UtilBase::toPath(const std::string& p) const
+std::string UtilBase::toPath(const std::string& p) const
 {
-        if (p.empty())
-                return makeBad<std::string>("No path provided");
         const std::string cwd = fs::current_path().string();
         const auto path = !isSlash(p[0]) ? std::string(fs::path(cwd) / p) : p;
-        return clean(path);
+        return path;
 }
 
 Maybe<bool> UtilBase::validFlag(const ArgMap& map, const ArgOr& arg) const

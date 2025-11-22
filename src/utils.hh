@@ -17,6 +17,9 @@
 #ifndef UTILS_HH
 #define UTILS_HH
 
+#include "src/types.hh"
+#include <string>
+
 namespace util {
 
 template <typename T, typename U, typename F>
@@ -27,6 +30,10 @@ T mapv(U it1, const U& it2, F&& fun)
                 acc.push_back(fun(*it1++));
         return acc;
 }
+
+std::string sanitize(const std::string& str);
+
+ArgList argsToList(int argc, char* argv[]);
 
 constexpr auto BANNER =
 R"( _______| |__  _ __ __ _
