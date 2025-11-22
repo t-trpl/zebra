@@ -37,7 +37,7 @@ ArgList argsToList(int argc, char* argv[])
         ArgList acc = nullptr;
         for (int i = 1; i < argc; i++)
                 acc = push(std::string(argv[i]), acc);
-        return reverseN(apply(acc, util::sanitize));
+        return reverseN(map(util::sanitize, acc));
 }
 
 } /// util

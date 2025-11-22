@@ -104,11 +104,11 @@ int count(const List<T> head)
 }
 
 template <typename T, typename F>
-List<T> apply(const List<T> head, F&& f)
+List<T> map(F&& f, const List<T> head)
 {
         if (!head)
                 return nullptr;
-        return push(f(head->val), apply(head->next, std::forward<F>(f)));
+        return push(f(head->val), map(std::forward<F>(f), head->next));
 }
 
 } /// ty
