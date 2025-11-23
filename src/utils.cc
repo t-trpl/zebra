@@ -20,13 +20,13 @@ namespace util {
 
 std::string sanitize(const std::string& str)
 {
+        if (str.empty())
+                return str;
         auto bIt = str.begin();
         auto eIt = str.end() - 1;
-        while (*bIt == ' ' && bIt < str.end())
+        while (bIt < str.end() && *bIt == ' ')
                 bIt++;
         while (eIt > bIt && *eIt == ' ')
-                eIt--;
-        if (bIt < eIt && *eIt == '/')
                 eIt--;
         eIt++;
         return std::string(bIt, eIt);
