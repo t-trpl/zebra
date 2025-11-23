@@ -42,6 +42,11 @@ Conflict UtilAssembler::conflicting() const
                 { "--name", "-n" },
                 "No-Name and Name not possible"
             },
+            {
+                { "--no-extension", "-ne" },
+                { "--extension", "-e" },
+                "No-Extension and Extension not possible"
+            },
         };
 }
 
