@@ -16,6 +16,7 @@
 
 #include "src/AssemblerIO.hh"
 #include <fstream>
+#include <iostream>
 
 Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
     std::ofstream& out)
@@ -30,7 +31,10 @@ Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
                         return makeBad<std::streamsize>(msg);
                 }
                 const auto size = fileSize(file);
-                bytes += chunk(file, out, size);
+                const auto transfer = chunk(file, out, size);
+                std::cout << "Transfered: " << path << ": " << transfer
+                          << " bytes\n";
+                bytes += transfer;
                 files = files->next;
         }
         return bytes;
