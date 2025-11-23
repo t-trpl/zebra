@@ -27,6 +27,22 @@ size_t UtilStripeBase::numberLength(const size_t& rem) const
         return rem > 0 ? 1 + numberLength(rem / 10) : 0;
 }
 
+Conflict UtilStripeBase::conflicting() const
+{
+        return {
+            {
+                { "--no-extension", "-ne" },
+                { "--extension", "-e" },
+                "No-Extension and Extension not possible"
+            },
+            {
+                { "--parts", "-p" },
+                { "--size", "-s" },
+                "Parts and Size not possible"
+            },
+        };
+}
+
 size_t UtilStripeBase::stripeLength(const std::streamsize& size,
     const size_t& stripeSize) const
 {

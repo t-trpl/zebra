@@ -28,13 +28,18 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
                 FilesL acc = nullptr;
                 for (auto p = it->second; p; p = p->next)
                         acc = push(toPath(p->val), acc);
-                files_ = reverseN(acc);
+                files_ = reverse(acc);
         } else {
                 return "Missing Input";
         }
         if (const auto e = setPath(map, OUT_A, out_))
                 return *e;
         return NONE;
+}
+
+Conflict UtilAssemblerMulti::conflicting() const
+{
+        return { };
 }
 
 Error UtilAssemblerMulti::run()

@@ -38,22 +38,11 @@ struct Node {
         Node(const T& v, List<T> head) : val(v), next(head) { }
 };
 
-template <typename T>
-List<T> push(const T& val, const List<T> head)
-{
-        return std::make_shared<Node<T>>(val, head);
-}
+/// not to be used directly
+namespace detail {
 
 template <typename T>
-List<T> copy(const List<T> head)
-{
-        if (!head)
-                return nullptr;
-        return std::make_shared<Node<T>>(head->val, copy(head->next));
-}
-
-template <typename T>
-void sort(const List<T> head)
+void sortInPlace(const List<T> head)
 {
         if (!head)
                 return;
@@ -72,29 +61,45 @@ void sort(const List<T> head)
 }
 
 template <typename T>
-List<T> sortN(const List<T> head)
-{
-        const auto newHead = copy(head);
-        sort(newHead);
-        return newHead;
-}
-
-template <typename T>
-List<T> reverse(List<T> head)
+List<T> reverseInPlace(List<T> head)
 {
         if (!head || !head->next)
                 return head;
-        auto rh = reverse(head->next);
+        auto rh = detail::reverseInPlace(head->next);
         head->next->next = head;
         head->next = nullptr;
         return rh;
 }
 
+} /// detail
+
 template <typename T>
-List<T> reverseN(const List<T> head)
+List<T> push(const T& val, const List<T> head)
+{
+        return std::make_shared<Node<T>>(val, head);
+}
+
+template <typename T>
+List<T> copy(const List<T> head)
+{
+        if (!head)
+                return nullptr;
+        return std::make_shared<Node<T>>(head->val, copy(head->next));
+}
+
+template <typename T>
+List<T> sort(const List<T> head)
+{
+        const auto newHead = copy(head);
+        detail::sortInPlace(newHead);
+        return newHead;
+}
+
+template <typename T>
+List<T> reverse(const List<T> head)
 {
         auto c = copy(head);
-        return reverse(c);
+        return detail::reverseInPlace(c);
 }
 
 template <typename T>
@@ -104,11 +109,21 @@ int count(const List<T> head)
 }
 
 template <typename T, typename F>
-List<T> map(F&& f, const List<T> head)
+List<T> map(const List<T> head, F&& f)
 {
         if (!head)
                 return nullptr;
-        return push(f(head->val), map(std::forward<F>(f), head->next));
+        return push(f(head->val), map(head->next, std::forward<F>(f)));
+}
+
+template <typename T, typename F>
+bool any(const List<T> head, F&& f)
+{
+        if (!head)
+                return false;
+        if (f(head->val))
+                return true;
+        return any(head->next, std::forward<F>(f));
 }
 
 } /// ty

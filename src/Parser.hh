@@ -34,13 +34,9 @@ private:
         bool isMode(const std::string& left) const;
         bool isOpt(const std::string& str) const;
         Mode toMode(const std::string& mode) const;
-        ArgList mapOr(const ArgOr& options) const;
         bool leadingHyphen(const std::string& str) const;
         OptData nextOption(ArgList args) const;
-        Error conflict() const;
         UtilPtr createPtr(const Mode m) const;
-        bool contains(const ArgOr& options) const;
-        bool emptyArg(ArgList args) const;
 public:
         Parser() = default;
         ~Parser() = default;

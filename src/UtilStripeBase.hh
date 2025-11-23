@@ -36,6 +36,7 @@ protected:
         std::string stripePath(const size_t& num, const size_t& max,
             const std::string& out) const;
         virtual size_t getStripeSize(const size_t& fsize) const = 0;
+        Conflict conflicting() const override;
 public:
         UtilStripeBase() = default;
         virtual ~UtilStripeBase() = default;

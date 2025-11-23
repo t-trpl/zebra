@@ -37,7 +37,25 @@ ArgList argsToList(int argc, char* argv[])
         ArgList acc = nullptr;
         for (int i = 1; i < argc; i++)
                 acc = push(std::string(argv[i]), acc);
-        return reverseN(map(util::sanitize, acc));
+        return reverse(map(acc, util::sanitize));
+}
+
+bool contains(const ArgMap& argMap, const ArgOr& options)
+{
+        if (argMap.find(options.first) != argMap.end())
+                return true;
+        if (argMap.find(options.second) != argMap.end())
+                return true;
+        return false;
+}
+
+ArgList mapOr(const ArgMap& argMap, const ArgOr& options)
+{
+        if (const auto it = argMap.find(options.first); it != argMap.end())
+                return it->second;
+        if (const auto it = argMap.find(options.second); it != argMap.end())
+                return it->second;
+        return nullptr;
 }
 
 } /// util

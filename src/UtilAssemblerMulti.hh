@@ -27,6 +27,7 @@ private:
         FilesL files_;
         std::string out_;
         std::unordered_set<std::string> validArgs() const override;
+        Conflict conflicting() const override;
 public:
         UtilAssemblerMulti() = default;
         ~UtilAssemblerMulti() = default;

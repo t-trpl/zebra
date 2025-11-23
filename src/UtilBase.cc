@@ -15,6 +15,7 @@
  */
 
 #include "src/UtilBase.hh"
+#include "src/utils.hh"
 #include <filesystem>
 
 namespace fs = std::filesystem;
@@ -45,6 +46,15 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
         } else if (required) {
                 return "Missing " + name;
         }
+        return NONE;
+}
+
+Error UtilBase::conflict(const ArgMap& map) const
+{
+        const auto c = conflicting();
+        for (const auto& [opt1, opt2, err] : c)
+                if (util::contains(map, opt1) && util::contains(map, opt2))
+                        return err;
         return NONE;
 }
 

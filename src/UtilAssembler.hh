@@ -36,6 +36,7 @@ private:
         std::unordered_set<std::string> validArgs() const override;
         bool matchExt(const fs::directory_entry& file) const;
         bool matchName(const fs::directory_entry& file) const;
+        Conflict conflicting() const override;
 public:
         UtilAssembler() = default;
         ~UtilAssembler() = default;

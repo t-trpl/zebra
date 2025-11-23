@@ -35,6 +35,10 @@ std::string sanitize(const std::string& str);
 
 ArgList argsToList(int argc, char* argv[]);
 
+bool contains(const ArgMap& argMap, const ArgOr& options);
+
+ArgList mapOr(const ArgMap& argMap, const ArgOr& options);
+
 constexpr auto BANNER =
 R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |

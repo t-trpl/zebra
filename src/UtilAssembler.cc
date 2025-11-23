@@ -31,7 +31,12 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
                         files = push(p.string(), files);
                 }
         }
-        return sortN(files);
+        return sort(files);
+}
+
+Conflict UtilAssembler::conflicting() const
+{
+        return { };
 }
 
 bool UtilAssembler::matchExt(const fs::directory_entry& file) const

@@ -35,6 +35,7 @@ protected:
         virtual std::unordered_set<std::string> validArgs() const = 0;
         Maybe<bool> validFlag(const ArgMap& map, const ArgOr& arg) const;
         Maybe<MapIt> argToIter(const ArgMap& map, const ArgT& arg) const;
+        virtual Conflict conflicting() const = 0;
 public:
         UtilBase() = default;
         virtual ~UtilBase() = default;
@@ -43,6 +44,7 @@ public:
         virtual Error setFlags(const ArgMap& map) = 0;
         virtual Error setArgs(const ArgMap& map) = 0;
         Error checkForUnknown(const ArgMap& map) const;
+        Error conflict(const ArgMap& map) const;
 };
 
 #endif /// UTIL_BASE_HH
