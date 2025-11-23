@@ -68,13 +68,13 @@ Error UtilStripe::setArgs(const ArgMap& map)
 Maybe<size_t> UtilStripe::stringToBytes(const std::string& size) const
 {
         auto it = size.begin();
-        while (it != size.end() && (std::isdigit(*it) || *it == '.'))
+        while (it != size.end() && (util::isDigit(*it) || *it == '.'))
                 it++;
         const std::string num(size.begin(), it);
         const auto d = std::count_if(num.begin(), num.end(), [](const auto c) {
                 return c == '.';
         });
-        if (num.empty() || d > 1 || (it != size.end() && !std::isalpha(*it)))
+        if (num.empty() || d > 1 || (it != size.end() && !util::isAlpha(*it)))
                 return makeBad<size_t>("Bad byte size");
         const std::unordered_map<std::string, size_t> map = {
             { "b" , 1 },

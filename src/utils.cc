@@ -58,4 +58,16 @@ ArgList mapOr(const ArgMap& argMap, const ArgOr& options)
         return nullptr;
 }
 
+bool isDigit(const char c)
+{
+        const auto uc = static_cast<unsigned char>(c);
+        return std::isdigit(uc);
+}
+
+bool isAlpha(const char c)
+{
+        const auto uc = static_cast<unsigned char>(c);
+        return std::isalpha(uc);
+}
+
 } /// util

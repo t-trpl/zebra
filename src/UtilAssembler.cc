@@ -36,7 +36,13 @@ Maybe<FilesL> UtilAssembler::stripeNames() const
 
 Conflict UtilAssembler::conflicting() const
 {
-        return { };
+        return {
+            {
+                { "--no-name", "-nn" },
+                { "--name", "-n" },
+                "No-Name and Name not possible"
+            },
+        };
 }
 
 bool UtilAssembler::matchExt(const fs::directory_entry& file) const
@@ -56,7 +62,7 @@ bool UtilAssembler::matchName(const fs::directory_entry& file) const
 std::string UtilAssembler::stemToName(const std::string& stem) const
 {
         auto it = stem.end() - 1;
-        while (it > stem.begin() && std::isdigit(*it))
+        while (it > stem.begin() && util::isDigit(*it))
                 it--;
         return std::string(stem.begin(), it);
 }

@@ -15,6 +15,7 @@
  */
 
 #include "src/UtilStripeFixed.hh"
+#include "src/utils.hh"
 
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {
@@ -39,7 +40,7 @@ size_t UtilStripeFixed::getStripeSize(const size_t& fsize) const
 Maybe<int> UtilStripeFixed::stringToParts(const std::string& parts) const
 {
         for (const auto c : parts)
-                if (!isdigit(c))
+                if (!util::isDigit(c))
                         return makeBad<int>("Bad Parts " + parts);
         return std::stoi(parts);
 }

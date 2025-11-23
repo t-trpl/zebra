@@ -39,6 +39,10 @@ bool contains(const ArgMap& argMap, const ArgOr& options);
 
 ArgList mapOr(const ArgMap& argMap, const ArgOr& options);
 
+bool isDigit(const char c);
+
+bool isAlpha(const char c);
+
 constexpr auto BANNER =
 R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |
