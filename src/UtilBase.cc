@@ -90,6 +90,8 @@ Error UtilBase::checkForUnknown(const ArgMap& map) const
 std::string UtilBase::toPath(const std::string& p) const
 {
         const std::string cwd = fs::current_path().string();
+        if (p.empty())
+                return p;
         if (isSlash(p[0]))
                 return p;
         if (p.size() == 1 && p[0] == '.')
