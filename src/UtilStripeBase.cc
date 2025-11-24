@@ -87,12 +87,14 @@ Error UtilStripeBase::run()
                 return "Stripe size too small";
         const auto length = stripeLength(fsize, stripeSize);
         int chunkNumber = 0;
-        while (!file.eof()) {
+        std::streamsize totalBytes = 0;
+        while (totalBytes < fsize) {
                 const auto path = stripePath(chunkNumber++, length, out_);
                 std::ofstream outFile(path);
                 if (!outFile)
                         return "Failed to write: " + path;
                 const auto bytes = chunk(file, outFile, stripeSize);
+                totalBytes += bytes;
                 if (!silence_)
                         std::cout << "\033[32m->\033[0m" << path << " " << bytes
                                   << " bytes\n";
