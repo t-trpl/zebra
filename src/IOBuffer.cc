@@ -16,7 +16,8 @@
 
 #include "src/IOBuffer.hh"
 
-IOBuffer::IOBuffer() : buffer_(size_, 0)
+IOBuffer::IOBuffer()
+    : buffer_(size_, 0)
 { }
 
 std::streamsize IOBuffer::fileSize(std::ifstream& file) const
