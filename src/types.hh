@@ -23,7 +23,7 @@
 #include <optional>
 #include <vector>
 
-using ArgList = List<std::string>;
+using ArgList = ty::List<std::string>;
 
 using ArgMap = std::unordered_map<std::string, ArgList>;
 
@@ -35,7 +35,7 @@ using ArgOr = std::pair<std::string, std::string>;
 
 using MapIt = ArgMap::const_iterator;
 
-using FilesL = List<std::string>;
+using FilesL = ty::List<std::string>;
 
 using Conflict = std::vector<std::tuple<ArgOr, ArgOr, std::string>>;
 

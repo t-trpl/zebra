@@ -22,7 +22,7 @@
 
 Maybe<FilesL> UtilAssembler::stripeNames() const
 {
-        FilesL files = Null<std::string>;
+        FilesL files = ty::Null<std::string>;
         if (!fs::exists(in_) || !fs::is_directory(in_))
                 return makeBad<FilesL>("Not a directory: " + in_);
         for (const auto& file : fs::directory_iterator(in_)) {

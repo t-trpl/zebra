@@ -25,6 +25,8 @@
 
 #include <memory>
 
+namespace ty {
+
 namespace detail {
 
 template <typename T>
@@ -86,8 +88,6 @@ List<T> reverseInPlace(List<T> head)
 }
 
 } /// detail
-
-namespace ty {
 
 template <typename T, typename U>
 List<T> push(const U& val, const List<T> head)
