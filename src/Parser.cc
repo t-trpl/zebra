@@ -35,13 +35,13 @@ Error Parser::runParse(const ArgList args)
         } else if (isOpt(arg)) {
                 if (argMap_.find(arg) != argMap_.end())
                         return "Duplicate " + arg;
-                const auto acc = takeWhile(args->next, [](const auto& s) {
+                const auto acc = ty::takeWhile(args->next, [](const auto& s) {
                         return !(s.size() > 0 && s[0] == '-');
                 });
-                if (any(acc, [](const auto& s) { return s.empty(); }))
+                if (ty::any(acc, [](const auto& s) { return s.empty(); }))
                         return arg + " empty option";
                 argMap_[arg] = acc;
-                return runParse(drop(args, count(acc) + 1));
+                return runParse(ty::drop(args, ty::count(acc) + 1));
         } else if (!arg.empty()) {
                 return "Bad arg " + arg;
         } else {
@@ -59,7 +59,7 @@ Parser::Mode Parser::toMode(const std::string& mode) const
 {
         if (mode == "-A" || mode == "--Assemble") {
                 const auto& val = util::mapOr(argMap_, { "--input", "-i" });
-                return count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
+                return ty::count(val) > 1 ? Mode::ASM_MULTI : Mode::ASM;
         }
         if (mode == "-S" || mode == "--Stripe") {
                 const auto& p = util::contains(argMap_, { "--parts", "-p" });

@@ -46,7 +46,7 @@ Error UtilStripe::setArgs(const ArgMap& map)
                 return size.error();
         if (const auto it = *size; it != map.end()) {
                 const auto args = it->second;
-                switch (count(args)) {
+                switch (ty::count(args)) {
                 case 0:
                         return "No size";
                 case 1: {

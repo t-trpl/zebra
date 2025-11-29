@@ -53,7 +53,7 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
         if (!parts)
                 return parts.error();
         const auto ptr = (*parts)->second;
-        switch (count(ptr)) {
+        switch (ty::count(ptr)) {
         case 0:
                 return "No parts";
         case 1: {

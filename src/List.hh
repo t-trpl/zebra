@@ -25,24 +25,35 @@
 
 #include <memory>
 
-namespace ty {
+namespace detail {
 
 template <typename T>
 struct Node;
 
+}
+
 template <typename T>
-using List = std::shared_ptr<Node<T>>;
+using List = std::shared_ptr<detail::Node<T>>;
+
+template <typename T>
+inline List<T> Null = nullptr;
+
+/// not to be used directly
+namespace detail {
 
 template <typename T>
 struct Node {
         T val;
         List<T> next = nullptr;
-        Node(const T& v) : val(v) { }
-        Node(const T& v, List<T> head) : val(v), next(head) { }
+        template <typename U>
+        Node(const U& v) : val(v) { }
+        template <typename U>
+        Node(U&& v) : val(std::forward<U>(v)) { }
+        template <typename U>
+        Node(const U& v, List<T> head) : val(v), next(head) { }
+        template <typename U>
+        Node(U&& v, List<T> head) : val(std::forward<U>(v)), next(head) { }
 };
-
-/// not to be used directly
-namespace detail {
 
 template <typename T>
 void sortInPlace(const List<T> head)
@@ -76,10 +87,18 @@ List<T> reverseInPlace(List<T> head)
 
 } /// detail
 
-template <typename T>
-List<T> push(const T& val, const List<T> head)
+namespace ty {
+
+template <typename T, typename U>
+List<T> push(const U& val, const List<T> head)
 {
-        return std::make_shared<Node<T>>(val, head);
+        return std::make_shared<detail::Node<T>>(val, head);
+}
+
+template <typename T, typename U>
+List<T> push(U&& val, const List<T> head)
+{
+        return std::make_shared<detail::Node<T>>(std::forward<U>(val), head);
 }
 
 template <typename T>
@@ -87,7 +106,7 @@ List<T> copy(const List<T> head)
 {
         if (!head)
                 return nullptr;
-        return std::make_shared<Node<T>>(head->val, copy(head->next));
+        return std::make_shared<detail::Node<T>>(head->val, copy(head->next));
 }
 
 template <typename T>
@@ -134,7 +153,7 @@ List<T> drop(const List<T> head, const int cnt)
 {
         if (!head)
                 return nullptr;
-        if (!cnt)
+        if (cnt <= 0)
                 return head;
         return drop(head->next, cnt - 1);
 }
@@ -147,6 +166,6 @@ List<T> takeWhile(const List<T> head, F&& f)
         return push(head->val, takeWhile(head->next, std::forward<F>(f)));
 }
 
-} /// ty
+} /// List
 
 #endif /// LIST_HH

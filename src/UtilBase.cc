@@ -29,7 +29,7 @@ Error UtilBase::setMemberBase(const ArgMap& map, const ArgT& opt,
                 return mIt.error();
         if (const auto it = *mIt; it != map.end()) {
                 const auto args = it->second;
-                switch (count(args)) {
+                switch (ty::count(args)) {
                 case 0:
                         return "Unmatched "+ name;
                 case 1: {

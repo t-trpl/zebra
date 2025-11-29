@@ -22,16 +22,16 @@
 
 Maybe<FilesL> UtilAssembler::stripeNames() const
 {
-        FilesL files;
+        FilesL files = Null<std::string>;
         if (!fs::exists(in_) || !fs::is_directory(in_))
                 return makeBad<FilesL>("Not a directory: " + in_);
         for (const auto& file : fs::directory_iterator(in_)) {
                 if (matchExt(file) && matchName(file)) {
                         const auto p = fs::path(in_) / file.path().filename();
-                        files = push(p.string(), files);
+                        files = ty::push(p.string(), files);
                 }
         }
-        return sort(files);
+        return ty::sort(files);
 }
 
 Conflict UtilAssembler::conflicting() const

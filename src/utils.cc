@@ -36,8 +36,8 @@ ArgList argsToList(int argc, char* argv[])
 {
         ArgList acc = nullptr;
         for (int i = 1; i < argc; i++)
-                acc = push(std::string(argv[i]), acc);
-        return reverse(map(acc, util::sanitize));
+                acc = ty::push(std::string(argv[i]), acc);
+        return ty::reverse(ty::map(acc, util::sanitize));
 }
 
 bool contains(const ArgMap& argMap, const ArgOr& options)
