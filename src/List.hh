@@ -36,7 +36,7 @@ template <typename T>
 using List = std::shared_ptr<detail::Node<T>>;
 
 template <typename T>
-inline List<T> Null = nullptr;
+const inline List<T> Null = nullptr;
 
 /// not to be used directly
 namespace detail {
