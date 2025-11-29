@@ -3,8 +3,8 @@
  *
  * Simple reference counting linked list with some useful functions.
  *
- * Functions take list first and then additional arguments. This is so lambdas
- * can cleanly extend multiple lines.
+ * Functions take the list first and then additional arguments. This is for
+ * lambdas.
  *
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
