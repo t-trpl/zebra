@@ -23,7 +23,8 @@
 
 class AssemblerIO : protected IOBuffer {
 protected:
-        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out);
+        Maybe<std::streamsize> writeStripe(FilesL files, std::ofstream& out,
+            const bool silence);
 public:
         AssemblerIO() = default;
         virtual ~AssemblerIO() = default;

@@ -19,21 +19,20 @@
 #include <iostream>
 
 Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
-    std::ofstream& out)
+    std::ofstream& out, const bool silence)
 {
         std::streamsize bytes = 0;
         while (files) {
                 const std::string& path = files->val;
                 std::ifstream file(path, std::ios::binary);
-                if (!file) {
-                        const auto msg =
-                            "Failed to open: " + path + "\nDiscard output";
-                        return makeBad<std::streamsize>(msg);
-                }
+                if (!file)
+                        return makeBad<std::streamsize>(
+                            "Failed to open: " + path + "\nDiscard output");
                 const auto size = fileSize(file);
                 const auto transfer = chunk(file, out, size);
-                std::cout << "Transfered: " << path << ": " << transfer
-                          << " bytes\n";
+                if (!silence)
+                        std::cout << "Transfered: " << path << ": " << transfer
+                                  << " bytes\n";
                 bytes += transfer;
                 files = files->next;
         }

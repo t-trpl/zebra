@@ -95,7 +95,7 @@ Error UtilAssembler::run()
         std::ofstream outFile(out_);
         if (!outFile)
                 return "Failed to open: " + out_;
-        const auto bytes = writeStripe(*stripes, outFile);
+        const auto bytes = writeStripe(*stripes, outFile, silence_);
         if (!bytes)
                 return bytes.error();
         if (!silence_)

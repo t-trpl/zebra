@@ -35,11 +35,13 @@ Error Parser::runParse(const ArgList args)
         } else if (isOpt(arg)) {
                 if (argMap_.find(arg) != argMap_.end())
                         return "Duplicate " + arg;
-                const auto [next, acc] = nextOption(args->next);
+                const auto acc = takeWhile(args->next, [](const auto& s) {
+                        return !(s.size() > 0 && s[0] == '-');
+                });
                 if (any(acc, [](const auto& s) { return s.empty(); }))
                         return arg + " empty option";
                 argMap_[arg] = acc;
-                return runParse(next);
+                return runParse(drop(args, count(acc) + 1));
         } else if (!arg.empty()) {
                 return "Bad arg " + arg;
         } else {
@@ -48,24 +50,9 @@ Error Parser::runParse(const ArgList args)
         return runParse(args->next);
 }
 
-OptData Parser::nextOption(ArgList args) const
-{
-        ArgList acc = nullptr;
-        while (args && !leadingHyphen(args->val)) {
-                acc = push(args->val, acc);
-                args = args->next;
-        }
-        return { args, reverse(acc) };
-}
-
 bool Parser::checkHelp() const
 {
         return util::contains(argMap_, { "-h", "--help" });
-}
-
-bool Parser::leadingHyphen(const std::string& str) const
-{
-        return str.size() > 0 && str[0] == '-';
 }
 
 Parser::Mode Parser::toMode(const std::string& mode) const

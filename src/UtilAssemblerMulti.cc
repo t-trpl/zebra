@@ -25,10 +25,9 @@ Error UtilAssemblerMulti::setArgs(const ArgMap& map)
         if (!input)
                 return input.error();
         if (const auto it = *input; it != map.end()) {
-                FilesL acc = nullptr;
-                for (auto p = it->second; p; p = p->next)
-                        acc = push(toPath(p->val), acc);
-                files_ = reverse(acc);
+                files_ = ty::map(it->second, [this](const auto& s) {
+                        return toPath(s);
+                });
         } else {
                 return "Missing Input";
         }
@@ -49,7 +48,7 @@ Error UtilAssemblerMulti::run()
         std::ofstream output(out_);
         if (!output)
                 return "Failed to open: " + out_;
-        const auto bytes = writeStripe(files_, output);
+        const auto bytes = writeStripe(files_, output, silence_);
         if (!bytes)
                 return bytes.error();
         if (!silence_)

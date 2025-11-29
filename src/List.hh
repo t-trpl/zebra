@@ -3,6 +3,9 @@
  *
  * Simple reference counting linked list with some useful functions.
  *
+ * Functions take list first and then additional arguments. This is so lambdas
+ * can cleanly extend multiple lines.
+ *
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -124,6 +127,24 @@ bool any(const List<T> head, F&& f)
         if (f(head->val))
                 return true;
         return any(head->next, std::forward<F>(f));
+}
+
+template <typename T>
+List<T> drop(const List<T> head, const int cnt)
+{
+        if (!head)
+                return nullptr;
+        if (!cnt)
+                return head;
+        return drop(head->next, cnt - 1);
+}
+
+template <typename T, typename F>
+List<T> takeWhile(const List<T> head, F&& f)
+{
+        if (!head || !f(head->val))
+                return nullptr;
+        return push(head->val, takeWhile(head->next, std::forward<F>(f)));
 }
 
 } /// ty

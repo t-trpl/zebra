@@ -35,7 +35,8 @@ private:
         bool isOpt(const std::string& str) const;
         Mode toMode(const std::string& mode) const;
         bool leadingHyphen(const std::string& str) const;
-        OptData nextOption(ArgList args) const;
+        /// OptData nextOption(ArgList args) const;
+        /// ArgList nextOption(ArgList args) const;
         UtilPtr createPtr(const Mode m) const;
 public:
         Parser() = default;
