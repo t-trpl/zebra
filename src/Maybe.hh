@@ -63,9 +63,7 @@ template <typename U>
 Maybe<T>::Maybe(const U& val)
     : hasValue_(true)
     , value_(static_cast<T>(val))
-{
-
-}
+{ }
 
 template <typename T>
 template <typename U>
@@ -94,26 +92,20 @@ template <typename T>
 Maybe<T>::Maybe(const std::string& msg, bool)
     : hasValue_(false)
     , value_(msg)
-{
-
-}
+{ }
 
 template <typename T>
 Maybe<T>::Maybe(std::string&& msg, bool)
     : hasValue_(false)
     , value_(std::forward<std::string>(msg))
-{
-
-}
+{ }
 
 template <typename T>
 template <typename U>
 Maybe<T>::Maybe(std::initializer_list<U> il)
     : hasValue_(true)
     , value_(T(il.begin(), il.end()))
-{
-
-}
+{ }
 
 template <typename T>
 template <typename U>
