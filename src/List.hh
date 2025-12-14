@@ -65,13 +65,11 @@ void sortInPlace(const List<T> head)
         bool swapped;
         do {
                 swapped = false;
-                auto curr = head;
-                while (curr->next) {
+                for (auto curr = head; curr->next; curr = curr->next) {
                         if (curr->val > curr->next->val) {
                                 std::swap(curr->val, curr->next->val);
                                 swapped = true;
                         }
-                        curr = curr->next;
                 }
         } while (swapped);
 }
@@ -81,7 +79,7 @@ List<T> reverseInPlace(List<T> head)
 {
         if (!head || !head->next)
                 return head;
-        auto rh = detail::reverseInPlace(head->next);
+        const auto rh = detail::reverseInPlace(head->next);
         head->next->next = head;
         head->next = nullptr;
         return rh;
