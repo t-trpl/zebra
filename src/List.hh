@@ -47,15 +47,37 @@ template <typename T>
 struct Node {
         T val;
         List<T> next = nullptr;
-        template <typename U>
-        Node(const U& v) : val(v) { }
-        template <typename U>
-        Node(U&& v) : val(std::forward<U>(v)) { }
-        template <typename U>
-        Node(const U& v, List<T> head) : val(v), next(head) { }
-        template <typename U>
-        Node(U&& v, List<T> head) : val(std::forward<U>(v)), next(head) { }
+        template <typename U> Node(const U& v);
+        template <typename U> Node(U&& v);
+        template <typename U> Node(const U& v, List<T> head);
+        template <typename U> Node(U&& v, List<T> head);
 };
+
+template <typename T>
+template <typename U>
+Node<T>::Node(const U& v)
+    : val(v)
+{ }
+
+template <typename T>
+template <typename U>
+Node<T>::Node(U&& v)
+    : val(std::forward<U>(v))
+{ }
+
+template <typename T>
+template <typename U>
+Node<T>::Node(const U& v, List<T> head)
+    : val(v)
+    , next(head)
+{ }
+
+template <typename T>
+template <typename U>
+Node<T>::Node(U&& v, List<T> head)
+    : val(std::forward<U>(v))
+    , next(head)
+{ }
 
 template <typename T>
 void sortInPlace(const List<T> head)
