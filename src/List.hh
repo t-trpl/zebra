@@ -45,8 +45,8 @@ namespace detail {
 
 template <typename T>
 struct Node {
-        T val;
-        List<T> next = nullptr;
+        T val_;
+        List<T> next_ = nullptr;
         template <typename U> Node(const U& v);
         template <typename U> Node(U&& v);
         template <typename U> Node(const U& v, List<T> head);
@@ -56,27 +56,27 @@ struct Node {
 template <typename T>
 template <typename U>
 Node<T>::Node(const U& v)
-    : val(v)
+    : val_(v)
 { }
 
 template <typename T>
 template <typename U>
 Node<T>::Node(U&& v)
-    : val(std::forward<U>(v))
+    : val_(std::forward<U>(v))
 { }
 
 template <typename T>
 template <typename U>
 Node<T>::Node(const U& v, List<T> head)
-    : val(v)
-    , next(head)
+    : val_(v)
+    , next_(head)
 { }
 
 template <typename T>
 template <typename U>
 Node<T>::Node(U&& v, List<T> head)
-    : val(std::forward<U>(v))
-    , next(head)
+    : val_(std::forward<U>(v))
+    , next_(head)
 { }
 
 template <typename T>
@@ -87,9 +87,9 @@ void sortInPlace(const List<T> head)
         bool swapped;
         do {
                 swapped = false;
-                for (auto curr = head; curr->next; curr = curr->next) {
-                        if (curr->val > curr->next->val) {
-                                std::swap(curr->val, curr->next->val);
+                for (auto curr = head; curr->next_; curr = curr->next_) {
+                        if (curr->val_ > curr->next_->val_) {
+                                std::swap(curr->val_, curr->next_->val_);
                                 swapped = true;
                         }
                 }
@@ -99,11 +99,11 @@ void sortInPlace(const List<T> head)
 template <typename T>
 List<T> reverseInPlace(List<T> head)
 {
-        if (!head || !head->next)
+        if (!head || !head->next_)
                 return head;
-        const auto rh = detail::reverseInPlace(head->next);
-        head->next->next = head;
-        head->next = nullptr;
+        const auto rh = detail::reverseInPlace(head->next_);
+        head->next_->next_ = head;
+        head->next_ = nullptr;
         return rh;
 }
 
@@ -126,7 +126,7 @@ List<T> copy(const List<T> head)
 {
         if (!head)
                 return nullptr;
-        return std::make_shared<detail::Node<T>>(head->val, copy(head->next));
+        return std::make_shared<detail::Node<T>>(head->val_, copy(head->next_));
 }
 
 template <typename T>
@@ -147,7 +147,7 @@ List<T> reverse(const List<T> head)
 template <typename T>
 int count(const List<T> head)
 {
-        return head ? 1 + count(head->next) : 0;
+        return head ? 1 + count(head->next_) : 0;
 }
 
 template <typename T, typename F>
@@ -155,7 +155,7 @@ List<T> map(const List<T> head, F&& f)
 {
         if (!head)
                 return nullptr;
-        return push(f(head->val), map(head->next, std::forward<F>(f)));
+        return push(f(head->val_), map(head->next_, std::forward<F>(f)));
 }
 
 template <typename T, typename F>
@@ -163,9 +163,9 @@ bool any(const List<T> head, F&& f)
 {
         if (!head)
                 return false;
-        if (f(head->val))
+        if (f(head->val_))
                 return true;
-        return any(head->next, std::forward<F>(f));
+        return any(head->next_, std::forward<F>(f));
 }
 
 template <typename T>
@@ -175,15 +175,15 @@ List<T> drop(const List<T> head, const int cnt)
                 return nullptr;
         if (cnt <= 0)
                 return head;
-        return drop(head->next, cnt - 1);
+        return drop(head->next_, cnt - 1);
 }
 
 template <typename T, typename F>
 List<T> takeWhile(const List<T> head, F&& f)
 {
-        if (!head || !f(head->val))
+        if (!head || !f(head->val_))
                 return nullptr;
-        return push(head->val, takeWhile(head->next, std::forward<F>(f)));
+        return push(head->val_, takeWhile(head->next_, std::forward<F>(f)));
 }
 
 } /// List

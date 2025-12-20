@@ -26,7 +26,7 @@ Error Parser::runParse(const ArgList args)
 {
         if (!args)
                 return NONE;
-        const auto& arg = args->val;
+        const auto& arg = args->val_;
         if (isMode(arg)) {
                 if(!mode_.empty())
                         return "Two Modes";
@@ -35,7 +35,7 @@ Error Parser::runParse(const ArgList args)
         } else if (isOpt(arg)) {
                 if (argMap_.find(arg) != argMap_.end())
                         return "Duplicate " + arg;
-                const auto acc = ty::takeWhile(args->next, [](const auto& s) {
+                const auto acc = ty::takeWhile(args->next_, [](const auto& s) {
                         return !(s.size() > 0 && s[0] == '-');
                 });
                 if (ty::any(acc, [](const auto& s) { return s.empty(); }))
@@ -47,7 +47,7 @@ Error Parser::runParse(const ArgList args)
         } else {
                 return "Empty arg";
         }
-        return runParse(args->next);
+        return runParse(args->next_);
 }
 
 bool Parser::checkHelp() const

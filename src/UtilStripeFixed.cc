@@ -57,7 +57,7 @@ Error UtilStripeFixed::setArgs(const ArgMap& map)
         case 0:
                 return "No parts";
         case 1: {
-                const auto parts = stringToParts(ptr->val);
+                const auto parts = stringToParts(ptr->val_);
                 if (!parts)
                         return parts.error();
                 if (*parts == 0)

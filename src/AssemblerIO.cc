@@ -23,7 +23,7 @@ Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
 {
         std::streamsize bytes = 0;
         while (files) {
-                const std::string& path = files->val;
+                const std::string& path = files->val_;
                 std::ifstream file(path, std::ios::binary);
                 if (!file)
                         return makeBad<std::streamsize>(
@@ -34,7 +34,7 @@ Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
                         std::cout << "Transfered: " << path << ": " << transfer
                                   << " bytes\n";
                 bytes += transfer;
-                files = files->next;
+                files = files->next_;
         }
         return bytes;
 }
