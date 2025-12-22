@@ -43,13 +43,13 @@ bool isDigit(const char c);
 
 bool isAlpha(const char c);
 
-constexpr auto BANNER =
+inline const std::string BANNER =
 R"( _______| |__  _ __ __ _
 |_  / _ \ '_ \| '__/ _` |
  / /  __/ |_) | | | (_| |
 /___\___|_.__/|_|  \__,_|)";
 
-constexpr auto HELP =
+inline const std::string HELP =
 R"(Usage: zebra [mode option] [required option] [required option]
 [optional option] ... [optional flags] ...
 
