@@ -46,7 +46,7 @@ namespace detail {
 template <typename T>
 struct Node {
         T val_;
-        List<T> next_ = nullptr;
+        List<T> next_ = Null<T>;
         template <typename U> Node(const U& v);
         template <typename U> Node(U&& v);
         template <typename U> Node(const U& v, List<T> head);
@@ -125,8 +125,8 @@ template <typename T>
 List<T> copy(const List<T> head)
 {
         if (!head)
-                return nullptr;
-        return std::make_shared<detail::Node<T>>(head->val_, copy(head->next_));
+                return Null<T>;
+        return push(head->val_, copy(head->next_));
 }
 
 template <typename T>
@@ -140,7 +140,7 @@ List<T> sort(const List<T> head)
 template <typename T>
 List<T> reverse(const List<T> head)
 {
-        auto c = copy(head);
+        const auto c = copy(head);
         return detail::reverseInPlace(c);
 }
 
@@ -154,7 +154,7 @@ template <typename T, typename F>
 List<T> map(const List<T> head, F&& f)
 {
         if (!head)
-                return nullptr;
+                return Null<T>;
         return push(f(head->val_), map(head->next_, std::forward<F>(f)));
 }
 
@@ -172,7 +172,7 @@ template <typename T>
 List<T> drop(const List<T> head, const int cnt)
 {
         if (!head)
-                return nullptr;
+                return Null<T>;
         if (cnt <= 0)
                 return head;
         return drop(head->next_, cnt - 1);
@@ -182,10 +182,10 @@ template <typename T, typename F>
 List<T> takeWhile(const List<T> head, F&& f)
 {
         if (!head || !f(head->val_))
-                return nullptr;
+                return Null<T>;
         return push(head->val_, takeWhile(head->next_, std::forward<F>(f)));
 }
 
-} /// List
+} /// ty
 
 #endif /// LIST_HH
