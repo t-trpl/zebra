@@ -38,10 +38,8 @@ public:
         ~Maybe() = default;
         template <typename U> Maybe(const U& val);
         template <typename U> Maybe(U&& val) noexcept;
-        template <typename U> Maybe(std::initializer_list<U> il);
         template <typename U> Maybe<T>& operator=(U&& val) noexcept;
         template <typename U> Maybe<T>& operator=(const U& val);
-        template <typename U> Maybe<T>& operator=(std::initializer_list<U> il);
         explicit operator bool() const;
         T& operator*();
         const T& operator*() const;
@@ -102,13 +100,6 @@ Maybe<T>::Maybe(std::string&& msg, bool)
 
 template <typename T>
 template <typename U>
-Maybe<T>::Maybe(std::initializer_list<U> il)
-    : hasValue_(true)
-    , value_(T(il.begin(), il.end()))
-{ }
-
-template <typename T>
-template <typename U>
 Maybe<T>& Maybe<T>::operator=(U&& val) noexcept
 {
         hasValue_ = true;
@@ -125,15 +116,6 @@ Maybe<T>& Maybe<T>::operator=(const U& val)
 {
         hasValue_ = true;
         value_ = static_cast<T>(val);
-        return *this;
-}
-
-template <typename T>
-template <typename U>
-Maybe<T>& Maybe<T>::operator=(std::initializer_list<U> il)
-{
-        hasValue_ = true;
-        value_ = T(il.begin(), il.end());
         return *this;
 }
 
