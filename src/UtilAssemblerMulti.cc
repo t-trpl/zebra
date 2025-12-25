@@ -52,7 +52,8 @@ Error UtilAssemblerMulti::run()
         if (!bytes)
                 return bytes.error();
         if (!silence_)
-                std::cout << "Wrote " << out_ << " " << *bytes << " bytes\n";
+                std::cout << "\033[32m->\033[0m" << out_ << " " << *bytes
+                          << " bytes\n";
         return NONE;
 }
 

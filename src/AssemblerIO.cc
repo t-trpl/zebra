@@ -31,7 +31,7 @@ Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
                 const auto size = fileSize(file);
                 const auto transfer = chunk(file, out, size);
                 if (!silence)
-                        std::cout << "Transfered: " << path << ": " << transfer
+                        std::cout << "\033[32m<-\033[0m" << path << " " << transfer
                                   << " bytes\n";
                 bytes += transfer;
                 files = files->next_;

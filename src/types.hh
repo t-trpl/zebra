@@ -39,36 +39,26 @@ using FilesL = ty::List<std::string>;
 
 using Conflict = std::vector<std::tuple<ArgOr, ArgOr, std::string>>;
 
-constexpr auto NONE = std::nullopt;
+inline const auto NONE = std::nullopt;
 
-#define EXT_A                                   \
-        { "--extension", "-e", "extension" }
+inline const ArgT EXT_A = { "--extension", "-e", "extension" };
 
-#define NAME_A                                  \
-        { "--name", "-n", "name" }
+inline const ArgT NAME_A = { "--name", "-n", "name" };
 
-#define OUT_A                                   \
-        { "--output", "-o", "output" }
+inline const ArgT OUT_A = { "--output", "-o", "output" };
 
-#define IN_A                                    \
-        { "--input", "-i", "input" }
+inline const ArgT IN_A = { "--input", "-i", "input" };
 
-#define SIZE_A                                  \
-        { "--size", "-s", "size" }
+inline const ArgT SIZE_A = { "--size", "-s", "size" };
 
-#define PARTS_A                                 \
-        { "--parts", "-p", "parts" }
+inline const ArgT PARTS_A = { "--parts", "-p", "parts" };
 
-#define QUIET_F                                 \
-        { "--quiet", "-q" }
+inline const ArgOr QUIET_F = { "--quiet", "-q" };
 
-#define NO_EXT_F                                \
-        { "--no-extension", "-ne" }
+inline const ArgOr NO_EXT_F = { "--no-extension", "-ne" };
 
-#define NO_NAME_F                               \
-        { "--no-name", "-nn" }
+inline const ArgOr NO_NAME_F = { "--no-name", "-nn" };
 
-#define NO_PAD_F                                \
-        { "--no-padding", "-np" }
+inline const ArgOr NO_PAD_F = { "--no-padding", "-np" };
 
 #endif /// TYPES_HH
