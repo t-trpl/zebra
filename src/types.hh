@@ -70,6 +70,10 @@ protected:
         std::mutex fmtx_;
         std::atomic<bool> failure_ = false;
         std::string fmsg_;
+public:
+        Failure() = default;
+        virtual ~Failure() = default;
+        Failure(const Failure&) = delete;
 };
 
 struct WD {
