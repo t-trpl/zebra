@@ -20,14 +20,6 @@ IOBuffer::IOBuffer()
     : buffer_(size_, 0)
 { }
 
-std::streamsize IOBuffer::fileSize(std::ifstream& file) const
-{
-        file.seekg(0, std::ios::end);
-        std::streamsize size = file.tellg();
-        file.seekg(0, std::ios::beg);
-        return size;
-}
-
 std::streamsize IOBuffer::chunk(std::ifstream& input, std::ofstream& output,
     std::streamsize remaining)
 {

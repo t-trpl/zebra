@@ -34,6 +34,7 @@ std::unordered_set<std::string> UtilStripe::validArgs() const
             "--no-padding"  , "-np",
             "--quiet"       , "-q" ,
             "--no-extension", "-ne",
+            "--threads"     , "-t" ,
         };
 }
 

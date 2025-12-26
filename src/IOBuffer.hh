@@ -20,18 +20,20 @@
 #include <fstream>
 #include <vector>
 
+class UtilStripeBase;
+
 class IOBuffer {
 private:
         const std::streamsize size_ = 1'024 * 64;
         std::vector<char> buffer_;
 protected:
-        std::streamsize fileSize(std::ifstream& file) const;
         std::streamsize chunk(std::ifstream& input, std::ofstream& output,
             std::streamsize remaining);
 public:
         IOBuffer();
         virtual ~IOBuffer() = default;
         IOBuffer(const IOBuffer&) = delete;
+        friend class UtilStripeBase;
 };
 
 #endif /// IO_BUFFER_HH

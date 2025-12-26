@@ -70,4 +70,12 @@ bool isAlpha(const char c)
         return std::isalpha(uc);
 }
 
+std::streamsize fileSize(std::ifstream& file)
+{
+        file.seekg(0, std::ios::end);
+        std::streamsize size = file.tellg();
+        file.seekg(0, std::ios::beg);
+        return size;
+}
+
 } /// util

@@ -19,6 +19,7 @@
 
 #include "src/types.hh"
 #include <string>
+#include <fstream>
 
 namespace util {
 
@@ -42,6 +43,8 @@ ArgList mapOr(const ArgMap& argMap, const ArgOr& options);
 bool isDigit(const char c);
 
 bool isAlpha(const char c);
+
+std::streamsize fileSize(std::ifstream& file);
 
 inline const std::string BANNER =
 R"( _______| |__  _ __ __ _
@@ -84,6 +87,11 @@ Optional :
         Example:
             -e part | 001.part
             -e txt  | 001.txt
+    -t, --threads <threads>
+        The amount of threads the program will try to use.
+        Example:
+            -t 4
+            --threads 4
 Flag(s)
     -np, --no-padding <no padding>
         This will cause stripes to not have padding on their numbers.

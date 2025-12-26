@@ -28,6 +28,7 @@ std::unordered_set<std::string> UtilStripeFixed::validArgs() const
             "--quiet"       , "-q" ,
             "--no-extension", "-ne",
             "--parts"       , "-p" ,
+            "--threads"     , "-t" ,
         };
 }
 

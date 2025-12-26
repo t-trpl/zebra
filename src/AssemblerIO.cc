@@ -15,6 +15,7 @@
  */
 
 #include "src/AssemblerIO.hh"
+#include "src/utils.hh"
 #include <fstream>
 #include <iostream>
 
@@ -28,7 +29,7 @@ Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
                 if (!file)
                         return makeBad<std::streamsize>(
                             "Failed to open: " + path + "\nDiscard output");
-                const auto size = fileSize(file);
+                const auto size = util::fileSize(file);
                 const auto transfer = chunk(file, out, size);
                 if (!silence)
                         std::cout << "\033[32m<-\033[0m" << path << " " << transfer

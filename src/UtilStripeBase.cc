@@ -15,10 +15,15 @@
  */
 
 #include "src/UtilStripeBase.hh"
+#include "IOBuffer.hh"
+#include "Maybe.hh"
 #include "src/utils.hh"
+#include <cstddef>
 #include <iostream>
 #include <filesystem>
 #include <fstream>
+#include <thread>
+#include <algorithm>
 
 namespace fs = std::filesystem;
 
@@ -46,8 +51,7 @@ Conflict UtilStripeBase::conflicting() const
 size_t UtilStripeBase::stripeLength(const std::streamsize& size,
     const size_t& stripeSize) const
 {
-        const size_t pieces = size / stripeSize + (size % stripeSize > 0);
-        return numberLength(pieces - 1);
+        return size / stripeSize + (size % stripeSize > 0);
 }
 
 std::string UtilStripeBase::fileName(const int& number, const size_t& len) const
@@ -68,6 +72,68 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
         return path;
 }
 
+DInfo UtilStripeBase::fileIndex(const size_t& stripes, const size_t& size)
+{
+        const int base = stripes / threadc_;
+        const int rem = stripes % threadc_;
+        std::vector<int> quant(threadc_, base);
+        for (int i = 0; i < rem; i++)
+                quant[i]++;
+        quant.erase(
+            std::remove_if(quant.begin(), quant.end(), [](const auto& x) {
+                    return x == 0;
+            }),
+            quant.end());
+        std::vector<int> start = { 0 };
+        std::vector<size_t> indexs = { 0 };
+        size_t running = 0;
+        int ind = 0;
+        for (const auto& x : quant) {
+                running += x * size;
+                ind += x;
+                start.push_back(ind);
+                indexs.push_back(running);
+        }
+        indexs.pop_back(); /// don't need ptr to eof
+        return { start, indexs };
+}
+
+Maybe<IFiles> UtilStripeBase::files(const std::vector<size_t>& indexs)
+{
+        std::vector<std::ifstream> descriptors;
+        for (const auto& s : indexs) {
+                descriptors.emplace_back(in_, std::ios::binary);
+                auto& d = descriptors.back();
+                if (!d)
+                        return makeBad<IFiles>("Invalid File");
+                d.seekg(s);
+        }
+        return descriptors;
+}
+
+void UtilStripeBase::worker(std::ifstream& file, const WD& data)
+{
+        auto [start, end, len, size] = data;
+        IOBuffer buffer;
+        while (!failure_ && start < end) {
+                const auto path = stripePath(start++, len, out_);
+                std::ofstream outFile(path);
+                if (!outFile) {
+                        failure_ = true;
+                        std::lock_guard<std::mutex> lock(fmtx_);
+                        fmsg_ = "Error" + path;
+                }
+                const auto bytes = buffer.chunk(file, outFile, size);
+                if (!bytes)
+                        break;
+                if (!silence_) {
+                        std::lock_guard<std::mutex> lock(mtx_);
+                        std::cout << "\033[32m->\033[0m" << path << " " << bytes
+                                  << " bytes\n";
+                }
+        }
+}
+
 Error UtilStripeBase::run()
 {
         if (!silence_)
@@ -79,26 +145,34 @@ Error UtilStripeBase::run()
         std::ifstream file(in_, std::ios::binary);
         if (!file)
                 return "Invalid File";
-        const auto fsize = fileSize(file);
+        const auto fsize = util::fileSize(file);
         if (fsize == -1)
                 return "Empty file?";
         const auto stripeSize = getStripeSize(fsize);
         if (stripeSize < 4'000)
                 return "Stripe size too small";
-        const auto length = stripeLength(fsize, stripeSize);
-        int chunkNumber = 0;
-        std::streamsize totalBytes = 0;
-        while (totalBytes < fsize) {
-                const auto path = stripePath(chunkNumber++, length, out_);
-                std::ofstream outFile(path);
-                if (!outFile)
-                        return "Failed to write: " + path;
-                const auto bytes = chunk(file, outFile, stripeSize);
-                totalBytes += bytes;
-                if (!silence_)
-                        std::cout << "\033[32m->\033[0m" << path << " " << bytes
-                                  << " bytes\n";
+        const auto stripes = stripeLength(fsize, stripeSize);
+        const auto length = numberLength(stripes - 1);
+        const auto [starts, indexs] = fileIndex(stripes, stripeSize);
+        auto descriptors = files(indexs);
+        if (!descriptors)
+                return descriptors.error();
+        std::vector<std::thread> threads;
+        const int t = std::min(static_cast<size_t>(threadc_), indexs.size());
+        for (int i = 0; i < t; i++) {
+                auto& f = (*descriptors)[i];
+                const auto& start = starts[i];
+                const auto& end = starts[i + 1];
+                threads.emplace_back(
+                    &UtilStripeBase::worker,
+                    this,
+                    std::ref(f),
+                    WD{ start, end, length, stripeSize });
         }
+        for (auto& t : threads)
+                t.join();
+        if (failure_)
+                return fmsg_;
         return NONE;
 }
 
@@ -127,5 +201,24 @@ Error UtilStripeBase::setArgs(const ArgMap& map)
                 return *e;
         if (const auto e = setMember(map, EXT_A, ext_))
                 return *e;
+        const auto threads = argToIter(map, THREADS_A);
+        if (!threads)
+                return threads.error();
+        if (const auto it = *threads; it != map.end()) {
+                const auto ptr = it->second;
+                switch (ty::count(ptr)) {
+                case 0:
+                        return "No threads";
+                case 1: {
+                        const auto t = std::stoi(ptr->val_);
+                        if (t == 0)
+                                return "Can't have zero threads";
+                        threadc_ = t;
+                        break;
+                }
+                default:
+                        return "Too many threads";
+                }
+        }
         return NONE;
 }

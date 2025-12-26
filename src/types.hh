@@ -22,6 +22,8 @@
 #include <string>
 #include <optional>
 #include <vector>
+#include <mutex>
+#include <atomic>
 
 using ArgList = ty::List<std::string>;
 
@@ -53,6 +55,8 @@ inline const ArgT SIZE_A = { "--size", "-s", "size" };
 
 inline const ArgT PARTS_A = { "--parts", "-p", "parts" };
 
+inline const ArgT THREADS_A = { "--threads", "-t", "threads" };
+
 inline const ArgOr QUIET_F = { "--quiet", "-q" };
 
 inline const ArgOr NO_EXT_F = { "--no-extension", "-ne" };
@@ -60,5 +64,19 @@ inline const ArgOr NO_EXT_F = { "--no-extension", "-ne" };
 inline const ArgOr NO_NAME_F = { "--no-name", "-nn" };
 
 inline const ArgOr NO_PAD_F = { "--no-padding", "-np" };
+
+class Failure {
+protected:
+        std::mutex fmtx_;
+        std::atomic<bool> failure_ = false;
+        std::string fmsg_;
+};
+
+struct WD {
+        int start;
+        int end;
+        size_t len;
+        size_t size;
+};
 
 #endif /// TYPES_HH

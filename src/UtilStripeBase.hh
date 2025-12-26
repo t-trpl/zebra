@@ -17,18 +17,26 @@
 #ifndef UTIL_STRIPE_BASE_HH
 #define UTIL_STRIPE_BASE_HH
 
+#include "Maybe.hh"
 #include "src/types.hh"
 #include "src/UtilBaseSingle.hh"
 #include "src/IOBuffer.hh"
+#include <fstream>
 #include <string>
+#include <mutex>
+
+using DInfo = std::pair<std::vector<int>, std::vector<size_t>>;
+using IFiles = std::vector<std::ifstream>;
 
 class UtilStripeBase : public UtilBaseSingle
-                     , protected IOBuffer {
+                     , protected Failure {
 protected:
         std::string name_ = "";
         std::string ext_ = "stripe";
         bool padding_ = true;
         bool useExt_ = true;
+        int threadc_ = 1;
+        std::mutex mtx_; /// std::cout
         size_t stripeLength(const std::streamsize& size,
             const size_t& stripeSize) const;
         std::string fileName(const int& number, const size_t& len) const;
@@ -37,6 +45,10 @@ protected:
             const std::string& out) const;
         virtual size_t getStripeSize(const size_t& fsize) const = 0;
         Conflict conflicting() const override;
+        DInfo fileIndex(const size_t& stripes, const size_t& size);
+        Error launchThread(const int quant);
+        Maybe<IFiles> files(const std::vector<size_t>& indexs);
+        void worker(std::ifstream& file, const WD& data);
 public:
         UtilStripeBase() = default;
         virtual ~UtilStripeBase() = default;
