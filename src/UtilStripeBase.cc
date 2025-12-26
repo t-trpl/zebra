@@ -70,7 +70,7 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
         return path;
 }
 
-DInfo UtilStripeBase::fileIndex(const size_t& stripes, const size_t& size)
+std::vector<int> UtilStripeBase::fileIndex(const size_t& stripes)
 {
         const int base = stripes / threadc_;
         const int rem = stripes % threadc_;
@@ -82,29 +82,22 @@ DInfo UtilStripeBase::fileIndex(const size_t& stripes, const size_t& size)
                     return x == 0;
             }),
             quant.end());
-        std::vector<int> start = { 0 };
-        std::vector<size_t> indexs = { 0 };
-        size_t running = 0;
-        int ind = 0;
-        for (const auto& x : quant) {
-                running += x * size;
-                ind += x;
-                start.push_back(ind);
-                indexs.push_back(running);
-        }
-        indexs.pop_back(); /// don't need ptr to eof
-        return { start, indexs };
+        std::vector<int> index = { 0 };
+        for (const auto& x : quant)
+                index.push_back(index.back() + x);
+        return index;
 }
 
-Maybe<IFiles> UtilStripeBase::files(const std::vector<size_t>& indexs)
+Maybe<IFiles> UtilStripeBase::files(const std::vector<int>& start,
+    const size_t& s)
 {
         std::vector<std::ifstream> descriptors;
-        for (const auto& s : indexs) {
+        for (const auto& x : start) {
                 descriptors.emplace_back(in_, std::ios::binary);
                 auto& d = descriptors.back();
                 if (!d)
                         return makeBad<IFiles>("Invalid File");
-                d.seekg(s);
+                d.seekg(x * s);
         }
         return descriptors;
 }
@@ -151,12 +144,12 @@ Error UtilStripeBase::run()
                 return "Stripe size too small";
         const auto stripes = stripeLength(fsize, stripeSize);
         const auto length = numberLength(stripes - 1);
-        const auto [starts, indexs] = fileIndex(stripes, stripeSize);
-        auto descriptors = files(indexs);
+        const auto starts = fileIndex(stripes);
+        auto descriptors = files(starts, stripeSize);
         if (!descriptors)
                 return descriptors.error();
         std::vector<std::thread> threads;
-        const int t = std::min(static_cast<size_t>(threadc_), indexs.size());
+        const int t = std::min(threadc_, static_cast<int>(starts.size()) - 1);
         for (int i = 0; i < t; i++) {
                 auto& f = (*descriptors)[i];
                 const auto& start = starts[i];

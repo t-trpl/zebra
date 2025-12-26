@@ -25,7 +25,6 @@
 #include <string>
 #include <mutex>
 
-using DInfo = std::pair<std::vector<int>, std::vector<size_t>>;
 using IFiles = std::vector<std::ifstream>;
 
 class UtilStripeBase : public UtilBaseSingle
@@ -45,9 +44,9 @@ protected:
             const std::string& out) const;
         virtual size_t getStripeSize(const size_t& fsize) const = 0;
         Conflict conflicting() const override;
-        DInfo fileIndex(const size_t& stripes, const size_t& size);
+        std::vector<int> fileIndex(const size_t& stripes);
         Error launchThread(const int quant);
-        Maybe<IFiles> files(const std::vector<size_t>& indexs);
+        Maybe<IFiles> files(const std::vector<int>& indexs, const size_t& s);
         void worker(std::ifstream& file, const WD& data);
 public:
         UtilStripeBase() = default;
