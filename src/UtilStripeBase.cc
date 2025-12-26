@@ -16,9 +16,7 @@
 
 #include "src/UtilStripeBase.hh"
 #include "IOBuffer.hh"
-#include "Maybe.hh"
 #include "src/utils.hh"
-#include <cstddef>
 #include <iostream>
 #include <filesystem>
 #include <fstream>
