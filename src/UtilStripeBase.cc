@@ -70,7 +70,7 @@ std::string UtilStripeBase::stripePath(const size_t& num, const size_t& max,
         return path;
 }
 
-std::vector<int> UtilStripeBase::fileIndex(const size_t& stripes)
+std::vector<int> UtilStripeBase::fileIndex(const size_t& stripes) const
 {
         const int base = stripes / threadc_;
         const int rem = stripes % threadc_;
@@ -89,7 +89,7 @@ std::vector<int> UtilStripeBase::fileIndex(const size_t& stripes)
 }
 
 Maybe<IFiles> UtilStripeBase::files(const std::vector<int>& start,
-    const size_t& s)
+    const size_t& s) const
 {
         std::vector<std::ifstream> descriptors;
         for (const auto& x : start) {

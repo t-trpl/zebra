@@ -44,9 +44,9 @@ protected:
             const std::string& out) const;
         virtual size_t getStripeSize(const size_t& fsize) const = 0;
         Conflict conflicting() const override;
-        std::vector<int> fileIndex(const size_t& stripes);
-        Error launchThread(const int quant);
-        Maybe<IFiles> files(const std::vector<int>& indexs, const size_t& s);
+        std::vector<int> fileIndex(const size_t& stripes) const;
+        Maybe<IFiles> files(const std::vector<int>& indexs, const size_t& s)
+            const;
         void worker(std::ifstream& file, const WD& data);
 public:
         UtilStripeBase() = default;
