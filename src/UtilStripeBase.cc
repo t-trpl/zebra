@@ -112,7 +112,9 @@ void UtilStripeBase::worker(std::ifstream& file, const WD& data)
                 if (!outFile) {
                         failure_ = true;
                         std::lock_guard<std::mutex> lock(fmtx_);
-                        fmsg_ = "Error" + path;
+                        if (fmsg_.empty())
+                                fmsg_ = "Error" + path;
+                        return;
                 }
                 const auto bytes = buffer.chunk(file, outFile, size);
                 if (!bytes)
