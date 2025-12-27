@@ -22,8 +22,6 @@
 #include <string>
 #include <optional>
 #include <vector>
-#include <mutex>
-#include <atomic>
 
 using ArgList = ty::List<std::string>;
 
@@ -64,17 +62,6 @@ inline const ArgOr NO_EXT_F = { "--no-extension", "-ne" };
 inline const ArgOr NO_NAME_F = { "--no-name", "-nn" };
 
 inline const ArgOr NO_PAD_F = { "--no-padding", "-np" };
-
-class Failure {
-protected:
-        std::mutex fmtx_;
-        std::atomic<bool> failure_ = false;
-        std::string fmsg_;
-public:
-        Failure() = default;
-        virtual ~Failure() = default;
-        Failure(const Failure&) = delete;
-};
 
 struct WD {
         int start;

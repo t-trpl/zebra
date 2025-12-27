@@ -102,18 +102,20 @@ Maybe<IFiles> UtilStripeBase::files(const std::vector<int>& start,
         return descriptors;
 }
 
+
 void UtilStripeBase::worker(std::ifstream& file, const WD& data)
 {
         auto [start, end, len, size] = data;
         IOBuffer buffer;
+        if (!file) {
+                fail("Bad descriptor");
+                return;
+        }
         while (!failure_ && start < end) {
                 const auto path = stripePath(start++, len, out_);
                 std::ofstream outFile(path);
                 if (!outFile) {
-                        failure_ = true;
-                        std::lock_guard<std::mutex> lock(fmtx_);
-                        if (fmsg_.empty())
-                                fmsg_ = "Error" + path;
+                        fail("Error " + path);
                         return;
                 }
                 const auto bytes = buffer.chunk(file, outFile, size);

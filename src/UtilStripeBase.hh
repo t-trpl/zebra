@@ -21,6 +21,7 @@
 #include "src/types.hh"
 #include "src/UtilBaseSingle.hh"
 #include "src/IOBuffer.hh"
+#include "src/Failure.hh"
 #include <fstream>
 #include <string>
 #include <mutex>
