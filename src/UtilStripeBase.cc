@@ -46,7 +46,7 @@ Conflict UtilStripeBase::conflicting() const
         };
 }
 
-size_t UtilStripeBase::stripeLength(const std::streamsize& size,
+size_t UtilStripeBase::getStripes(const std::streamsize& size,
     const size_t& stripeSize) const
 {
         return size / stripeSize + (size % stripeSize > 0);
@@ -141,7 +141,7 @@ Error UtilStripeBase::run()
         const auto stripeSize = getStripeSize(fsize);
         if (stripeSize < 4'000)
                 return "Stripe size too small";
-        const auto stripes = stripeLength(fsize, stripeSize);
+        const auto stripes = getStripes(fsize, stripeSize);
         const auto length = numberLength(stripes - 1);
         const auto starts = fileIndex(stripes);
         auto descriptors = files(starts, stripeSize);

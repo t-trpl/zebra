@@ -37,8 +37,8 @@ protected:
         bool useExt_ = true;
         int threadc_ = 1;
         std::mutex mtx_; /// std::cout
-        size_t stripeLength(const std::streamsize& size,
-            const size_t& stripeSize) const;
+        size_t getStripes(const std::streamsize& size, const size_t& stripeSize)
+            const;
         std::string fileName(const int& number, const size_t& len) const;
         size_t numberLength(const size_t& rem) const;
         std::string stripePath(const size_t& num, const size_t& max,
