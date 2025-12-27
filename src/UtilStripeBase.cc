@@ -106,10 +106,6 @@ void UtilStripeBase::worker(std::ifstream& file, const WD& data)
 {
         auto [start, end, len, size] = data;
         IOBuffer buffer;
-        if (!file) {
-                fail("Bad descriptor");
-                return;
-        }
         while (!failure_ && start < end) {
                 const auto path = stripePath(start++, len, out_);
                 std::ofstream outFile(path);
