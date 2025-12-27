@@ -102,7 +102,6 @@ Maybe<IFiles> UtilStripeBase::files(const std::vector<int>& start,
         return descriptors;
 }
 
-
 void UtilStripeBase::worker(std::ifstream& file, const WD& data)
 {
         auto [start, end, len, size] = data;
