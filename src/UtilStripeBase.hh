@@ -26,7 +26,12 @@
 #include <string>
 #include <mutex>
 
-using IFiles = std::vector<std::ifstream>;
+struct WD {
+        int start;
+        int end;
+        size_t len;
+        size_t size;
+};
 
 class UtilStripeBase : public UtilBaseSingle
                      , protected Failure {

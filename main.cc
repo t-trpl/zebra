@@ -16,6 +16,7 @@
 
 #include "src/Parser.hh"
 #include "src/utils.hh"
+#include "src/consts.hh"
 #include <iostream>
 
 Error run(const ArgList args)

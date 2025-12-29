@@ -16,6 +16,7 @@
 
 #include "src/UtilStripeFixed.hh"
 #include "src/utils.hh"
+#include "src/consts.hh"
 
 std::unordered_set<std::string> UtilStripeFixed::validArgs() const
 {

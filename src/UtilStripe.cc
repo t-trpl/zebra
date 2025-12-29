@@ -18,6 +18,7 @@
 #include "src/Maybe.hh"
 #include "src/types.hh"
 #include "src/utils.hh"
+#include "src/consts.hh"
 #include <cctype>
 #include <cstddef>
 #include <unordered_map>

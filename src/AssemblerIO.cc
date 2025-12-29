@@ -16,6 +16,7 @@
 
 #include "src/AssemblerIO.hh"
 #include "src/utils.hh"
+#include "src/Row.hh"
 #include <fstream>
 #include <iostream>
 
@@ -32,8 +33,7 @@ Maybe<std::streamsize> AssemblerIO::writeStripe(FilesL files,
                 const auto size = util::fileSize(file);
                 const auto transfer = chunk(file, out, size);
                 if (!silence)
-                        std::cout << "\033[32m<-\033[0m" << path << " "
-                                  << transfer << " bytes\n";
+                        Row::print(LEFT, path, transfer);
                 bytes += transfer;
                 files = files->next_;
         }

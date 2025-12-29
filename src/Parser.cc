@@ -20,6 +20,7 @@
 #include "src/UtilAssemblerMulti.hh"
 #include "src/UtilStripeFixed.hh"
 #include "src/utils.hh"
+#include "src/consts.hh"
 #include "types.hh"
 
 Error Parser::runParse(const ArgList args)

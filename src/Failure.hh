@@ -14,6 +14,9 @@
  * GNU General Public License for more details.
  */
 
+#ifndef FAILURE_HH
+#define FAILURE_HH
+
 #include <mutex>
 #include <atomic>
 #include <string>
@@ -29,3 +32,5 @@ public:
         virtual ~Failure() = default;
         Failure(const Failure&) = delete;
 };
+
+#endif /// FAILURE_HH

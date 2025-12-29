@@ -17,6 +17,8 @@
 #include "src/UtilStripeBase.hh"
 #include "IOBuffer.hh"
 #include "src/utils.hh"
+#include "src/Row.hh"
+#include "src/consts.hh"
 #include <iostream>
 #include <filesystem>
 #include <fstream>
@@ -118,8 +120,7 @@ void UtilStripeBase::worker(std::ifstream& file, const WD& data)
                         break;
                 if (!silence_) {
                         std::lock_guard<std::mutex> lock(mtx_);
-                        std::cout << "\033[32m->\033[0m" << path << " " << bytes
-                                  << " bytes\n";
+                        Row::print(RIGHT, path, bytes);
                 }
         }
 }

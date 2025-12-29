@@ -1,5 +1,5 @@
 /**
- * File: types.hh
+ * File: Row.hh
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,31 +14,27 @@
  * GNU General Public License for more details.
  */
 
-#ifndef TYPES_HH
-#define TYPES_HH
+#ifndef ROW_HH
+#define ROW_HH
 
-#include "src/List.hh"
+#include <ios>
 #include <unordered_map>
 #include <string>
-#include <optional>
-#include <vector>
 
-using ArgList = ty::List<std::string>;
+enum Dir { LEFT, RIGHT };
 
-using ArgMap = std::unordered_map<std::string, ArgList>;
+class Row {
+private:
+        inline static const std::unordered_map<Dir, std::string> arrows_ = {
+            { LEFT, "\033[32m<-\033[0m" },
+            { RIGHT, "\033[32m->\033[0m" },
+        };
+public:
+        Row() = default;
+        ~Row() = default;
+        Row(const Row&) = delete;
+        static void print(const Dir& d, const std::string& path,
+            const std::streamsize& bytes);
+};
 
-using Error = std::optional<std::string>;
-
-using ArgT = std::tuple<std::string, std::string, std::string>;
-
-using ArgOr = std::pair<std::string, std::string>;
-
-using MapIt = ArgMap::const_iterator;
-
-using FilesL = ty::List<std::string>;
-
-using Conflict = std::vector<std::tuple<ArgOr, ArgOr, std::string>>;
-
-using IFiles = std::vector<std::ifstream>;
-
-#endif /// TYPES_HH
+#endif /// ROW_HH

@@ -1,5 +1,5 @@
 /**
- * File: UtilBaseSingle.cc
+ * File: Row.cc
  * Copyright (C) 2025 Tyler Triplett
  * License: GNU GPL 3.0 or later <https://www.gnu.org/licenses/gpl-3.0.html>
  *
@@ -14,14 +14,13 @@
  * GNU General Public License for more details.
  */
 
-#include "src/UtilBaseSingle.hh"
-#include "src/consts.hh"
+#include "src/Row.hh"
+#include <iostream>
 
-Error UtilBaseSingle::setArgs(const ArgMap& map)
+void Row::print(const Dir& d, const std::string& path,
+    const std::streamsize& bytes)
 {
-        if (const auto e = setPath(map, IN_A, in_))
-                return *e;
-        if (const auto e = setPath(map, OUT_A, out_))
-                return *e;
-        return NONE;
+        const auto it = arrows_.find(d);
+        if (it != arrows_.end())
+                std::cout << it->second << path << " " << bytes << " bytes\n";
 }

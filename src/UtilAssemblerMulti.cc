@@ -16,6 +16,8 @@
 
 #include "src/UtilAssemblerMulti.hh"
 #include "src/utils.hh"
+#include "src/consts.hh"
+#include "src/Row.hh"
 #include <iostream>
 #include <fstream>
 
@@ -52,8 +54,7 @@ Error UtilAssemblerMulti::run()
         if (!bytes)
                 return bytes.error();
         if (!silence_)
-                std::cout << "\033[32m->\033[0m" << out_ << " " << *bytes
-                          << " bytes\n";
+                Row::print(RIGHT, out_, *bytes);
         return NONE;
 }
 
